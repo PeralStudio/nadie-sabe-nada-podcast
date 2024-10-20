@@ -1,0 +1,16 @@
+.paginationContainer {
+    margin: 20px 0;
+}
+
+.paginationText {
+    color: #16db93;
+    font-size: 1rem;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.paginationSpan {
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    margin-right: 20px;
+}

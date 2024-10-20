@@ -1,0 +1,137 @@
+.container {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+    user-select: none;
+    padding-bottom: 100px;
+}
+
+.title {
+    color: #16db93;
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.playerList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    justify-items: center;
+}
+
+.loaderContainer {
+    margin-top: 100px;
+}
+
+.pLoading {
+    display: flex;
+    justify-content: center;
+    color: #16db93;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.searchInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid #16db93;
+    border-radius: 25px;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #12b177 !important;
+    background-color: #f0f0f0;
+    font-weight: 800;
+    margin: -10px;
+}
+
+.searchInput::placeholder {
+    color: #9a9a9a;
+}
+
+.searchInput:focus {
+    border-color: #0f3460;
+    background-color: #ffffff;
+    color: #12b177;
+    box-shadow: 0 4px 6px rgba(22, 219, 147, 0.2);
+    font-weight: 800;
+}
+
+button {
+    background-color: #16db93;
+    font-weight: 600;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    padding: 4px 16px;
+    margin: 0 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button {
+    background-color: #16db93;
+    font-weight: 600;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    padding: 4px 12px;
+    margin: 0 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activeButton {
+    background-color: #0f3460;
+    color: #16db93;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    padding: 4px 12px;
+    margin: 0 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button svg {
+    margin-bottom: -3px;
+}
+
+button:disabled {
+    background-color: #4a4e69;
+    color: #9a9a9a;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0f3460;
+    color: #16db93;
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(22, 219, 147, 0.1);
+}
+
+@media (max-width: 768px) {
+    .searchInput {
+        max-width: 56%;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .searchInput {
+        max-width: 80%;
+        padding: 10px 15px;
+    }
+}

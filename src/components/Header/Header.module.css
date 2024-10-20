@@ -1,0 +1,107 @@
+/* Estilos generales del header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0f3460;
+    padding: 16px 68px;
+    color: #fff;
+    /* position: sticky; */
+    top: 0;
+    z-index: 1000;
+}
+
+/* Estilos del logo y tagline */
+.logo {
+    text-align: left;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #16db93;
+    font-weight: bold;
+}
+
+.logoLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.tagline {
+    font-size: 16px;
+    color: #ffffff;
+    margin: 5px 0 0 0;
+}
+
+/* Estilos de los iconos de redes sociales */
+.socialIcons {
+    display: flex;
+    gap: 10px;
+}
+
+.iconButton {
+    color: white !important;
+    /* background-color: #16db93 !important; */
+    transition: color 0.3s ease;
+}
+
+.iconButton:hover {
+    color: #16db93 !important;
+    transform: translateY(-1px);
+    /* background-color: #103460 !important; */
+}
+
+/* Estilo del botón de "Último episodio" */
+.ctaButton {
+    display: flex;
+}
+
+.ctaLink {
+    text-decoration: none;
+    background-color: #16db93;
+    color: #0f3460;
+    font-size: 14px;
+    padding: 10px 10px;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.ctaLink:hover {
+    background-color: #14db85;
+    transform: translateY(-1px);
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .logo {
+        align-items: center;
+    }
+
+    .logoLink {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .socialIcons {
+        margin-top: 15px;
+        justify-content: center;
+    }
+
+    .ctaLink {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}

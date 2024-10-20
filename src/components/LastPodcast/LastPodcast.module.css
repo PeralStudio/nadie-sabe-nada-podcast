@@ -1,0 +1,194 @@
+.podcastDetail {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: #16213e;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    color: #16db93;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.backButton:hover {
+    text-decoration: underline;
+}
+
+.title {
+    font-size: 2rem;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+    text-align: center; /* Centrando el título */
+}
+
+.youtubePlayer {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.description {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.date {
+    color: #16db93;
+    font-size: 0.9rem;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #16db93;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+    background-color: #0f3460;
+    color: #16db93;
+}
+
+.listenedButton {
+    background-color: #0f3460;
+    color: #16db93;
+}
+
+/* Custom styles for the audio player */
+:global(.rhap_container) {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+:global(.rhap_time),
+:global(.rhap_current-time),
+:global(.rhap_total-time) {
+    color: #e0e0e0 !important;
+}
+
+:global(.rhap_progress-filled),
+:global(.rhap_progress-indicator) {
+    background-color: #16db93 !important;
+}
+
+:global(.rhap_download-progress),
+:global(.rhap_volume-indicator) {
+    background-color: #2a4a7f !important;
+}
+
+:global(.rhap_button-clear) {
+    color: #e0e0e0 !important;
+}
+
+:global(.rhap_volume-button),
+:global(.rhap_main-controls-button) {
+    color: #16db93 !important;
+}
+
+@media (max-width: 768px) {
+    .podcastDetail {
+        padding: 15px;
+        margin-top: 10px;
+        margin-bottom: 120px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .youtubePlayer {
+        width: 100%;
+        height: 360px;
+    }
+
+    .description {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .metadata {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .actionButton {
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .podcastDetail {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .youtubePlayer {
+        height: 240px;
+    }
+
+    .description {
+        font-size: 0.9rem;
+    }
+
+    .metadata {
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .actionButton {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .backButton {
+        margin-bottom: 15px;
+    }
+}

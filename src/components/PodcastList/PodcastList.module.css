@@ -1,0 +1,42 @@
+.playerList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    margin-bottom: 30px;
+}
+
+.button {
+    background-color: #16db93;
+    font-weight: 600;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 25px;
+    padding: 4px 12px;
+    margin: 0 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activeButton {
+    background-color: #0f3460;
+    color: #16db93;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    padding: 4px 12px;
+    margin: 0 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cardLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.paginationContainer {
+    margin-top: 40px;
+}
