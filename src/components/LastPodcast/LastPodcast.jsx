@@ -9,6 +9,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -80,6 +81,18 @@ const PodcastDetail = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
+            <Helmet>
+                <title>{podcast.title} - Nadie Sabe Nada</title>
+                <meta property="og:title" content={podcast.title} />
+                <meta property="og:description" content={podcast.description} />
+                <meta property="og:image" content={podcast.image} />
+                <meta property="og:url" content={window.location.href} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={podcast.title} />
+                <meta name="twitter:description" content={podcast.description} />
+                <meta name="twitter:image" content={podcast.image} />
+            </Helmet>
+
             <Link to="/" className={styles.backButton}>
                 <ArrowBackIcon /> Volver
             </Link>
