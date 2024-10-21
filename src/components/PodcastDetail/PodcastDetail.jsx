@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import YouTube from "react-youtube";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -25,6 +25,7 @@ const PodcastDetail = ({
     const { id } = useParams();
     const [podcast, setPodcast] = useState(null);
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const foundPodcast = songs.find((song) => slugify(song.title) === id);
@@ -45,14 +46,16 @@ const PodcastDetail = ({
                 } catch (error) {
                     console.error("Error fetching YouTube video:", error);
                 }
+            } else {
+                navigate("/404");
             }
         };
 
         fetchYoutubeVideo();
-    }, [id, songs]);
+    }, [id, songs, navigate]);
 
     if (!podcast) {
-        return <div>Loading...</div>;
+        return <></>;
     }
 
     const handleShareClick = () => {
@@ -84,20 +87,22 @@ const PodcastDetail = ({
             </Link>
             <h2 className={styles.title}>{podcast.title}</h2>
             {youtubeVideoId && (
-                <YouTube
-                    videoId={youtubeVideoId}
-                    opts={{
-                        height: "390",
-                        width: "640",
-                        playerVars: {
-                            autoplay: 0
-                        },
-                        modestbranding: 1,
-                        showinfo: 0
-                    }}
-                    className={styles.youtubePlayer}
-                    onPlay={stopPlayingAudio}
-                />
+                <div className={styles.youtubePlayer}>
+                    <YouTube
+                        videoId={youtubeVideoId}
+                        opts={{
+                            height: "390",
+                            width: "640",
+                            playerVars: {
+                                autoplay: 0
+                            },
+                            modestbranding: 1,
+                            showinfo: 0
+                        }}
+                        className={styles.youtubePlayer}
+                        onPlay={stopPlayingAudio}
+                    />
+                </div>
             )}
             <p className={styles.description}>{podcast.description}</p>
             <div className={styles.metadata}>

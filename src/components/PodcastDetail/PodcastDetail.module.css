@@ -27,7 +27,7 @@
     font-size: 2rem;
     color: #e0e0e0;
     margin-bottom: 20px;
-    text-align: center; /* Centrando el título */
+    text-align: center;
 }
 
 .youtubePlayer {
@@ -81,6 +81,51 @@
 .listenedButton {
     background-color: #0f3460;
     color: #16db93;
+}
+
+.youtubePlayer {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.youtubePlayer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+}
+
+.message {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #b0b0b0;
+}
+
+.homeButton {
+    background-color: #16db93;
+    color: #1a1a2e;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.homeButton:hover {
+    background-color: #0f3460;
+    color: #16db93;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Custom styles for the audio player */
@@ -153,6 +198,10 @@
         width: 100%;
         padding: 10px;
     }
+
+    .youtubePlayer {
+        aspect-ratio: 16 / 9;
+    }
 }
 
 @media (max-width: 480px) {
@@ -190,5 +239,9 @@
 
     .backButton {
         margin-bottom: 15px;
+    }
+
+    .youtubePlayer {
+        aspect-ratio: 16 / 9;
     }
 }
