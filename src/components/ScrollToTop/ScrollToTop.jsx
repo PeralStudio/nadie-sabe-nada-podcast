@@ -47,9 +47,9 @@ const ScrollToTop = () => {
         <>
             {isVisible && !isMobile && (
                 <div className={styles.scrollToTop} onClick={scrollToTop}>
-                    <div className={styles.scrollButton}>
+                    <button className={styles.scrollButton}>
                         <ArrowUpwardIcon />
-                    </div>
+                    </button>
                 </div>
             )}
         </>
