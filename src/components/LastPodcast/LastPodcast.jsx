@@ -22,7 +22,6 @@ const PodcastDetail = ({
     currentPodcast,
     stopPlayingAudio
 }) => {
-    console.log(songs[0]);
     const { id } = useParams();
     const podcast = songs[0];
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
