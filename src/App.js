@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import styles from "./App.module.css";
-import PodcastList from "./components/PodcastList/PodcastList";
-import PodcastDetail from "./components/PodcastDetail/PodcastDetail";
-import LastPodcast from "./components/LastPodcast/LastPodcast";
-import PersistentPlayer from "./components/PersistentPlayer/PersistentPlayer";
 import axios from "axios";
 import RingLoader from "react-spinners/RingLoader";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
+
+import PodcastList from "./components/PodcastList/PodcastList";
+import PodcastDetail from "./components/PodcastDetail/PodcastDetail";
+import LastPodcast from "./components/LastPodcast/LastPodcast";
+import PersistentPlayer from "./components/PersistentPlayer/PersistentPlayer";
+import NotFound from "./components/NotFound/NotFound";
 
 const localStorageKey = "nsnPodcastSongs";
 const lastUpdatedKey = "nsnPodcastLastUpdated";
@@ -236,6 +238,7 @@ const App = () => {
                             />
                         }
                     />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             )}
             <PersistentPlayer
