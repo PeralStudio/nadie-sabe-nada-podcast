@@ -7,6 +7,7 @@ import { slugify } from "../../utils/slugify";
 import { PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const PodcastList = ({
     filteredSongs,
@@ -66,6 +67,12 @@ const PodcastList = ({
 
     return (
         <>
+            <Helmet>
+                <title>
+                    Nadie Sabe Nada | Podcast de Humor y Comedia con Andreu Buenafuente y Berto
+                    Romero
+                </title>
+            </Helmet>
             <Pagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
