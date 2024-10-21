@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
+html {
+    background-color: #1a1a2e;
+}
+
 body {
     margin: 0;
     background-color: #1a1a2e;
