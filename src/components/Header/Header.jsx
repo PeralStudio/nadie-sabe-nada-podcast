@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 import styles from "./Header.module.css";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
-import { GitHub } from "@mui/icons-material";
+import { GitHub, Language } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { Zoom } from "@mui/material";
 
 const Header = () => {
     // Variantes para la animación de la cabecera
@@ -41,6 +44,22 @@ const Header = () => {
         }
     };
 
+    const BootstrapTooltip = styled(({ className, ...props }) => (
+        <Tooltip {...props} arrow classes={{ popper: className }} />
+    ))(({ theme }) => ({
+        [`& .${tooltipClasses.arrow}`]: {
+            color: "#14D993"
+        },
+        [`& .${tooltipClasses.tooltip}`]: {
+            backgroundColor: "#14DB93",
+            color: "#000000",
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "5px 10px",
+            borderRadius: "5px"
+        }
+    }));
+
     return (
         <motion.header
             className={styles.header}
@@ -64,16 +83,35 @@ const Header = () => {
             </div>
 
             <div className={styles.socialIcons}>
-                <motion.div whileHover="hover" variants={iconVariants}>
-                    <IconButton
-                        href="https://github.com/PeralStudio"
-                        target="_blank"
-                        rel="noopener"
-                        className={styles.iconButton}
-                    >
-                        <GitHub />
-                    </IconButton>
-                </motion.div>
+                <BootstrapTooltip
+                    title={"Página Web"}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Zoom}
+                >
+                    <motion.div whileHover="hover" variants={iconVariants}>
+                        <IconButton
+                            href="https://peralstudio.com"
+                            target="_blank"
+                            rel="noopener"
+                            className={styles.iconButton}
+                        >
+                            <Language />
+                        </IconButton>
+                    </motion.div>
+                </BootstrapTooltip>
+                <BootstrapTooltip title={"Github"} placement="top" arrow TransitionComponent={Zoom}>
+                    <motion.div whileHover="hover" variants={iconVariants}>
+                        <IconButton
+                            href="https://github.com/PeralStudio"
+                            target="_blank"
+                            rel="noopener"
+                            className={styles.iconButton}
+                        >
+                            <GitHub />
+                        </IconButton>
+                    </motion.div>
+                </BootstrapTooltip>
 
                 <motion.div whileHover="hover" variants={ctaVariants}>
                     <Link to="/ultimo-episodio" className={styles.ctaLink}>
