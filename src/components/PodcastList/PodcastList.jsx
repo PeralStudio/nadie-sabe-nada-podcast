@@ -22,8 +22,6 @@ const PodcastList = ({
     const indexOfFirstSong = indexOfLastSong - songsPerPage;
     const currentSongs = filteredSongs.slice(indexOfFirstSong, indexOfLastSong);
 
-    console.log(filteredSongs);
-
     return (
         <>
             <Pagination
