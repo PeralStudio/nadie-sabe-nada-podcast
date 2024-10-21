@@ -7,6 +7,8 @@ import PauseIcon from "@mui/icons-material/Pause";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -20,7 +22,8 @@ const MP3Player = ({
     isListened,
     toggleListened,
     onPlay,
-    isPlaying
+    isPlaying,
+    onClick
 }) => {
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
@@ -36,6 +39,12 @@ const MP3Player = ({
         e.preventDefault();
         e.stopPropagation();
         onPlay();
+    };
+
+    const handleCardClick = (e) => {
+        if (e.target.tagName !== "IMG") {
+            onClick();
+        }
     };
 
     const BootstrapTooltip = styled(({ className, ...props }) => (
@@ -119,13 +128,26 @@ const MP3Player = ({
     );
 
     return (
-        <div className={styles.card}>
-            <img
-                src={imageUrl || placeHolderImage2}
-                alt={title}
-                className={styles.image}
-                onError={handleImageError}
-            />
+        <div className={styles.card} onClick={handleCardClick}>
+            <PhotoProvider
+                maskOpacity={0.7}
+                bannerVisible={false}
+                speed={() => 700}
+                easing={(type) =>
+                    type === 2
+                        ? "cubic-bezier(0.36, 0, 0.66, -0.56)"
+                        : "cubic-bezier(0.34, 1.56, 0.64, 1)"
+                }
+            >
+                <PhotoView src={imageUrl || placeHolderImage2}>
+                    <img
+                        src={imageUrl || placeHolderImage2}
+                        alt={title}
+                        className={styles.image}
+                        onError={handleImageError}
+                    />
+                </PhotoView>
+            </PhotoProvider>
 
             <h3 className={styles.title}>{title}</h3>
 
