@@ -38,6 +38,7 @@
 .socialIcons {
     display: flex;
     gap: 10px;
+    align-items: baseline;
 }
 
 .iconButton {

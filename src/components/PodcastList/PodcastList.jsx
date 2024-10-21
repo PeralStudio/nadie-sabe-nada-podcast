@@ -30,21 +30,37 @@ const PodcastList = ({
         navigate(`/podcast/${slugify(song.title)}`);
     };
 
+    // Variantes para el contenedor
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1
+                staggerChildren: 0.15 // Mayor separación entre animaciones
             }
         }
     };
 
+    // Variantes para los items
     const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
+        hidden: { y: 20, opacity: 0 }, // Aquí es donde los elementos entran desde y: 20 con opacidad 0
         visible: {
             y: 0,
-            opacity: 1
+            opacity: 1,
+            transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 15
+            }
+        },
+        hover: {
+            scale: 1.05,
+            rotate: 1,
+            transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 12
+            }
         }
     };
 
@@ -68,7 +84,7 @@ const PodcastList = ({
                 transition={{ duration: 0.5 }}
             >
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
                     whileTap={{ scale: 0.95 }}
                     className={filter === "todos" ? styles.activeButton : styles.button}
                     onClick={() => setFilter("todos")}
@@ -76,7 +92,7 @@ const PodcastList = ({
                     Todos
                 </motion.button>
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
                     whileTap={{ scale: 0.95 }}
                     className={filter === "escuchados" ? styles.activeButton : styles.button}
                     onClick={() => {
@@ -87,7 +103,7 @@ const PodcastList = ({
                     Vistos
                 </motion.button>
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     className={filter === "no-escuchados" ? styles.activeButton : styles.button}
                     onClick={() => {
@@ -106,7 +122,12 @@ const PodcastList = ({
                     animate="visible"
                 >
                     {currentSongs.map((song) => (
-                        <motion.div key={song.pubDate} variants={itemVariants}>
+                        <motion.div
+                            className={styles.playerList}
+                            key={song.pubDate}
+                            variants={itemVariants}
+                            whileHover="hover"
+                        >
                             <MP3Player
                                 title={song.title}
                                 url={song.audio}
