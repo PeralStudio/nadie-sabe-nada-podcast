@@ -22,7 +22,7 @@ const Header = () => {
     // Variantes para la animación del logo
     const logoVariants = {
         hover: {
-            scale: 1.05,
+            scale: 1.1,
             rotate: -2,
             transition: { type: "spring", stiffness: 300, damping: 8 }
         }
