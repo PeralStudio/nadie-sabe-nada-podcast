@@ -85,6 +85,10 @@
         align-items: center;
     }
 
+    .logo h1 {
+        justify-self: center;
+    }
+
     .logoLink {
         font-size: 1.8rem;
         text-align: center;

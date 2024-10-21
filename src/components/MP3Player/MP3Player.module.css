@@ -77,3 +77,10 @@
     background-color: #16db93;
     color: #0f3460;
 }
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 480px) {
+    .spanDate {
+        align-self: center;
+    }
+}
