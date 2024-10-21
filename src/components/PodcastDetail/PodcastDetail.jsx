@@ -101,10 +101,7 @@ const PodcastDetail = ({
                 <meta property="og:description" content={podcast.description} />
                 <meta property="og:image" content={podcast.image} />
                 <meta property="og:url" content={window.location.href} />
-                <meta
-                    name="description"
-                    content="Escucha el podcast 'Nadie Sabe Nada', el show de humor con Andreu Buenafuente y Berto Romero. Accede a todos los episodios y disfruta de las mejores bromas."
-                />
+                <meta name="description" content={podcast.description} />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content={podcast.title} />
                 <meta name="twitter:description" content={podcast.description} />
