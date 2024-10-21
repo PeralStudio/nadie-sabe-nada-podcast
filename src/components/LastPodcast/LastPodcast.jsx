@@ -82,7 +82,7 @@ const PodcastDetail = ({
             transition={{ duration: 0.5 }}
         >
             <Helmet>
-                <title>{podcast.title} - Nadie Sabe Nada</title>
+                <title>{podcast.title} - Nadie Sabe Nada Podcast</title>
                 <meta property="og:title" content={podcast.title} />
                 <meta property="og:description" content={podcast.description} />
                 <meta property="og:image" content={podcast.image} />
