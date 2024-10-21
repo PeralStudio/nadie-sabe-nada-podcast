@@ -23,8 +23,13 @@
       "sizes": "1024x1024"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#14DB93",
-  "background_color": "#191A2E"
+  "theme_color": "#1a1a2e",
+  "background_color": "#191A2E",
+  "orientation": "portrait",
+  "description": "Escucha todos los episodios del podcast 'Nadie Sabe Nada' de Andreu Buenafuente y Berto Romero. Humor y comedia en su máxima expresión.",
+  "lang": "es",
+  "dir": "ltr"
 }
