@@ -59,26 +59,32 @@ const PodcastDetail = ({
         return <></>;
     }
 
-    const handleShareClick = () => {
-        if (navigator.share) {
-            navigator
-                .share({
-                    title: podcast.title,
-                    text: podcast.description,
-                    url: window.location.href
-                })
-                .then(() => console.log("Shared successfully"))
-                .catch((error) => console.error("Error sharing", error));
-        } else {
-            alert("Web Share API not supported in your browser. Please copy the URL manually.");
-        }
-    };
-
     const isListened = listenedEpisodes.includes(podcast.title);
     const isPodcastPlaying = isPlaying && currentPodcast && currentPodcast.title === podcast.title;
 
     const handlePlayClick = () => {
         onPlayPodcast(podcast);
+    };
+
+    const handleShareClick = async () => {
+        if (navigator.share) {
+            try {
+                if (navigator.canShare) {
+                    await navigator.share({
+                        title: podcast.titulo,
+                        text: podcast.titulo,
+                        url: window.location.href
+                    });
+                    console.log("Contenido compartido exitosamente");
+                } else {
+                    console.error("Este navegador no soporta compartir archivos.");
+                }
+            } catch (error) {
+                console.error("Error al compartir: ", error);
+            }
+        } else {
+            console.error("La API de compartir no está disponible en este navegador.");
+        }
     };
 
     return (
