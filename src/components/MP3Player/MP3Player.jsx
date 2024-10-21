@@ -145,6 +145,7 @@ const MP3Player = ({
                         alt={title}
                         className={styles.image}
                         onError={handleImageError}
+                        loading="lazy"
                     />
                 </PhotoView>
             </PhotoProvider>
