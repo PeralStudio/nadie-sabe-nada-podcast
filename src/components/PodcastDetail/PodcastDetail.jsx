@@ -9,6 +9,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { slugify } from "../../utils/slugify";
+import { motion } from "framer-motion";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -81,13 +82,30 @@ const PodcastDetail = ({
     };
 
     return (
-        <div className={styles.podcastDetail}>
+        <motion.div
+            className={styles.podcastDetail}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <Link to="/" className={styles.backButton}>
                 <ArrowBackIcon /> Volver
             </Link>
-            <h2 className={styles.title}>{podcast.title}</h2>
+            <motion.h2
+                className={styles.title}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+            >
+                {podcast.title}
+            </motion.h2>
             {youtubeVideoId && (
-                <div className={styles.youtubePlayer}>
+                <motion.div
+                    className={styles.youtubePlayer}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                >
                     <YouTube
                         videoId={youtubeVideoId}
                         opts={{
@@ -102,13 +120,27 @@ const PodcastDetail = ({
                         className={styles.youtubePlayer}
                         onPlay={stopPlayingAudio}
                     />
-                </div>
+                </motion.div>
             )}
-            <p className={styles.description}>{podcast.description}</p>
-            <div className={styles.metadata}>
+            <motion.p
+                className={styles.description}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+            >
+                {podcast.description}
+            </motion.p>
+            <motion.div
+                className={styles.metadata}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+            >
                 <span className={styles.date}>{podcast.pubDate}</span>
                 <div className={styles.actions}>
-                    <button
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         className={`${styles.actionButton} ${
                             isListened ? styles.listenedButton : ""
                         }`}
@@ -116,17 +148,27 @@ const PodcastDetail = ({
                     >
                         {isListened ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
                         {isListened ? "Marcado" : "Marcar"} como escuchado
-                    </button>
-                    <button className={styles.actionButton} onClick={handleShareClick}>
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={handleShareClick}
+                    >
                         <ShareIcon /> Compartir
-                    </button>
-                    <button className={styles.actionButton} onClick={handlePlayClick}>
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={handlePlayClick}
+                    >
                         {isPodcastPlaying ? <PauseIcon /> : <PlayArrowIcon />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
-                    </button>
+                    </motion.button>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 
