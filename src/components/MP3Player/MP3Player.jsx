@@ -11,7 +11,17 @@ import { Zoom } from "@mui/material";
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
 
-const MP3Player = ({ title, url, imageUrl, date, desc, isListened, toggleListened, onPlay, isPlaying }) => {
+const MP3Player = ({
+    title,
+    url,
+    imageUrl,
+    date,
+    desc,
+    isListened,
+    toggleListened,
+    onPlay,
+    isPlaying
+}) => {
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
     };
