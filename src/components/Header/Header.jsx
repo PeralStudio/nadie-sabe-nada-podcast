@@ -39,6 +39,7 @@ const Header = () => {
     // Variantes para la animación del ícono de GitHub
     const iconVariants = {
         hover: {
+            scale: 1.36,
             rotate: 360, // Rotación completa en hover
             transition: { type: "spring", stiffness: 150, damping: 12 }
         }
@@ -107,6 +108,9 @@ const Header = () => {
                             target="_blank"
                             rel="noopener"
                             className={styles.iconButton}
+                            style={{
+                                fontSize: "2.5rem !important"
+                            }}
                         >
                             <GitHub />
                         </IconButton>
