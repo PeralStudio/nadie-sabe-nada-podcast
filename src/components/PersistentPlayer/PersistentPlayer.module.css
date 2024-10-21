@@ -52,12 +52,12 @@
 }
 
 .closeButton {
-    background-color: #16db93;
+    background-color: #103460;
     font-weight: 600;
-    color: #1a1a2e;
+    color: #16db93 !important;
     border: none;
     border-radius: 25px;
-    padding: 4px 16px;
+    padding: 2px 10px !important;
     margin: 5px 5px;
     font-size: 1rem;
     cursor: pointer;
@@ -68,7 +68,8 @@
 }
 
 .closeButton:hover {
-    color: #e0e0e0;
+    color: #103460 !important;
+    background-color: #16db93 !important;
 }
 
 :global(.rhap_container) {

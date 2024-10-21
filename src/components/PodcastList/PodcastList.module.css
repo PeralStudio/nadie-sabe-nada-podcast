@@ -40,3 +40,15 @@
 .paginationContainer {
     margin-top: 40px;
 }
+
+@media (max-width: 768px) {
+    .paginationContainer {
+        margin-bottom: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .paginationContainer {
+        margin-bottom: 120px;
+    }
+}
