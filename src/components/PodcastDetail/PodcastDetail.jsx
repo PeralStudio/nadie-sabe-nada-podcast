@@ -32,7 +32,7 @@ const PodcastDetail = ({
     const { id } = useParams();
     const [podcast, setPodcast] = useState(null);
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
-    const { isLoading, handleDownload } = useDownload();
+    const { isLoading, handleDownload, progress } = useDownload();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -209,7 +209,7 @@ const PodcastDetail = ({
                                 }}
                             />
                         )}
-                        {isLoading ? "Descargando" : "Descargar"}
+                        {isLoading ? <span>Descargando {progress}%</span> : "Descargar"}
                     </motion.button>
                 </div>
             </motion.div>

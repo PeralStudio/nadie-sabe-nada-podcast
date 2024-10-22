@@ -25,7 +25,7 @@ const MP3Player = ({
     isPlaying,
     onClick
 }) => {
-    const { isLoading, handleDownload } = useDownload();
+    const { isLoading, handleDownload, progress } = useDownload();
     const isMobile = useMobileDetect();
 
     const handleImageError = (event) => {
@@ -151,15 +151,15 @@ const MP3Player = ({
                 disabled={isLoading}
             >
                 {isLoading ? (
-                    <FidgetSpinner
-                        height="21"
-                        width="16"
-                        radius="9"
-                        color={"#191A2E"}
-                        ariaLabel="fidget-spinner-loading"
-                        wrapperStyle={{}}
-                        wrapperClass="fidget-spinner-wrapper"
-                    />
+                    <span
+                        style={{
+                            color: "#16db93",
+                            fontSize: "15px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        {progress}%
+                    </span>
                 ) : (
                     <Download
                         style={{
