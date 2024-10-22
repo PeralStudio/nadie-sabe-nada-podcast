@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import YouTube from "react-youtube";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ShareIcon from "@mui/icons-material/Share";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
+import {
+    CheckCircleOutline,
+    CheckCircle,
+    PlayArrow,
+    ArrowBack,
+    Pause,
+    Share,
+    Download
+} from "@mui/icons-material";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { FidgetSpinner } from "react-loader-spinner";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -27,6 +31,7 @@ const PodcastDetail = ({
     const { id } = useParams();
     const [podcast, setPodcast] = useState(null);
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -88,6 +93,27 @@ const PodcastDetail = ({
         }
     };
 
+    const handleDownload = async (audioUrl, fileName) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(audioUrl);
+            const blob = await response.blob();
+            const urlBlob = window.URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = urlBlob;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(urlBlob);
+        } catch (error) {
+            console.error("Error al descargar el archivo:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <motion.div
             className={styles.podcastDetail}
@@ -100,7 +126,7 @@ const PodcastDetail = ({
             </Helmet>
 
             <Link to="/" className={styles.backButton}>
-                <ArrowBackIcon /> Volver
+                <ArrowBack /> Volver
             </Link>
             <motion.h2
                 className={styles.title}
@@ -156,7 +182,7 @@ const PodcastDetail = ({
                         }`}
                         onClick={() => toggleListened(podcast)}
                     >
-                        {isListened ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
+                        {isListened ? <CheckCircle /> : <CheckCircleOutline />}
                         {isListened ? "Marcado" : "Marcar"} como escuchado
                     </motion.button>
                     <motion.button
@@ -165,7 +191,7 @@ const PodcastDetail = ({
                         className={styles.actionButton}
                         onClick={handleShareClick}
                     >
-                        <ShareIcon /> Compartir
+                        <Share /> Compartir
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -173,8 +199,36 @@ const PodcastDetail = ({
                         className={styles.actionButton}
                         onClick={handlePlayClick}
                     >
-                        {isPodcastPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                        {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={() => handleDownload(podcast.audio, podcast.title)}
+                        style={{
+                            backgroundColor: isLoading && "#0f3460"
+                        }}
+                    >
+                        {isLoading ? (
+                            <FidgetSpinner
+                                height="21"
+                                width="16"
+                                radius="9"
+                                color={"#191A2E"}
+                                ariaLabel="fidget-spinner-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="fidget-spinner-wrapper"
+                            />
+                        ) : (
+                            <Download
+                                style={{
+                                    fontSize: "16px"
+                                }}
+                            />
+                        )}
+                        {isLoading ? "Descargando" : "Descargar"}
                     </motion.button>
                 </div>
             </motion.div>
