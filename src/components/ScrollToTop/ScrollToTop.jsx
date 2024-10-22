@@ -21,7 +21,6 @@ const ScrollToTop = () => {
 
     const isMobile = useMobileDetect();
 
-    // Mostrar el botón cuando se haya hecho scroll hacia abajo
     const toggleVisibility = () => {
         if (window.pageYOffset > 400) {
             setIsVisible(true);
@@ -30,7 +29,6 @@ const ScrollToTop = () => {
         }
     };
 
-    // Hacer scroll hacia arriba con efecto "smooth"
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,

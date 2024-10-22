@@ -9,9 +9,8 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 
 const Header = () => {
-    // Variantes para la animación de la cabecera
     const headerVariants = {
-        hidden: { opacity: 0, y: -50 }, // Aparece desde arriba
+        hidden: { opacity: 0, y: -50 },
         visible: {
             opacity: 1,
             y: 0,
@@ -19,7 +18,6 @@ const Header = () => {
         }
     };
 
-    // Variantes para la animación del logo
     const logoVariants = {
         hover: {
             scale: 1.1,
@@ -28,19 +26,17 @@ const Header = () => {
         }
     };
 
-    // Variantes para el botón del último episodio
     const ctaVariants = {
         hover: {
             scale: 1.06,
-            transition: { duration: 0.3, yoyo: Infinity } // Repite la animación mientras está en hover
+            transition: { duration: 0.3, yoyo: Infinity }
         }
     };
 
-    // Variantes para la animación del ícono de GitHub
     const iconVariants = {
         hover: {
             scale: 1.36,
-            rotate: 360, // Rotación completa en hover
+            rotate: 360,
             transition: { type: "spring", stiffness: 150, damping: 12 }
         }
     };
@@ -69,10 +65,7 @@ const Header = () => {
             variants={headerVariants}
         >
             <div className={styles.logo}>
-                <motion.h1
-                    whileHover="hover"
-                    variants={logoVariants} // Aplica la animación en hover
-                >
+                <motion.h1 whileHover="hover" variants={logoVariants}>
                     <Link to="/" className={styles.logoLink}>
                         Nadie Sabe Nada
                     </Link>

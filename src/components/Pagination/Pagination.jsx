@@ -8,10 +8,8 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
 
 const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
-    // Calcula el número total de páginas basado en las canciones filtradas
     const totalPages = Math.ceil(songs.length / songsPerPage);
 
-    // Calcula el índice de las canciones actuales que se están mostrando
     const indexOfFirstSong = (currentPage - 1) * songsPerPage + 1;
     const indexOfLastSong = Math.min(currentPage * songsPerPage, songs.length);
 

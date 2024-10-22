@@ -5,12 +5,10 @@ const Modal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
 
     const handleOverlayClick = (e) => {
-        // Si se hace clic en el overlay (fuera del contenido del modal), cierra el modal
         onClose();
     };
 
     const handleModalClick = (e) => {
-        // Evita que el clic dentro del modal cierre el modal
         e.stopPropagation();
     };
 

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { motion } from "framer-motion"; // Importa motion
+import { motion } from "framer-motion";
 import styles from "./PersistentPlayer.module.css";
 import useWindowWidth from "../../hooks/useWindowWidth";
 

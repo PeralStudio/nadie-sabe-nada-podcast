@@ -31,27 +31,26 @@ const PodcastList = ({
         navigate(`/podcast/${slugify(song.title)}`);
     };
 
-    // Variantes para el contenedor
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.15 // Mayor separación entre animaciones
+                staggerChildren: 0.15
             }
         }
     };
 
-    // Variantes para los items
     const itemVariants = {
-        hidden: { y: 20, opacity: 0 }, // Aquí es donde los elementos entran desde y: 20 con opacidad 0
+        hidden: { y: -20, opacity: 0 },
         visible: {
             y: 0,
             opacity: 1,
             transition: {
                 type: "spring",
-                stiffness: 100,
-                damping: 15
+                stiffness: 400,
+                damping: 12,
+                mass: 0.95
             }
         },
         hover: {
@@ -133,6 +132,8 @@ const PodcastList = ({
                             className={styles.playerList}
                             key={song.pubDate}
                             variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
                             whileHover="hover"
                         >
                             <MP3Player
