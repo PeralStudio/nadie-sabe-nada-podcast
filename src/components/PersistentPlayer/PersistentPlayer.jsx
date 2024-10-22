@@ -1,10 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { motion } from "framer-motion"; // Importa motion
 import styles from "./PersistentPlayer.module.css";
+import useWindowWidth from "../../hooks/useWindowWidth";
 
 const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) => {
     const audioRef = useRef(null);
+    const windowWidth = useWindowWidth();
 
     useEffect(() => {
         if (audioRef.current) {
@@ -27,7 +30,13 @@ const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) 
     if (!currentPodcast) return null;
 
     return (
-        <div className={styles.persistentPlayer}>
+        <motion.div
+            className={styles.persistentPlayer}
+            initial={{ opacity: 0, x: windowWidth }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: windowWidth - 100, transition: { duration: 0.9 } }}
+            transition={{ duration: 0.9, type: "spring", stiffness: 120, damping: 10 }}
+        >
             <div className={styles.podcastInfo}>
                 <img
                     src={currentPodcast.image}
@@ -52,7 +61,7 @@ const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) 
             <button onClick={onClose} className={styles.closeButton}>
                 ×
             </button>
-        </div>
+        </motion.div>
     );
 };
 

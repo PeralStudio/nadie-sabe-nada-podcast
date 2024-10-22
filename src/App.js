@@ -5,6 +5,7 @@ import axios from "axios";
 import RingLoader from "react-spinners/RingLoader";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Clear as ClearIcon } from "@mui/icons-material";
+import { AnimatePresence } from "framer-motion";
 
 import PodcastList from "./components/PodcastList/PodcastList";
 import PodcastDetail from "./components/PodcastDetail/PodcastDetail";
@@ -241,12 +242,16 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             )}
-            <PersistentPlayer
-                currentPodcast={currentPodcast}
-                onClose={handleClosePersistentPlayer}
-                isPlaying={isPlaying}
-                onTogglePlay={handleTogglePlay}
-            />
+            <AnimatePresence>
+                {isPlaying && (
+                    <PersistentPlayer
+                        currentPodcast={currentPodcast}
+                        onClose={handleClosePersistentPlayer}
+                        isPlaying={isPlaying}
+                        onTogglePlay={handleTogglePlay}
+                    />
+                )}
+            </AnimatePresence>
         </div>
     );
 };
