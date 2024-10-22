@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-// import { FidgetSpinner } from "react-loader-spinner";
+import { FidgetSpinner } from "react-loader-spinner";
 import useDownload from "../../hooks/useDownload";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
