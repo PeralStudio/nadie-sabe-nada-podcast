@@ -26,6 +26,7 @@ const App = () => {
     const [filter, setFilter] = useState("todos");
     const [currentPodcast, setCurrentPodcast] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [showPlayer, setShowPlayer] = useState(false);
 
     const location = useLocation();
 
@@ -121,6 +122,7 @@ const App = () => {
             setCurrentPodcast(podcast);
             setIsPlaying(true);
         }
+        setShowPlayer(true);
     };
 
     const stopPlayingAudio = () => {
@@ -130,6 +132,7 @@ const App = () => {
     const handleClosePersistentPlayer = () => {
         setCurrentPodcast(null);
         setIsPlaying(false);
+        setShowPlayer(false);
     };
 
     const handleTogglePlay = (playing) => {
@@ -243,7 +246,7 @@ const App = () => {
                 </Routes>
             )}
             <AnimatePresence>
-                {isPlaying && (
+                {showPlayer && (
                     <PersistentPlayer
                         currentPodcast={currentPodcast}
                         onClose={handleClosePersistentPlayer}

@@ -9,7 +9,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import Seo from "../Seo/Seo";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -81,10 +81,27 @@ const PodcastDetail = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <Helmet>
-                <title>{podcast.title} - Nadie Sabe Nada Podcast</title>
-            </Helmet>
-
+            <Seo
+                title={`${podcast.title} - Nadie Sabe Nada Podcast`}
+                description={podcast.description}
+                keywords="podcast, humor, comedia, Andreu Buenafuente, Berto Romero, nadie sabe nada, escuchar podcast"
+                ogTitle={`${podcast.title} - Nadie Sabe Nada Podcast`}
+                ogDescription={podcast.description}
+                ogImage={
+                    podcast.image
+                        ? podcast.image
+                        : "ttps://sdmedia.playser.cadenaser.com/playser/image/20233/31/1680287953_square_image.png"
+                }
+                ogUrl={window.location.href}
+                twitterCard="summary_large_image"
+                twitterTitle={`${podcast.title} - Nadie Sabe Nada Podcast`}
+                twitterDescription={podcast.description}
+                twitterImage={
+                    podcast.image
+                        ? podcast.image
+                        : "ttps://sdmedia.playser.cadenaser.com/playser/image/20233/31/1680287953_square_image.png"
+                }
+            />
             <Link to="/" className={styles.backButton}>
                 <ArrowBackIcon /> Volver
             </Link>
