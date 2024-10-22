@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./MP3Player.module.css";
 import { CheckCircleOutline, CheckCircle, PlayArrow, Pause, Download } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -7,6 +7,7 @@ import { Zoom } from "@mui/material";
 import { FidgetSpinner } from "react-loader-spinner";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
+import useDownload from "../../hooks/useDownload";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -23,7 +24,7 @@ const MP3Player = ({
     isPlaying,
     onClick
 }) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, handleDownload } = useDownload();
 
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
@@ -166,27 +167,6 @@ const MP3Player = ({
             </button>
         </BootstrapTooltip>
     );
-
-    const handleDownload = async (audioUrl, fileName) => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(audioUrl);
-            const blob = await response.blob();
-            const urlBlob = window.URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = urlBlob;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(urlBlob);
-        } catch (error) {
-            console.error("Error al descargar el archivo:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     return (
         <div className={styles.card} onClick={handleCardClick}>

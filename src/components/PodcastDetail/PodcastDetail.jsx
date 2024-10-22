@@ -15,6 +15,7 @@ import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { FidgetSpinner } from "react-loader-spinner";
+import useDownload from "../../hooks/useDownload";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -31,7 +32,7 @@ const PodcastDetail = ({
     const { id } = useParams();
     const [podcast, setPodcast] = useState(null);
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const { isLoading, handleDownload } = useDownload();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -90,27 +91,6 @@ const PodcastDetail = ({
             }
         } else {
             console.error("La API de compartir no está disponible en este navegador.");
-        }
-    };
-
-    const handleDownload = async (audioUrl, fileName) => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(audioUrl);
-            const blob = await response.blob();
-            const urlBlob = window.URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
-            link.href = urlBlob;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(urlBlob);
-        } catch (error) {
-            console.error("Error al descargar el archivo:", error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -207,6 +187,7 @@ const PodcastDetail = ({
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
                         onClick={() => handleDownload(podcast.audio, podcast.title)}
+                        disabled={isLoading}
                         style={{
                             backgroundColor: isLoading && "#0f3460"
                         }}

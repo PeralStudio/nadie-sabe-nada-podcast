@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./LastPodcast.module.css";
 import YouTube from "react-youtube";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ShareIcon from "@mui/icons-material/Share";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
+import {
+    CheckCircleOutline,
+    CheckCircle,
+    PlayArrow,
+    ArrowBack,
+    Pause,
+    Share,
+    Download
+} from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { FidgetSpinner } from "react-loader-spinner";
+import useDownload from "../../hooks/useDownload";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -25,6 +30,7 @@ const PodcastDetail = ({
 }) => {
     const podcast = songs[0];
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
+    const { isLoading, handleDownload } = useDownload();
 
     useEffect(() => {
         const fetchYoutubeVideo = async () => {
@@ -86,7 +92,7 @@ const PodcastDetail = ({
             </Helmet>
 
             <Link to="/" className={styles.backButton}>
-                <ArrowBackIcon /> Volver
+                <ArrowBack /> Volver
             </Link>
             <motion.h2
                 className={styles.title}
@@ -143,7 +149,7 @@ const PodcastDetail = ({
                         }`}
                         onClick={() => toggleListened(podcast)}
                     >
-                        {isListened ? <CheckCircleIcon /> : <CheckCircleOutlineIcon />}
+                        {isListened ? <CheckCircle /> : <CheckCircleOutline />}
                         {isListened ? "Marcado" : "Marcar"} como escuchado
                     </motion.button>
                     <motion.button
@@ -152,7 +158,7 @@ const PodcastDetail = ({
                         className={styles.actionButton}
                         onClick={handleShareClick}
                     >
-                        <ShareIcon /> Compartir
+                        <Share /> Compartir
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -160,8 +166,37 @@ const PodcastDetail = ({
                         className={styles.actionButton}
                         onClick={handlePlayClick}
                     >
-                        {isPodcastPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                        {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={() => handleDownload(podcast.audio, podcast.title)}
+                        disabled={isLoading}
+                        style={{
+                            backgroundColor: isLoading && "#0f3460"
+                        }}
+                    >
+                        {isLoading ? (
+                            <FidgetSpinner
+                                height="21"
+                                width="16"
+                                radius="9"
+                                color={"#191A2E"}
+                                ariaLabel="fidget-spinner-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="fidget-spinner-wrapper"
+                            />
+                        ) : (
+                            <Download
+                                style={{
+                                    fontSize: "16px"
+                                }}
+                            />
+                        )}
+                        {isLoading ? "Descargando" : "Descargar"}
                     </motion.button>
                 </div>
             </motion.div>
