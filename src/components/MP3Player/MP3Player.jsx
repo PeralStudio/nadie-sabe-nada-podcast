@@ -146,6 +146,7 @@ const MP3Player = ({
                     margin: "0 5px",
                     backgroundColor: isLoading && "#0f3460"
                 }}
+                disabled={isLoading}
             >
                 {isLoading ? (
                     <FidgetSpinner
