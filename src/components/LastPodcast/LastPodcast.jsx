@@ -83,15 +83,6 @@ const PodcastDetail = ({
         >
             <Helmet>
                 <title>{podcast.title} - Nadie Sabe Nada Podcast</title>
-                <meta property="og:title" content={podcast.title} />
-                <meta property="og:description" content={podcast.description} />
-                <meta property="og:image" content={podcast.image} />
-                <meta property="og:url" content={window.location.href} />
-                <meta name="description" content={podcast.description} />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={podcast.title} />
-                <meta name="twitter:description" content={podcast.description} />
-                <meta name="twitter:image" content={podcast.image} />
             </Helmet>
 
             <Link to="/" className={styles.backButton}>
