@@ -151,16 +151,25 @@ const MP3Player = ({
                 disabled={isLoading}
             >
                 {isLoading ? (
-                    <span
-                        style={{
-                            color: "#16db93",
-                            fontSize: "15px",
-                            fontWeight: "bold"
-                        }}
-                    >
-                        {progress}%
-                    </span>
+                    <FidgetSpinner
+                        height="21"
+                        width="16"
+                        radius="9"
+                        color={"#191A2E"}
+                        ariaLabel="fidget-spinner-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="fidget-spinner-wrapper"
+                    />
                 ) : (
+                    // <span
+                    //     style={{
+                    //         color: "#16db93",
+                    //         fontSize: "15px",
+                    //         fontWeight: "bold"
+                    //     }}
+                    // >
+                    //     {progress}%
+                    // </span>
                     <Download
                         style={{
                             fontSize: "16px"

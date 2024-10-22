@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { FidgetSpinner } from "react-loader-spinner";
+// import { FidgetSpinner } from "react-loader-spinner";
 import useDownload from "../../hooks/useDownload";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
@@ -30,7 +30,7 @@ const PodcastDetail = ({
 }) => {
     const podcast = songs[0];
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
-    const { isLoading, handleDownload } = useDownload();
+    const { isLoading, handleDownload, progress } = useDownload();
 
     useEffect(() => {
         const fetchYoutubeVideo = async () => {
@@ -196,7 +196,7 @@ const PodcastDetail = ({
                                 }}
                             />
                         )}
-                        {isLoading ? "Descargando" : "Descargar"}
+                        {isLoading ? <span>Descargando {progress}%</span> : "Descargar"}
                     </motion.button>
                 </div>
             </motion.div>
