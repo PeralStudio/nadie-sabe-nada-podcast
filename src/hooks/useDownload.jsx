@@ -56,7 +56,7 @@ const useDownload = () => {
             setProgress(Math.round((loaded / total) * 100));
         }
 
-        const blob = new Blob(chunks);
+        const blob = new Blob(chunks, { type: "audio/mp3" });
         const urlBlob = window.URL.createObjectURL(blob);
 
         const link = document.createElement("a");
