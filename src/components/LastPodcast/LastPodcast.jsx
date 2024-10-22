@@ -181,7 +181,8 @@ const PodcastDetail = ({
                         } // Si está descargando, mostramos la opción de cancelar
                         disabled={isLoading && isCancelled} // Deshabilitamos el botón si ya se ha cancelado
                         style={{
-                            backgroundColor: isLoading ? "#0f3460" : "" // Cambiar el color si está descargando
+                            backgroundColor: isLoading ? "#0f3460" : "",
+                            color: isLoading ? "#16db93" : ""
                         }}
                     >
                         {isLoading ? (
