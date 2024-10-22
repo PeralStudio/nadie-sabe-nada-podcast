@@ -32,11 +32,12 @@
 }
 
 .spanDate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
     font-size: 0.8rem;
     color: #16db93;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .title {
@@ -76,6 +77,15 @@
 .listenedButton:hover {
     background-color: #16db93;
     color: #0f3460;
+}
+
+.date {
+    flex: 1; /* Ocupa el espacio necesario */
+}
+
+.controls {
+    display: flex; /* También puedes usar flexbox aquí */
+    align-items: center; /* Alinear botones verticalmente */
 }
 
 /* Media queries para pantallas más pequeñas */

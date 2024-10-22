@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./MP3Player.module.css";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
+import { CheckCircleOutline, CheckCircle, PlayArrow, Pause, Download } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
+import { FidgetSpinner } from "react-loader-spinner";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
@@ -25,6 +23,8 @@ const MP3Player = ({
     isPlaying,
     onClick
 }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
     };
@@ -79,13 +79,13 @@ const MP3Player = ({
                 }}
             >
                 {isListened ? (
-                    <CheckCircleIcon
+                    <CheckCircle
                         style={{
                             fontSize: "16px"
                         }}
                     />
                 ) : (
-                    <CheckCircleOutlineIcon
+                    <CheckCircleOutline
                         style={{
                             fontSize: "16px"
                         }}
@@ -111,13 +111,13 @@ const MP3Player = ({
                 }}
             >
                 {isPlaying ? (
-                    <PauseIcon
+                    <Pause
                         style={{
                             fontSize: "16px"
                         }}
                     />
                 ) : (
-                    <PlayArrowIcon
+                    <PlayArrow
                         style={{
                             fontSize: "16px"
                         }}
@@ -126,6 +126,67 @@ const MP3Player = ({
             </button>
         </BootstrapTooltip>
     );
+
+    const downloadButton = (
+        <BootstrapTooltip
+            title={isLoading ? "Descargando" : "Descargar"}
+            placement="top"
+            arrow
+            TransitionComponent={Zoom}
+        >
+            <button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownload(url, title);
+                }}
+                style={{
+                    borderRadius: "25px",
+                    padding: "2px 10px",
+                    margin: "0 5px",
+                    backgroundColor: isLoading && "#0f3460"
+                }}
+            >
+                {isLoading ? (
+                    <FidgetSpinner
+                        height="21"
+                        width="16"
+                        radius="9"
+                        color={"#191A2E"}
+                        ariaLabel="fidget-spinner-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="fidget-spinner-wrapper"
+                    />
+                ) : (
+                    <Download
+                        style={{
+                            fontSize: "16px"
+                        }}
+                    />
+                )}
+            </button>
+        </BootstrapTooltip>
+    );
+
+    const handleDownload = async (audioUrl, fileName) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(audioUrl);
+            const blob = await response.blob();
+            const urlBlob = window.URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = urlBlob;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(urlBlob);
+        } catch (error) {
+            console.error("Error al descargar el archivo:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className={styles.card} onClick={handleCardClick}>
@@ -149,12 +210,13 @@ const MP3Player = ({
                     />
                 </PhotoView>
             </PhotoProvider>
-
             <h3 className={styles.title}>{title}</h3>
-
-            <span className={styles.spanDate}>
-                {date} {listenedButton} {playButton}
-            </span>
+            <div className={styles.spanDate}>
+                <span className={styles.date}>{date}</span>
+                <div className={styles.controls}>
+                    {listenedButton} {playButton} {downloadButton}
+                </div>
+            </div>
         </div>
     );
 };
