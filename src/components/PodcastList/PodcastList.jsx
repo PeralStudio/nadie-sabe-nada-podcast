@@ -7,7 +7,7 @@ import { slugify } from "../../utils/slugify";
 import { PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const PodcastList = ({
     filteredSongs,
@@ -72,6 +72,30 @@ const PodcastList = ({
                     Nadie Sabe Nada | Podcast de Humor y Comedia con Andreu Buenafuente y Berto
                     Romero
                 </title>
+                <meta property="og:title" content="Nadie Sabe Nada - Podcast de Humor" />
+                <meta
+                    property="og:description"
+                    content="Escucha todos los episodios del podcast 'Nadie Sabe Nada' de Andreu Buenafuente y Berto Romero. Humor y comedia en su máxima expresión."
+                />
+                <meta
+                    property="og:image"
+                    content="https://sdmedia.playser.cadenaser.com/playser/image/20233/31/1680287953_square_image.png"
+                />
+                <meta property="og:url" content="https://nsn.peralstudio.com" />
+                <meta
+                    name="description"
+                    content="Escucha el podcast 'Nadie Sabe Nada', el show de humor con Andreu Buenafuente y Berto Romero. Accede a todos los episodios y disfruta de las mejores bromas."
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Nadie Sabe Nada - Podcast de Humor" />
+                <meta
+                    name="twitter:description"
+                    content="Escucha el podcast más divertido de Andreu Buenafuente y Berto Romero."
+                />
+                <meta
+                    name="twitter:image"
+                    content="https://sdmedia.playser.cadenaser.com/playser/image/20233/31/1680287953_square_image.png"
+                />
             </Helmet>
             <Pagination
                 currentPage={currentPage}
