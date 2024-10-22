@@ -4,7 +4,7 @@ import { CheckCircleOutline, CheckCircle, PlayArrow, Pause, Download } from "@mu
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
-import { FidgetSpinner } from "react-loader-spinner";
+// import { FidgetSpinner } from "react-loader-spinner";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import useDownload from "../../hooks/useDownload";
@@ -132,7 +132,7 @@ const MP3Player = ({
 
     const downloadButton = (
         <BootstrapTooltip
-            title={isLoading ? "Descargando" : "Descargar"}
+            title={isLoading ? "" : "Descargar"}
             placement="top"
             arrow
             TransitionComponent={Zoom}
@@ -146,30 +146,31 @@ const MP3Player = ({
                     borderRadius: "25px",
                     padding: "2px 10px",
                     margin: "0 5px",
-                    backgroundColor: isLoading && "#0f3460"
+                    backgroundColor: isLoading && "#0f3460",
+                    border: isLoading && "1px solid #16db93"
                 }}
                 disabled={isLoading}
             >
                 {isLoading ? (
-                    <FidgetSpinner
-                        height="21"
-                        width="16"
-                        radius="9"
-                        color={"#191A2E"}
-                        ariaLabel="fidget-spinner-loading"
-                        wrapperStyle={{}}
-                        wrapperClass="fidget-spinner-wrapper"
-                    />
+                    // <FidgetSpinner
+                    //     height="21"
+                    //     width="16"
+                    //     radius="9"
+                    //     color={"#191A2E"}
+                    //     ariaLabel="fidget-spinner-loading"
+                    //     wrapperStyle={{}}
+                    //     wrapperClass="fidget-spinner-wrapper"
+                    // />
+                    <span
+                        style={{
+                            color: "#16db93",
+                            fontSize: "15px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        {progress}%
+                    </span>
                 ) : (
-                    // <span
-                    //     style={{
-                    //         color: "#16db93",
-                    //         fontSize: "15px",
-                    //         fontWeight: "bold"
-                    //     }}
-                    // >
-                    //     {progress}%
-                    // </span>
                     <Download
                         style={{
                             fontSize: "16px"
