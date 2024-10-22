@@ -9,7 +9,8 @@ import {
     ArrowBack,
     Pause,
     Share,
-    Download
+    Download,
+    Close
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -30,7 +31,7 @@ const PodcastDetail = ({
 }) => {
     const podcast = songs[0];
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
-    const { isLoading, handleDownload, progress } = useDownload();
+    const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
 
     useEffect(() => {
         const fetchYoutubeVideo = async () => {
@@ -173,30 +174,49 @@ const PodcastDetail = ({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => handleDownload(podcast.audio, podcast.title)}
-                        disabled={isLoading}
+                        onClick={
+                            isLoading
+                                ? cancelDownload
+                                : () => handleDownload(podcast.audio, podcast.title)
+                        } // Si está descargando, mostramos la opción de cancelar
+                        disabled={isLoading && isCancelled} // Deshabilitamos el botón si ya se ha cancelado
                         style={{
-                            backgroundColor: isLoading && "#0f3460"
+                            backgroundColor: isLoading ? "#0f3460" : "" // Cambiar el color si está descargando
                         }}
                     >
                         {isLoading ? (
-                            <FidgetSpinner
-                                height="21"
-                                width="16"
-                                radius="9"
-                                color={"#191A2E"}
-                                ariaLabel="fidget-spinner-loading"
-                                wrapperStyle={{}}
-                                wrapperClass="fidget-spinner-wrapper"
-                            />
+                            isCancelled ? (
+                                <span>Descarga cancelada</span> // Mensaje si la descarga se ha cancelado
+                            ) : (
+                                <>
+                                    <FidgetSpinner
+                                        height="21"
+                                        width="16"
+                                        radius="9"
+                                        color={"#191A2E"}
+                                        ariaLabel="fidget-spinner-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass="fidget-spinner-wrapper"
+                                    />
+                                    <span>Descargando {progress}%</span>
+                                    <Close
+                                        style={{
+                                            marginLeft: "8px",
+                                            fontSize: "16px",
+                                            backgroundColor: "#16db93",
+                                            color: "#0f3460",
+                                            borderRadius: "50%",
+                                            marginBottom: "1px"
+                                        }}
+                                    />
+                                </>
+                            )
                         ) : (
-                            <Download
-                                style={{
-                                    fontSize: "16px"
-                                }}
-                            />
+                            <>
+                                <Download style={{ fontSize: "16px" }} />
+                                Descargar
+                            </>
                         )}
-                        {isLoading ? <span>Descargando {progress}%</span> : "Descargar"}
                     </motion.button>
                 </div>
             </motion.div>
