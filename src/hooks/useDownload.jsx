@@ -151,17 +151,16 @@ const useDownload = () => {
             if (error.name === "AbortError") {
                 setIsCancelled(true);
             } else {
-                toast.error("Error en la descarga"),
-                    {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "dark",
-                        transition: Bounce
-                    };
+                toast.error("Error en la descarga", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: "dark",
+                    transition: Bounce
+                });
             }
         }
     };
