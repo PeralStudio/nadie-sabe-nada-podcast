@@ -8,7 +8,7 @@ import { Zoom } from "@mui/material";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import useDownload from "../../hooks/useDownload";
-import useMobileDetect from "../../hooks/useMobileDetect";
+// import useMobileDetect from "../../hooks/useMobileDetect";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -26,7 +26,7 @@ const MP3Player = ({
     onClick
 }) => {
     const { isLoading, handleDownload, progress } = useDownload();
-    const isMobile = useMobileDetect();
+    // const isMobile = useMobileDetect();
 
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
@@ -207,7 +207,7 @@ const MP3Player = ({
             <div className={styles.spanDate}>
                 <span className={styles.date}>{date}</span>
                 <div className={styles.controls}>
-                    {listenedButton} {playButton} {!isMobile && downloadButton}
+                    {listenedButton} {playButton} {/* !isMobile && */ downloadButton}
                 </div>
             </div>
         </div>

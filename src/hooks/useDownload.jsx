@@ -21,9 +21,9 @@ const useDownload = () => {
         return (
             <div
                 style={{
-                    padding: "10px", // Añadido para mayor espacio
-                    color: "#fff", // Texto blanco para mayor contraste
-                    borderRadius: "5px" // Bordes redondeados
+                    padding: "10px",
+                    color: "#fff",
+                    borderRadius: "5px"
                 }}
             >
                 <h4 style={{ margin: "0", color: "#4CAF50" }}>Descargando: {currentProgress}%</h4>
@@ -35,7 +35,7 @@ const useDownload = () => {
                     style={{
                         cursor: "pointer",
                         marginLeft: "10px",
-                        transition: "transform 0.2s" // Efecto de transición para hover
+                        transition: "transform 0.2s"
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
                     onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
@@ -93,7 +93,6 @@ const useDownload = () => {
                 autoClose: false
             });
 
-            // Si se cancela, salimos del bucle
             if (isCancelled) {
                 break;
             }
@@ -111,12 +110,11 @@ const useDownload = () => {
             document.body.removeChild(link);
             window.URL.revokeObjectURL(urlBlob);
 
-            // Finaliza el toast de éxito
             toast.update(toastIdRef.current, {
                 render: <DownloadCompleteToast fileName={fileName} />,
                 type: "success",
                 isLoading: false,
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -136,9 +134,8 @@ const useDownload = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Crear un toast para mostrar el progreso
             toastIdRef.current = toast.loading("Iniciando descarga...", {
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -154,7 +151,17 @@ const useDownload = () => {
             if (error.name === "AbortError") {
                 setIsCancelled(true);
             } else {
-                toast.error("Error en la descarga"); // Muestra un error si falla
+                toast.error("Error en la descarga"),
+                    {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "dark",
+                        transition: Bounce
+                    };
             }
         }
     };
@@ -167,9 +174,8 @@ const useDownload = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Crear un toast para mostrar el progreso
             toastIdRef.current = toast.loading("Iniciando descarga...", {
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -182,7 +188,7 @@ const useDownload = () => {
             await processDownload(response, fileName);
         } catch (error) {
             toast.error("Error en la descarga", {
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
