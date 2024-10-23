@@ -7,6 +7,8 @@ const useDownload = () => {
     const [isCancelled, setIsCancelled] = useState(false);
     const abortController = useRef(null);
     const toastIdRef = useRef(null);
+    const retryCount = useRef(0);
+    const MAX_RETRIES = 3;
 
     const DownloadCompleteToast = ({ fileName }) => (
         <div style={{ padding: "4px" }}>
@@ -19,13 +21,7 @@ const useDownload = () => {
 
     const DownloadProgressToast = ({ currentProgress, cancelDownload, fileName }) => {
         return (
-            <div
-                style={{
-                    padding: "10px",
-                    color: "#fff",
-                    borderRadius: "5px"
-                }}
-            >
+            <div style={{ padding: "10px", color: "#fff", borderRadius: "5px" }}>
                 <h4 style={{ margin: "0", color: "#4CAF50" }}>Descargando: {currentProgress}%</h4>
                 <p style={{ margin: "5px 0", color: "#bdbdbd" }}>
                     <strong>{fileName}</strong>
@@ -55,12 +51,42 @@ const useDownload = () => {
         );
     };
 
-    const fetchAudio = async (url) => {
-        return await fetch(url, {
-            method: "GET",
-            redirect: "follow",
-            signal: abortController.current.signal
-        });
+    const resetState = () => {
+        setIsLoading(false);
+        setProgress(0);
+        setIsCancelled(false);
+        retryCount.current = 0;
+        if (abortController.current) {
+            abortController.current = null;
+        }
+    };
+
+    const fetchWithRetry = async (url, fileName, attempt = 0) => {
+        try {
+            abortController.current = new AbortController();
+            const response = await fetch(url, {
+                method: "GET",
+                redirect: "follow",
+                signal: abortController.current.signal
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return response;
+        } catch (error) {
+            if (error.name === "AbortError") {
+                throw error;
+            }
+
+            if (attempt < MAX_RETRIES) {
+                await new Promise((resolve) => setTimeout(resolve, 1000 * (attempt + 1)));
+                return fetchWithRetry(url, fileName, attempt + 1);
+            }
+
+            throw error;
+        }
     };
 
     const processDownload = async (response, fileName) => {
@@ -79,6 +105,11 @@ const useDownload = () => {
             const currentProgress = Math.round((loaded / total) * 100);
             setProgress(currentProgress);
 
+            if (isCancelled) {
+                reader.cancel();
+                break;
+            }
+
             toast.update(toastIdRef.current, {
                 render: (
                     <DownloadProgressToast
@@ -92,10 +123,6 @@ const useDownload = () => {
                 closeOnClick: false,
                 autoClose: false
             });
-
-            if (isCancelled) {
-                break;
-            }
         }
 
         if (!isCancelled) {
@@ -126,32 +153,30 @@ const useDownload = () => {
         }
     };
 
-    const handleDownloadPrimary = async (audioUrl, fileName) => {
+    const handleDownload = async (audioUrl, fileName) => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+        setProgress(0);
+        setIsCancelled(false);
+
+        toastIdRef.current = toast.loading("Iniciando descarga...", {
+            position: "top-right",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "dark",
+            transition: Bounce
+        });
+
         try {
-            const response = await fetchAudio(audioUrl);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            toastIdRef.current = toast.loading("Iniciando descarga...", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce
-            });
-
+            const response = await fetchWithRetry(audioUrl, fileName);
             await processDownload(response, fileName);
         } catch (error) {
-            if (error.name === "AbortError") {
-                setIsCancelled(true);
-            } else {
-                toast.error("Error en la descarga", {
+            if (error.name !== "AbortError") {
+                toast.error("Error en la descarga. Por favor, inténtalo de nuevo.", {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -162,58 +187,8 @@ const useDownload = () => {
                     transition: Bounce
                 });
             }
-        }
-    };
-
-    const handleDownloadSecondary = async (audioUrl, fileName) => {
-        try {
-            const response = await fetchAudio(audioUrl);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            toastIdRef.current = toast.loading("Iniciando descarga...", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
-            });
-
-            await processDownload(response, fileName);
-        } catch (error) {
-            toast.error("Error en la descarga", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
-            });
-        }
-    };
-
-    const handleDownload = async (audioUrl, fileName) => {
-        setIsLoading(true);
-        setProgress(0);
-        setIsCancelled(false);
-        abortController.current = new AbortController();
-
-        try {
-            await handleDownloadPrimary(audioUrl, fileName);
-        } catch (error) {
-            await handleDownloadSecondary(audioUrl, fileName);
-            if (error.name !== "AbortError") {
-                console.error("Error en la descarga:", error);
-            }
         } finally {
-            setIsLoading(false);
+            resetState();
         }
     };
 
@@ -232,8 +207,7 @@ const useDownload = () => {
                 theme: "dark",
                 transition: Bounce
             });
-            setIsLoading(false);
-            setProgress(0);
+            resetState();
         }
     };
 
