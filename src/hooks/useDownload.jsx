@@ -223,7 +223,7 @@ const useDownload = () => {
             setIsCancelled(true);
             toast.dismiss(toastIdRef.current);
             toast.warning("Descarga cancelada", {
-                position: "bottom-right",
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
