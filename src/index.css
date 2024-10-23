@@ -2,6 +2,7 @@
 
 html {
     background-color: #1a1a2e;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -16,4 +17,24 @@ body {
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #103460;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #16db93;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #16db93;
 }
