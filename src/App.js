@@ -12,6 +12,8 @@ import PodcastDetail from "./components/PodcastDetail/PodcastDetail";
 import LastPodcast from "./components/LastPodcast/LastPodcast";
 import PersistentPlayer from "./components/PersistentPlayer/PersistentPlayer";
 import NotFound from "./components/NotFound/NotFound";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const localStorageKey = "nsnPodcastSongs";
 const lastUpdatedKey = "nsnPodcastLastUpdated";
@@ -255,6 +257,18 @@ const App = () => {
                     />
                 )}
             </AnimatePresence>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={true}
+                pauseOnHover
+                theme="light"
+            />
         </div>
     );
 };

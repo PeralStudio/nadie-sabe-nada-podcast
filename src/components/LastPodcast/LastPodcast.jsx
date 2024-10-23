@@ -178,8 +178,8 @@ const PodcastDetail = ({
                             isLoading
                                 ? cancelDownload
                                 : () => handleDownload(podcast.audio, podcast.title)
-                        } // Si está descargando, mostramos la opción de cancelar
-                        disabled={isLoading && isCancelled} // Deshabilitamos el botón si ya se ha cancelado
+                        }
+                        disabled={isLoading && isCancelled}
                         style={{
                             backgroundColor: isLoading ? "#0f3460" : "",
                             color: isLoading ? "#16db93" : ""
@@ -187,7 +187,7 @@ const PodcastDetail = ({
                     >
                         {isLoading ? (
                             isCancelled ? (
-                                <span>Descarga cancelada</span> // Mensaje si la descarga se ha cancelado
+                                <span>Descarga cancelada</span>
                             ) : (
                                 <>
                                     <FidgetSpinner
