@@ -1,5 +1,8 @@
 import { useState, useRef } from "react";
 import { Bounce, toast } from "react-toastify";
+import { motion } from "framer-motion";
+import { Download, Warning, CheckCircle, Close } from "@mui/icons-material";
+import styles from "./useDownload.module.css";
 
 const useDownload = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -10,46 +13,55 @@ const useDownload = () => {
     const retryCount = useRef(0);
     const MAX_RETRIES = 3;
 
+    const DownloadProgressToast = ({ currentProgress, cancelDownload, fileName }) => {
+        return (
+            <div className={styles.confirmToast}>
+                <div className={styles.confirmHeader}>
+                    <Download className={styles.warningIcon} />
+                    <h3>Descargando Podcast</h3>
+                </div>
+                <p className={styles.confirmMessage}>
+                    <strong>{fileName}</strong>
+                    <br />
+                    Progreso: {currentProgress}%
+                </p>
+                <div className={styles.confirmButtons}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.cancelButton}
+                        onClick={cancelDownload}
+                    >
+                        <Close style={{ marginRight: "5px" }} /> Cancelar
+                    </motion.button>
+                </div>
+            </div>
+        );
+    };
+
     const DownloadCompleteToast = ({ fileName }) => (
-        <div style={{ padding: "4px" }}>
-            <h4 style={{ margin: "0", color: "#4CAF50" }}>Descarga Completa</h4>
-            <p style={{ margin: "5px 0", color: "#bdbdbd" }}>
+        <div className={styles.confirmToast}>
+            <div className={styles.confirmHeader}>
+                <CheckCircle className={styles.successIcon} />
+                <h3>Descarga Completa</h3>
+            </div>
+            <p className={styles.confirmMessage}>
                 El Podcast <strong>{fileName}</strong> se ha descargado correctamente.
             </p>
         </div>
     );
 
-    const DownloadProgressToast = ({ currentProgress, cancelDownload, fileName }) => {
-        return (
-            <div style={{ padding: "10px", color: "#fff", borderRadius: "5px" }}>
-                <h4 style={{ margin: "0", color: "#4CAF50" }}>Descargando: {currentProgress}%</h4>
-                <p style={{ margin: "5px 0", color: "#bdbdbd" }}>
-                    <strong>{fileName}</strong>
-                </p>
-                <div
-                    onClick={cancelDownload}
-                    style={{
-                        cursor: "pointer",
-                        marginLeft: "10px",
-                        transition: "transform 0.2s"
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="red"
-                        viewBox="0 0 24 24"
-                        style={{ width: "24px", height: "24px" }}
-                    >
-                        <path d="M19.79 4.21a1 1 0 00-1.41 0L12 10.59 5.62 4.21a1 1 0 10-1.41 1.41L10.59 12l-6.38 6.38a1 1 0 001.41 1.41L12 13.41l6.38 6.38a1 1 0 001.41-1.41L13.41 12l6.38-6.38a1 1 0 000-1.41z" />
-                    </svg>
-                </div>
+    const DownloadCancelledToast = ({ fileName }) => (
+        <div className={styles.confirmToast}>
+            <div className={styles.confirmHeader}>
+                <Warning className={styles.warningIconText} />
+                <h3 className={styles.warningText}>Descarga Cancelada</h3>
             </div>
-        );
-    };
+            <p className={styles.confirmMessage}>
+                La descarga de <strong>{fileName}</strong> ha sido cancelada.
+            </p>
+        </div>
+    );
 
     const resetState = () => {
         setIsLoading(false);
@@ -160,32 +172,51 @@ const useDownload = () => {
         setProgress(0);
         setIsCancelled(false);
 
-        toastIdRef.current = toast.loading("Iniciando descarga...", {
-            position: "top-right",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "dark",
-            transition: Bounce
-        });
+        toastIdRef.current = toast.loading(
+            <DownloadProgressToast
+                currentProgress={0}
+                cancelDownload={cancelDownload}
+                fileName={fileName}
+            />,
+            {
+                position: "top-right",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "dark",
+                transition: Bounce
+            }
+        );
 
         try {
             const response = await fetchWithRetry(audioUrl, fileName);
             await processDownload(response, fileName);
         } catch (error) {
             if (error.name !== "AbortError") {
-                toast.error("Error en la descarga. Por favor, inténtalo de nuevo.", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "dark",
-                    transition: Bounce
-                });
+                toast.error(
+                    <div className={styles.confirmToast}>
+                        <div className={styles.confirmHeader}>
+                            <Warning className={styles.warningIcon} />
+                            <h3>Error de Descarga</h3>
+                        </div>
+                        <p className={styles.confirmMessage}>
+                            Error al descargar <strong>{fileName}</strong>. Por favor, inténtalo de
+                            nuevo.
+                        </p>
+                    </div>,
+                    {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "dark",
+                        transition: Bounce
+                    }
+                );
             }
         } finally {
             resetState();
@@ -197,7 +228,7 @@ const useDownload = () => {
             abortController.current.abort();
             setIsCancelled(true);
             toast.dismiss(toastIdRef.current);
-            toast.warning("Descarga cancelada", {
+            toast.warning(<DownloadCancelledToast />, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
