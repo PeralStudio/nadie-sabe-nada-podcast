@@ -6,12 +6,14 @@ import Pagination from "../Pagination/Pagination";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { Bounce, toast } from "react-toastify";
 import {
     Headphones,
     HeadsetOff,
     Favorite,
     FormatListBulleted,
-    CheckCircle
+    CheckCircle,
+    Warning
 } from "@mui/icons-material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Typography, Zoom } from "@mui/material";
@@ -35,6 +37,48 @@ const PodcastList = ({ onPlayPodcast }) => {
     const { currentFilter, currentPage, songsPerPage } = useSelector((state) => state.filter);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
+
+    const showConfirmToast = (message, onConfirm) => {
+        toast.warn(
+            <div className={styles.confirmToast}>
+                <div className={styles.confirmHeader}>
+                    <Warning className={styles.warningIcon} />
+                    <h3>Confirmar Acción</h3>
+                </div>
+                <p className={styles.confirmMessage}>{message}</p>
+                <div className={styles.confirmButtons}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.confirmButton}
+                        onClick={() => {
+                            toast.dismiss();
+                            onConfirm();
+                        }}
+                    >
+                        Confirmar
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.cancelButton}
+                        onClick={() => toast.dismiss()}
+                    >
+                        Cancelar
+                    </motion.button>
+                </div>
+            </div>,
+            {
+                position: "top-center",
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                className: styles.customToast,
+                theme: "dark"
+            }
+        );
+    };
 
     const formatTime = (seconds) => {
         if (!seconds) return "0:00";
@@ -68,6 +112,37 @@ const PodcastList = ({ onPlayPodcast }) => {
 
     const handleCardClick = (song) => {
         navigate(`/podcast/${slugify(song.title)}`);
+    };
+
+    const handleRemoveStarted = (song) => {
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
+            () => {
+                dispatch(deleteEpisode(song.title));
+                dispatch(removePlaybackTime(song.title));
+                toast.success("Tiempo de reproducción eliminado", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
+    };
+
+    const handleRemoveCompleted = (song) => {
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar este podcast de completados?",
+            () => {
+                dispatch(removeFromCompleted(song.title));
+                toast.success("Podcast eliminado de completados", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
     };
 
     const containerVariants = {
@@ -300,8 +375,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                                             }}
                                             onClick={() => {
                                                 if (!isPlaying) {
-                                                    dispatch(deleteEpisode(song.title));
-                                                    dispatch(removePlaybackTime(song.title));
+                                                    handleRemoveStarted(song);
                                                 }
                                             }}
                                             className={styles.headphonesIcon}
@@ -338,7 +412,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                                             }}
                                             onClick={() => {
                                                 if (!isPlaying) {
-                                                    dispatch(removeFromCompleted(song.title));
+                                                    handleRemoveCompleted(song);
                                                 }
                                             }}
                                             className={styles.completedIcon}
