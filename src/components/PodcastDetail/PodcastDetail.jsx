@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import YouTube from "react-youtube";
+import { Bounce, toast } from "react-toastify";
 import {
     PlayArrow,
     ArrowBack,
@@ -11,7 +12,10 @@ import {
     Close,
     Headphones,
     HeadsetOff,
-    CheckCircle
+    CheckCircle,
+    Favorite,
+    FavoriteBorder,
+    Warning
 } from "@mui/icons-material";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
@@ -20,7 +24,11 @@ import { FidgetSpinner } from "react-loader-spinner";
 import useDownload from "../../hooks/useDownload";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
-import { deleteEpisode, removeFromCompleted } from "../../store/slices/podcastSlice";
+import {
+    deleteEpisode,
+    removeFromCompleted,
+    toggleFavorite
+} from "../../store/slices/podcastSlice";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
@@ -37,7 +45,9 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
     const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
 
-    const { songs, listenedEpisodes, completedEpisodes } = useSelector((state) => state.podcast);
+    const { songs, listenedEpisodes, completedEpisodes, favoriteEpisodes } = useSelector(
+        (state) => state.podcast
+    );
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
 
@@ -60,6 +70,94 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             })),
         []
     );
+
+    const logoVariants = {
+        hover: {
+            scale: 1.16,
+            rotate: 45,
+            transition: { type: "spring", stiffness: 150, damping: 4 }
+        }
+    };
+
+    const iconVariants = {
+        hover: {
+            scale: 1.1,
+            transition: { type: "spring", stiffness: 300, damping: 10 }
+        }
+    };
+
+    const showConfirmToast = (message, onConfirm) => {
+        toast.warn(
+            <div className={styles.confirmToast}>
+                <div className={styles.confirmHeader}>
+                    <Warning className={styles.warningIcon} />
+                    <h3>Confirmar Acción</h3>
+                </div>
+                <p className={styles.confirmMessage}>{message}</p>
+                <div className={styles.confirmButtons}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.confirmButton}
+                        onClick={() => {
+                            toast.dismiss();
+                            onConfirm();
+                        }}
+                    >
+                        Confirmar
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.cancelButton}
+                        onClick={() => toast.dismiss()}
+                    >
+                        Cancelar
+                    </motion.button>
+                </div>
+            </div>,
+            {
+                position: "top-center",
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                className: styles.customToast,
+                theme: "dark"
+            }
+        );
+    };
+
+    const handleRemoveStarted = (song) => {
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
+            () => {
+                dispatch(deleteEpisode(song.title));
+                dispatch(removePlaybackTime(song.title));
+                toast.success("Tiempo de reproducción eliminado", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
+    };
+
+    const handleRemoveCompleted = (song) => {
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar este podcast de completados?",
+            () => {
+                dispatch(removeFromCompleted(song.title));
+                toast.success("Podcast eliminado de completados", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
+    };
 
     useEffect(() => {
         const foundPodcast = songs.find((song) => slugify(song.title) === id);
@@ -97,6 +195,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
         (playbackTimes[podcast.title] && playbackTimes[podcast.title] > 0);
     const isPodcastPlaying = isPlaying && currentPodcast && currentPodcast.title === podcast.title;
     const isCompleted = completedEpisodes.includes(podcast.title);
+    const isFavorite = favoriteEpisodes.includes(podcast.title);
 
     const formatTime = (seconds) => {
         if (!seconds) return "0:00";
@@ -161,9 +260,102 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 <title>{podcast.title} - Nadie Sabe Nada Podcast</title>
             </Helmet>
 
-            <Link to="/" className={styles.backButton}>
-                <ArrowBack /> Volver
-            </Link>
+            <div className={styles.headerContainer}>
+                <Link to="/" className={styles.backButton}>
+                    <motion.div
+                        style={{ display: "flex", alignItems: "flex-start" }}
+                        whileHover="hover"
+                    >
+                        <motion.div variants={logoVariants}>
+                            <ArrowBack />
+                        </motion.div>
+                        <span style={{ marginLeft: "4px" }}>Volver</span>
+                    </motion.div>
+                </Link>
+
+                <div className={styles.iconControls}>
+                    {isListened && !isCompleted && (
+                        <BootstrapTooltip
+                            title={
+                                <Typography
+                                    style={{
+                                        fontSize: "14px",
+                                        fontWeight: "bold",
+                                        textAlign: "center"
+                                    }}
+                                >
+                                    {`Empezado - ${formatTime(playbackTime)}`}
+                                    <br />
+                                    {!isPlaying && "Clic para eliminar el tiempo"}
+                                </Typography>
+                            }
+                            placement="top"
+                            arrow
+                            TransitionComponent={Zoom}
+                        >
+                            <motion.div
+                                variants={iconVariants}
+                                whileHover="hover"
+                                onClick={() => !isPlaying && handleRemoveStarted(podcast)}
+                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                            >
+                                <Headphones className={styles.statusIcon} />
+                            </motion.div>
+                        </BootstrapTooltip>
+                    )}
+
+                    {isCompleted && (
+                        <BootstrapTooltip
+                            title={
+                                <Typography
+                                    style={{
+                                        fontSize: "14px",
+                                        fontWeight: "bold",
+                                        textAlign: "center"
+                                    }}
+                                >
+                                    Podcast completado
+                                    <br />
+                                    {!isPlaying && "Clic para eliminar de completados"}
+                                </Typography>
+                            }
+                            placement="top"
+                            arrow
+                            TransitionComponent={Zoom}
+                        >
+                            <motion.div
+                                variants={iconVariants}
+                                whileHover="hover"
+                                onClick={() => !isPlaying && handleRemoveCompleted(podcast)}
+                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                            >
+                                <CheckCircle className={styles.statusIcon} />
+                            </motion.div>
+                        </BootstrapTooltip>
+                    )}
+
+                    <BootstrapTooltip
+                        title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+                        placement="top"
+                        arrow
+                        TransitionComponent={Zoom}
+                    >
+                        <motion.div
+                            variants={iconVariants}
+                            whileHover="hover"
+                            onClick={() => dispatch(toggleFavorite(podcast))}
+                            style={{ cursor: "pointer" }}
+                        >
+                            {isFavorite ? (
+                                <Favorite className={styles.favoriteIcon} />
+                            ) : (
+                                <FavoriteBorder className={styles.favoriteIcon} />
+                            )}
+                        </motion.div>
+                    </BootstrapTooltip>
+                </div>
+            </div>
+
             <motion.h2
                 className={styles.title}
                 initial={{ opacity: 0, x: 200 }}
