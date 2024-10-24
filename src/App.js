@@ -21,7 +21,7 @@ import {
     setCurrentPodcast,
     togglePlay,
     setShowPlayer,
-    closePersistentPlayer
+    closePersistentPlayerAsync
 } from "./store/slices/playerSlice";
 
 const App = () => {
@@ -128,7 +128,7 @@ const App = () => {
             )}
             <AnimatePresence>
                 {showPlayer && (
-                    <PersistentPlayer onClose={() => dispatch(closePersistentPlayer())} />
+                    <PersistentPlayer onClose={() => dispatch(closePersistentPlayerAsync())} />
                 )}
             </AnimatePresence>
             <ToastContainer
