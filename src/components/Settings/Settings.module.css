@@ -1,0 +1,363 @@
+/* Estilos del contenedor principal */
+.settingsContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #16213e;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: padding 0.3s ease;
+}
+
+.title {
+    color: #16db93;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.settingItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(22, 219, 147, 0.2);
+    transition: padding 0.3s ease;
+}
+
+.settingInfo {
+    flex: 1;
+}
+
+.settingInfo h3 {
+    color: #e0e0e0;
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+}
+
+.settingInfo p {
+    color: #b0b0b0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.backButton {
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    color: #16db93;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: font-size 0.3s ease;
+    transition: transform 0.2s;
+}
+
+.backButton:hover {
+    color: #18f2a2;
+    transform: scale(1.01);
+}
+
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.buttonsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.clearButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #15223e;
+}
+
+.buttonIcon {
+    font-size: 20px;
+}
+
+.timeButton {
+    background-color: #16db93;
+}
+
+.timeButton:hover {
+    background-color: #14c985;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(22, 219, 147, 0.3);
+}
+
+.startedButton {
+    background-color: #3498db;
+}
+
+.startedButton:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.favoritesButton {
+    background-color: #e74c3c;
+}
+
+.favoritesButton:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+.completedButton {
+    background-color: #2ecc71;
+}
+
+.completedButton:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+}
+
+.deleteAllButton {
+    background-color: #9b59b6;
+}
+
+.deleteAllButton:hover {
+    background-color: #8e44ad;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(155, 89, 182, 0.3);
+}
+
+/* Estilos del toast de confirmación */
+.confirmToast {
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(22, 219, 147, 0.2);
+    color: #e0e0e0;
+}
+
+.confirmHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.confirmHeader h3 {
+    margin: 0;
+    color: #16db93;
+    font-size: 1.2rem;
+}
+
+.warningIcon {
+    color: #16db93;
+    font-size: 24px;
+}
+
+.confirmMessage {
+    margin: 0 0 20px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.confirmButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirmButton,
+.cancelButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirmButton {
+    background-color: #16db93;
+    color: #16213e;
+}
+
+.confirmButton:hover {
+    background-color: #14c985;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(22, 219, 147, 0.3);
+}
+
+.cancelButton {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+/* Estilos personalizados para el contenedor del toast */
+:global(.Toastify__toast-container) {
+    width: auto !important;
+    max-width: 400px;
+}
+
+:global(.Toastify__toast) {
+    padding: 10px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:global(.Toastify__toast--success) {
+    background-color: #18181b !important;
+}
+
+:global(.Toastify__toast-body) {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .settingsContainer {
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .settingItem {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .settingInfo h3 {
+        font-size: 1rem;
+    }
+
+    .settingInfo p {
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .backButton {
+        font-size: 1rem;
+    }
+
+    .buttonsContainer {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .clearButton {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .confirmToast {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .confirmHeader h3 {
+        font-size: 1.1rem;
+    }
+
+    .confirmMessage {
+        font-size: 0.9rem;
+    }
+
+    .confirmButton,
+    .cancelButton {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .settingsContainer {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .settingItem {
+        align-items: center;
+        padding: 15px;
+    }
+
+    .settingInfo h3 {
+        font-size: 0.9rem;
+    }
+
+    .settingInfo p {
+        font-size: 0.8rem;
+    }
+
+    .backButton {
+        font-size: 0.9rem;
+    }
+
+    .buttonsContainer {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .clearButton {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    .buttonIcon {
+        font-size: 18px;
+    }
+
+    .confirmToast {
+        padding: 12px;
+    }
+
+    .confirmHeader h3 {
+        font-size: 1rem;
+    }
+
+    .warningIcon {
+        font-size: 20px;
+    }
+
+    .confirmMessage {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+
+    .confirmButtons {
+        gap: 8px;
+    }
+
+    .confirmButton,
+    .cancelButton {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+}

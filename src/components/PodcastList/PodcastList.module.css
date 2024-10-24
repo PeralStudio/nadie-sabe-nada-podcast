@@ -32,6 +32,18 @@
     transition: all 0.3s ease;
 }
 
+.activeButton svg {
+    color: #16db93;
+}
+
+.headphonesIcon {
+    transition: all 0.3s ease;
+}
+
+.headphonesIcon:hover {
+    transform: scale(1.1);
+}
+
 .cardLink {
     text-decoration: none;
     color: inherit;
@@ -39,6 +51,14 @@
 
 .paginationContainer {
     margin-top: 40px;
+}
+
+.headphonesIcon {
+    color: #1a1a2e;
+}
+
+.headphonesIcon:hover {
+    color: #16db93;
 }
 
 @media (max-width: 768px) {
