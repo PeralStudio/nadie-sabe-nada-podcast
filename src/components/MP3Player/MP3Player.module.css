@@ -20,8 +20,9 @@
 }
 
 .image {
-    height: 240px;
-    width: 240px;
+    width: 252px;
+    height: 252px;
+    object-fit: cover;
     border-radius: 12px;
     margin-bottom: 16px;
     transition: transform 0.3s ease;
@@ -83,7 +84,7 @@
 .favoriteContainer {
     position: absolute;
     top: 6px;
-    right: 6px;
+    right: 3px;
     z-index: 1;
 }
 
