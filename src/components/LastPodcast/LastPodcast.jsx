@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./LastPodcast.module.css";
 import YouTube from "react-youtube";
@@ -28,22 +28,6 @@ import { Typography, Zoom } from "@mui/material";
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
-const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-        color: "#14D993"
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: "#14DB93",
-        color: "#000000",
-        fontSize: "14px",
-        fontWeight: "bold",
-        padding: "5px 10px",
-        borderRadius: "5px"
-    }
-}));
-
 const LastPodcast = ({ onPlayPodcast }) => {
     const dispatch = useDispatch();
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
@@ -54,6 +38,26 @@ const LastPodcast = ({ onPlayPodcast }) => {
     const { playbackTimes } = useSelector((state) => state.audioTime);
 
     const podcast = songs[0];
+
+    const BootstrapTooltip = useMemo(
+        () =>
+            styled(({ className, ...props }) => (
+                <Tooltip {...props} arrow classes={{ popper: className }} />
+            ))(({ theme }) => ({
+                [`& .${tooltipClasses.arrow}`]: {
+                    color: "#14D993"
+                },
+                [`& .${tooltipClasses.tooltip}`]: {
+                    backgroundColor: "#14DB93",
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    borderRadius: "5px"
+                }
+            })),
+        []
+    );
 
     useEffect(() => {
         const fetchYoutubeVideo = async () => {

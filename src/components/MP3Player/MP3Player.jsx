@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./MP3Player.module.css";
 import { PlayArrow, Pause, Download, FavoriteBorder, Favorite } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -39,21 +39,25 @@ const MP3Player = ({
         onPlay();
     };
 
-    const BootstrapTooltip = styled(({ className, ...props }) => (
-        <Tooltip {...props} arrow classes={{ popper: className }} />
-    ))(({ theme }) => ({
-        [`& .${tooltipClasses.arrow}`]: {
-            color: "#14D993"
-        },
-        [`& .${tooltipClasses.tooltip}`]: {
-            backgroundColor: "#14DB93",
-            color: "#000000",
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "5px 10px",
-            borderRadius: "5px"
-        }
-    }));
+    const BootstrapTooltip = useMemo(
+        () =>
+            styled(({ className, ...props }) => (
+                <Tooltip {...props} arrow classes={{ popper: className }} />
+            ))(({ theme }) => ({
+                [`& .${tooltipClasses.arrow}`]: {
+                    color: "#14D993"
+                },
+                [`& .${tooltipClasses.tooltip}`]: {
+                    backgroundColor: "#14DB93",
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    borderRadius: "5px"
+                }
+            })),
+        []
+    );
 
     const favoriteButton = (
         <BootstrapTooltip

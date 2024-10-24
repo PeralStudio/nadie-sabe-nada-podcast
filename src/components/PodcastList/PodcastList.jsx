@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./PodcastList.module.css";
 import MP3Player from "../MP3Player/MP3Player";
@@ -178,21 +178,25 @@ const PodcastList = ({ onPlayPodcast }) => {
         }
     };
 
-    const BootstrapTooltip = styled(({ className, ...props }) => (
-        <Tooltip {...props} arrow classes={{ popper: className }} />
-    ))(({ theme }) => ({
-        [`& .${tooltipClasses.arrow}`]: {
-            color: "#14D993"
-        },
-        [`& .${tooltipClasses.tooltip}`]: {
-            backgroundColor: "#14DB93",
-            color: "#000000",
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "5px 10px",
-            borderRadius: "5px"
-        }
-    }));
+    const BootstrapTooltip = useMemo(
+        () =>
+            styled(({ className, ...props }) => (
+                <Tooltip {...props} arrow classes={{ popper: className }} />
+            ))(({ theme }) => ({
+                [`& .${tooltipClasses.arrow}`]: {
+                    color: "#14D993"
+                },
+                [`& .${tooltipClasses.tooltip}`]: {
+                    backgroundColor: "#14DB93",
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    borderRadius: "5px"
+                }
+            })),
+        []
+    );
 
     return (
         <>
@@ -213,7 +217,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                     display: "flex",
                     maxHeight: "2rem",
                     justifyContent: "center",
-                    marginBottom: "1rem",
+                    marginBottom: "2rem",
                     gap: "0.5rem"
                 }}
                 initial={{ opacity: 0, y: -20 }}

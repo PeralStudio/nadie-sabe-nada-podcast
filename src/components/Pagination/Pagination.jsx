@@ -6,6 +6,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
+import { useMemo } from "react";
 
 const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
     const totalPages = Math.ceil(songs.length / songsPerPage);
@@ -13,21 +14,25 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
     const indexOfFirstSong = (currentPage - 1) * songsPerPage + 1;
     const indexOfLastSong = Math.min(currentPage * songsPerPage, songs.length);
 
-    const BootstrapTooltip = styled(({ className, ...props }) => (
-        <Tooltip {...props} arrow classes={{ popper: className }} />
-    ))(({ theme }) => ({
-        [`& .${tooltipClasses.arrow}`]: {
-            color: "#14D993"
-        },
-        [`& .${tooltipClasses.tooltip}`]: {
-            backgroundColor: "#14DB93",
-            color: "#000000",
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "5px 10px",
-            borderRadius: "5px"
-        }
-    }));
+    const BootstrapTooltip = useMemo(
+        () =>
+            styled(({ className, ...props }) => (
+                <Tooltip {...props} arrow classes={{ popper: className }} />
+            ))(({ theme }) => ({
+                [`& .${tooltipClasses.arrow}`]: {
+                    color: "#14D993"
+                },
+                [`& .${tooltipClasses.tooltip}`]: {
+                    backgroundColor: "#14DB93",
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    borderRadius: "5px"
+                }
+            })),
+        []
+    );
 
     const backToTop = () => {
         window.scrollTo({

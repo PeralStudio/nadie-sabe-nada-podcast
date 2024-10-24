@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import YouTube from "react-youtube";
@@ -29,22 +29,6 @@ import { Typography, Zoom } from "@mui/material";
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
-const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-        color: "#14D993"
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: "#14DB93",
-        color: "#000000",
-        fontSize: "14px",
-        fontWeight: "bold",
-        padding: "5px 10px",
-        borderRadius: "5px"
-    }
-}));
-
 const PodcastDetail = ({ onPlayPodcast }) => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -56,6 +40,26 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const { songs, listenedEpisodes, completedEpisodes } = useSelector((state) => state.podcast);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
+
+    const BootstrapTooltip = useMemo(
+        () =>
+            styled(({ className, ...props }) => (
+                <Tooltip {...props} arrow classes={{ popper: className }} />
+            ))(({ theme }) => ({
+                [`& .${tooltipClasses.arrow}`]: {
+                    color: "#14D993"
+                },
+                [`& .${tooltipClasses.tooltip}`]: {
+                    backgroundColor: "#14DB93",
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "5px 10px",
+                    borderRadius: "5px"
+                }
+            })),
+        []
+    );
 
     useEffect(() => {
         const foundPodcast = songs.find((song) => slugify(song.title) === id);
