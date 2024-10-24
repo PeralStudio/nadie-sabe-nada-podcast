@@ -3,39 +3,61 @@ import { Link } from "react-router-dom";
 import styles from "./LastPodcast.module.css";
 import YouTube from "react-youtube";
 import {
-    CheckCircleOutline,
-    CheckCircle,
     PlayArrow,
     ArrowBack,
     Pause,
     Share,
     Download,
-    Close
+    Close,
+    Headphones,
+    HeadsetOff,
+    CheckCircle
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { FidgetSpinner } from "react-loader-spinner";
 import useDownload from "../../hooks/useDownload";
+import { useDispatch, useSelector } from "react-redux";
+import { togglePlay } from "../../store/slices/playerSlice";
+import { deleteEpisode, removeFromCompleted } from "../../store/slices/podcastSlice";
+import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { Typography, Zoom } from "@mui/material";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
-const PodcastDetail = ({
-    songs,
-    listenedEpisodes,
-    toggleListened,
-    onPlayPodcast,
-    isPlaying,
-    currentPodcast,
-    stopPlayingAudio
-}) => {
-    const podcast = songs[0];
+const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+        color: "#14D993"
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: "#14DB93",
+        color: "#000000",
+        fontSize: "14px",
+        fontWeight: "bold",
+        padding: "5px 10px",
+        borderRadius: "5px"
+    }
+}));
+
+const LastPodcast = ({ onPlayPodcast }) => {
+    const dispatch = useDispatch();
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
     const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
 
+    const { songs, listenedEpisodes, completedEpisodes } = useSelector((state) => state.podcast);
+    const { currentPodcast, isPlaying } = useSelector((state) => state.player);
+    const { playbackTimes } = useSelector((state) => state.audioTime);
+
+    const podcast = songs[0];
+
     useEffect(() => {
         const fetchYoutubeVideo = async () => {
-            if (podcast.audio) {
+            if (podcast?.audio) {
                 try {
                     const response = await fetch(
                         `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
@@ -53,33 +75,69 @@ const PodcastDetail = ({
         };
 
         fetchYoutubeVideo();
-    }, [podcast.audio, podcast.title]);
+    }, [podcast?.audio, podcast?.title]);
 
     if (!podcast) {
         return <div>Loading...</div>;
     }
 
-    const handleShareClick = () => {
+    const handleShareClick = async () => {
         if (navigator.share) {
-            navigator
-                .share({
+            try {
+                await navigator.share({
                     title: podcast.title,
                     text: podcast.description,
                     url: window.location.href
-                })
-                .then(() => console.log("Shared successfully"))
-                .catch((error) => console.error("Error sharing", error));
-        } else {
-            alert("Web Share API not supported in your browser. Please copy the URL manually.");
+                });
+            } catch (error) {
+                console.error("Error sharing:", error);
+            }
         }
     };
 
-    const isListened = listenedEpisodes.includes(podcast.title);
+    const isListened =
+        listenedEpisodes.includes(podcast.title) ||
+        (playbackTimes[podcast.title] && playbackTimes[podcast.title] > 0);
     const isPodcastPlaying = isPlaying && currentPodcast && currentPodcast.title === podcast.title;
+    const isCompleted = completedEpisodes.includes(podcast.title);
 
-    const handlePlayClick = () => {
-        onPlayPodcast(podcast);
+    const formatTime = (seconds) => {
+        if (!seconds) return "0:00";
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
     };
+
+    const handleListenedToggle = () => {
+        if (!isPlaying) {
+            if (isCompleted) {
+                dispatch(removeFromCompleted(podcast.title));
+            } else {
+                dispatch(deleteEpisode(podcast.title));
+                dispatch(removePlaybackTime(podcast.title));
+            }
+        }
+    };
+
+    const playbackTime = playbackTimes[podcast.title] || 0;
+
+    const ListenedButton = () => (
+        <motion.button
+            whileTap={{ scale: 0.95 }}
+            className={`${styles.listenedButton} ${
+                (isListened || isCompleted) && !isPlaying ? styles.listenedButtonTrue : ""
+            } ${isPlaying ? styles.listenedButtonPlaying : ""}`}
+            onClick={!isPlaying ? handleListenedToggle : undefined}
+            style={{
+                cursor: !isPlaying && (isListened || isCompleted) ? "pointer" : "default",
+                backgroundColor: isCompleted ? "#14DB93" : isListened ? "#14DB93" : "",
+                color: isCompleted || isListened ? "#000000" : ""
+            }}
+        >
+            {isCompleted ? <CheckCircle /> : isListened ? <Headphones /> : <HeadsetOff />}
+            {isCompleted ? "Completado" : isListened ? "Empezado" : "No Empezado"}
+        </motion.button>
+    );
 
     return (
         <motion.div
@@ -122,7 +180,7 @@ const PodcastDetail = ({
                             showinfo: 0
                         }}
                         className={styles.youtubePlayer}
-                        onPlay={stopPlayingAudio}
+                        onPlay={() => dispatch(togglePlay(false))}
                     />
                 </motion.div>
             )}
@@ -142,17 +200,37 @@ const PodcastDetail = ({
             >
                 <span className={styles.date}>{podcast.pubDate}</span>
                 <div className={styles.actions}>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`${styles.actionButton} ${
-                            isListened ? styles.listenedButton : ""
-                        }`}
-                        onClick={() => toggleListened(podcast)}
-                    >
-                        {isListened ? <CheckCircle /> : <CheckCircleOutline />}
-                        {isListened ? "Marcado" : "Marcar"} como escuchado
-                    </motion.button>
+                    {isListened || isCompleted ? (
+                        <BootstrapTooltip
+                            title={
+                                <Typography
+                                    style={{
+                                        fontSize: "14px",
+                                        fontWeight: "bold",
+                                        textAlign: "center"
+                                    }}
+                                >
+                                    {isCompleted
+                                        ? "Podcast completado"
+                                        : `Empezado - ${formatTime(playbackTime)}`}
+                                    <br />
+                                    {!isPlaying &&
+                                        (isCompleted
+                                            ? "Clic para eliminar de completados"
+                                            : "Clic para eliminar el tiempo")}
+                                </Typography>
+                            }
+                            placement="top"
+                            arrow
+                            TransitionComponent={Zoom}
+                        >
+                            <span>
+                                <ListenedButton />
+                            </span>
+                        </BootstrapTooltip>
+                    ) : (
+                        <ListenedButton />
+                    )}
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -165,7 +243,7 @@ const PodcastDetail = ({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={handlePlayClick}
+                        onClick={() => onPlayPodcast(podcast)}
                     >
                         {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
@@ -225,4 +303,4 @@ const PodcastDetail = ({
     );
 };
 
-export default PodcastDetail;
+export default LastPodcast;

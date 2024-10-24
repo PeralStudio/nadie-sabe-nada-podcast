@@ -4,13 +4,25 @@ import "react-h5-audio-player/lib/styles.css";
 import { motion } from "framer-motion";
 import styles from "./PersistentPlayer.module.css";
 import useWindowWidth from "../../hooks/useWindowWidth";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePlaybackTime } from "../../store/slices/audioTimeSlice";
+import { togglePlay } from "../../store/slices/playerSlice";
+import { markAsCompleted } from "../../store/slices/podcastSlice";
 
-const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) => {
+const PersistentPlayer = ({ onClose }) => {
+    const dispatch = useDispatch();
     const audioRef = useRef(null);
     const windowWidth = useWindowWidth();
+    const lastTimeUpdateRef = useRef(0);
+
+    const { currentPodcast, isPlaying } = useSelector((state) => state.player);
+    const { playbackTimes, savePlaybackTime } = useSelector((state) => state.audioTime);
 
     useEffect(() => {
-        if (audioRef.current) {
+        if (audioRef.current && currentPodcast) {
+            const savedTime = savePlaybackTime ? playbackTimes[currentPodcast.title] || 0 : 0;
+            audioRef.current.audio.current.currentTime = savedTime;
+
             if (isPlaying) {
                 audioRef.current.audio.current.play();
             } else {
@@ -19,12 +31,19 @@ const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) 
         }
     }, [isPlaying, currentPodcast]);
 
-    const handlePlay = () => {
-        onTogglePlay(true);
+    const handleTimeUpdate = (e) => {
+        const currentTime = e.target.currentTime;
+        const now = Date.now();
+
+        if (now - lastTimeUpdateRef.current >= 1000) {
+            dispatch(updatePlaybackTime({ title: currentPodcast.title, time: currentTime }));
+            lastTimeUpdateRef.current = now;
+        }
     };
 
-    const handlePause = () => {
-        onTogglePlay(false);
+    const handleEnded = () => {
+        dispatch(updatePlaybackTime({ title: currentPodcast.title, time: 0 }));
+        dispatch(markAsCompleted(currentPodcast.title));
     };
 
     if (!currentPodcast) return null;
@@ -55,8 +74,11 @@ const PersistentPlayer = ({ currentPodcast, onClose, isPlaying, onTogglePlay }) 
                 layout="stacked-reverse"
                 customProgressBarSection={["CURRENT_TIME", "PROGRESS_BAR", "DURATION"]}
                 className={styles.audioPlayer}
-                onPlay={handlePlay}
-                onPause={handlePause}
+                onPlay={() => dispatch(togglePlay(true))}
+                onPause={() => dispatch(togglePlay(false))}
+                listenInterval={1000}
+                onListen={handleTimeUpdate}
+                onEnded={handleEnded}
             />
             <button onClick={onClose} className={styles.closeButton}>
                 ×

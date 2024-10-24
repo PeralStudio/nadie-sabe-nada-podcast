@@ -1,14 +1,10 @@
 import React from "react";
 import styles from "./MP3Player.module.css";
-import { CheckCircleOutline, CheckCircle, PlayArrow, Pause, Download } from "@mui/icons-material";
+import { PlayArrow, Pause, Download, FavoriteBorder, Favorite } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
-// import { FidgetSpinner } from "react-loader-spinner";
-import { PhotoProvider, PhotoView } from "react-photo-view";
-import "react-photo-view/dist/react-photo-view.css";
 import useDownload from "../../hooks/useDownload";
-// import useMobileDetect from "../../hooks/useMobileDetect";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -19,35 +15,28 @@ const MP3Player = ({
     imageUrl,
     date,
     desc,
-    isListened,
-    toggleListened,
+    isFavorite,
+    toggleFavorite,
     onPlay,
     isPlaying,
     onClick
 }) => {
     const { isLoading, handleDownload, progress } = useDownload();
-    // const isMobile = useMobileDetect();
 
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
     };
 
-    const handleListenedClick = (e) => {
+    const handleFavoriteClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggleListened();
+        toggleFavorite();
     };
 
     const handlePlayClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         onPlay();
-    };
-
-    const handleCardClick = (e) => {
-        if (e.target.tagName !== "IMG") {
-            onClick();
-        }
     };
 
     const BootstrapTooltip = styled(({ className, ...props }) => (
@@ -66,35 +55,23 @@ const MP3Player = ({
         }
     }));
 
-    const listenedButton = (
+    const favoriteButton = (
         <BootstrapTooltip
-            title={isListened ? "Marcado como escuchado" : "Marcar como escuchado"}
+            title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
             placement="top"
             arrow
             TransitionComponent={Zoom}
         >
-            <button
-                onClick={handleListenedClick}
-                style={{
-                    borderRadius: "25px",
-                    padding: "2px 10px",
-                    margin: "0 5px"
-                }}
+            <span
+                onClick={handleFavoriteClick}
+                className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteActive : ""}`}
             >
-                {isListened ? (
-                    <CheckCircle
-                        style={{
-                            fontSize: "16px"
-                        }}
-                    />
+                {isFavorite ? (
+                    <Favorite style={{ fontSize: "20px" }} />
                 ) : (
-                    <CheckCircleOutline
-                        style={{
-                            fontSize: "16px"
-                        }}
-                    />
+                    <FavoriteBorder style={{ fontSize: "20px" }} />
                 )}
-            </button>
+            </span>
         </BootstrapTooltip>
     );
 
@@ -152,15 +129,6 @@ const MP3Player = ({
                 disabled={isLoading}
             >
                 {isLoading ? (
-                    // <FidgetSpinner
-                    //     height="21"
-                    //     width="16"
-                    //     radius="9"
-                    //     color={"#191A2E"}
-                    //     ariaLabel="fidget-spinner-loading"
-                    //     wrapperStyle={{}}
-                    //     wrapperClass="fidget-spinner-wrapper"
-                    // />
                     <span
                         style={{
                             color: "#16db93",
@@ -182,32 +150,21 @@ const MP3Player = ({
     );
 
     return (
-        <div className={styles.card} onClick={handleCardClick}>
-            <PhotoProvider
-                maskOpacity={0.7}
-                bannerVisible={false}
-                speed={() => 700}
-                easing={(type) =>
-                    type === 2
-                        ? "cubic-bezier(0.36, 0, 0.66, -0.56)"
-                        : "cubic-bezier(0.34, 1.56, 0.64, 1)"
-                }
-            >
-                <PhotoView src={imageUrl || placeHolderImage2}>
-                    <img
-                        src={imageUrl || placeHolderImage2}
-                        alt={title}
-                        className={styles.image}
-                        onError={handleImageError}
-                        loading="lazy"
-                    />
-                </PhotoView>
-            </PhotoProvider>
+        <div className={styles.card} onClick={onClick}>
+            <div className={styles.favoriteContainer}>{favoriteButton}</div>
+            <img
+                src={imageUrl || placeHolderImage2}
+                alt={title}
+                className={styles.image}
+                onError={handleImageError}
+                loading="lazy"
+                onClick={onClick}
+            />
             <h3 className={styles.title}>{title}</h3>
             <div className={styles.spanDate}>
                 <span className={styles.date}>{date}</span>
                 <div className={styles.controls}>
-                    {listenedButton} {playButton} {/* !isMobile && */ downloadButton}
+                    {playButton} {downloadButton}
                 </div>
             </div>
         </div>
