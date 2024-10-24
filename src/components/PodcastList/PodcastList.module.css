@@ -61,14 +61,129 @@
     color: #16db93;
 }
 
+/* Estilos del toast de confirmación */
+.confirmToast {
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(22, 219, 147, 0.2);
+    color: #e0e0e0;
+}
+
+.confirmHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.confirmHeader h3 {
+    margin: 0;
+    color: #16db93;
+    font-size: 1.2rem;
+}
+
+.warningIcon {
+    color: #16db93;
+    font-size: 24px;
+}
+
+.confirmMessage {
+    margin: 0 0 20px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.confirmButtons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.confirmButton,
+.cancelButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirmButton {
+    background-color: #16db93;
+    color: #16213e;
+}
+
+.confirmButton:hover {
+    background-color: #14c985;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(22, 219, 147, 0.3);
+}
+
+.cancelButton {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.cancelButton:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+}
+
 @media (max-width: 768px) {
     .paginationContainer {
         margin-bottom: 120px;
+    }
+
+    .confirmToast {
+        padding: 15px;
+    }
+
+    .confirmHeader h3 {
+        font-size: 1.1rem;
+    }
+
+    .confirmMessage {
+        font-size: 0.9rem;
+    }
+
+    .confirmButton,
+    .cancelButton {
+        padding: 6px 12px;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 480px) {
     .paginationContainer {
         margin-bottom: 120px;
+    }
+
+    .confirmToast {
+        padding: 12px;
+    }
+
+    .confirmHeader h3 {
+        font-size: 1rem;
+    }
+
+    .warningIcon {
+        font-size: 20px;
+    }
+
+    .confirmMessage {
+        font-size: 0.85rem;
+    }
+
+    .confirmButtons {
+        gap: 8px;
+    }
+
+    .confirmButton,
+    .cancelButton {
+        padding: 6px 10px;
+        font-size: 0.85rem;
     }
 }
