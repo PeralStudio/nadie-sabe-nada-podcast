@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import styles from "./Header.module.css";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
-import { GitHub, Language } from "@mui/icons-material";
+import { GitHub, Language, Settings } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Zoom } from "@mui/material";
@@ -101,20 +101,30 @@ const Header = () => {
                             target="_blank"
                             rel="noopener"
                             className={styles.iconButton}
-                            style={{
-                                fontSize: "2.5rem !important"
-                            }}
                         >
                             <GitHub />
                         </IconButton>
                     </motion.div>
                 </BootstrapTooltip>
-
                 <motion.div whileHover="hover" variants={ctaVariants}>
                     <Link to="/ultimo-episodio" className={styles.ctaLink}>
                         Último Episodio
                     </Link>
                 </motion.div>
+                <BootstrapTooltip
+                    title={"Ajustes"}
+                    placement="top"
+                    arrow
+                    TransitionComponent={Zoom}
+                >
+                    <motion.div whileHover="hover" variants={iconVariants}>
+                        <Link to="/settings">
+                            <IconButton className={styles.iconButton}>
+                                <Settings style={{ fontSize: "26px", marginBottom: "1px" }} />
+                            </IconButton>
+                        </Link>
+                    </motion.div>
+                </BootstrapTooltip>
             </div>
         </motion.header>
     );
