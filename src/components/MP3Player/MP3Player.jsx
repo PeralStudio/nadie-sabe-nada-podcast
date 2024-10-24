@@ -77,7 +77,7 @@ const MP3Player = ({
 
     const playButton = (
         <BootstrapTooltip
-            title={isPlaying ? "Pausar" : "Reproducir"}
+            title={isPlaying ? "" : "Reproducir"}
             placement="top"
             arrow
             TransitionComponent={Zoom}
