@@ -83,8 +83,29 @@
 }
 
 .listenedButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     background-color: #0f3460;
     color: #16db93;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.listenedButtonTrue {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.listenedButtonTrue:hover {
+    background-color: #0f3460 !important; /* Cambia el color de fondo al pasar el mouse */
+    color: #16db93 !important; /* Cambia el color del texto al pasar el mouse */
+}
+
+.listenedButtonPlaying:hover {
+    transform: translateY(0px) !important;
 }
 
 .youtubePlayer {
@@ -203,6 +224,12 @@
         padding: 10px;
     }
 
+    .listenedButton {
+        justify-content: center;
+        width: 100%;
+        padding: 10px;
+    }
+
     .youtubePlayer {
         aspect-ratio: 16 / 9;
     }
@@ -237,6 +264,11 @@
     }
 
     .actionButton {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .listenedButton {
         padding: 8px;
         font-size: 0.8rem;
     }
