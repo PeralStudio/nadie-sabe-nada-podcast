@@ -218,6 +218,10 @@
     max-width: 400px;
 }
 
+:global(.Toastify__toast-icon) {
+    margin-bottom: 10px !important;
+}
+
 :global(.Toastify__toast) {
     padding: 10px !important;
     background: transparent !important;
@@ -229,6 +233,8 @@
 }
 
 :global(.Toastify__toast-body) {
+    display: block !important;
+    justify-items: center !important;
     padding: 0 !important;
     margin: 0 !important;
 }
