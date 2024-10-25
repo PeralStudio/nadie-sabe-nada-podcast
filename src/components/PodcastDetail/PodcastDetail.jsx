@@ -27,7 +27,8 @@ import { togglePlay } from "../../store/slices/playerSlice";
 import {
     deleteEpisode,
     removeFromCompleted,
-    toggleFavorite
+    toggleFavorite,
+    markAsCompleted
 } from "../../store/slices/podcastSlice";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
@@ -187,7 +188,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     }, [id, songs, navigate]);
 
     if (!podcast) {
-        return <></>;
+        return null;
     }
 
     const isListened =
@@ -221,31 +222,53 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const handleListenedToggle = () => {
         if (!isPlaying) {
             if (isCompleted) {
-                dispatch(removeFromCompleted(podcast.title));
+                handleRemoveCompleted(podcast);
             } else {
-                dispatch(deleteEpisode(podcast.title));
-                dispatch(removePlaybackTime(podcast.title));
+                handleRemoveStarted(podcast);
             }
         }
     };
 
+    const handlePlay = () => {
+        if (isCompleted) {
+            dispatch(removeFromCompleted(podcast.title));
+        }
+        onPlayPodcast(podcast);
+    };
+
     const playbackTime = playbackTimes[podcast.title] || 0;
+
+    const getStatusIcon = () => {
+        if (isPodcastPlaying) return <Headphones />;
+        if (isCompleted) return <CheckCircle />;
+        if (isListened) return <Headphones />;
+        return <HeadsetOff />;
+    };
+
+    const getStatusText = () => {
+        if (isPodcastPlaying) return "Reproduciendo";
+        if (isCompleted) return "Completado";
+        if (isListened) return "Empezado";
+        return "No Empezado";
+    };
 
     const ListenedButton = () => (
         <motion.button
             whileTap={{ scale: 0.95 }}
             className={`${styles.listenedButton} ${
-                (isListened || isCompleted) && !isPlaying ? styles.listenedButtonTrue : ""
-            } ${isPlaying ? styles.listenedButtonPlaying : ""}`}
-            onClick={!isPlaying ? handleListenedToggle : undefined}
+                (isListened || isCompleted) && !isPodcastPlaying ? styles.listenedButtonTrue : ""
+            } ${isPodcastPlaying ? styles.listenedButtonPlaying : ""}`}
+            onClick={
+                !isPodcastPlaying && (isListened || isCompleted) ? handleListenedToggle : undefined
+            }
             style={{
-                cursor: !isPlaying && (isListened || isCompleted) ? "pointer" : "default",
+                cursor: !isPodcastPlaying && (isListened || isCompleted) ? "pointer" : "default",
                 backgroundColor: isCompleted ? "#14DB93" : isListened ? "#14DB93" : "",
                 color: isCompleted || isListened ? "#000000" : ""
             }}
         >
-            {isCompleted ? <CheckCircle /> : isListened ? <Headphones /> : <HeadsetOff />}
-            {isCompleted ? "Completado" : isListened ? "Empezado" : "No Empezado"}
+            {getStatusIcon()}
+            {getStatusText()}
         </motion.button>
     );
 
@@ -274,7 +297,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 </Link>
 
                 <div className={styles.iconControls}>
-                    {isListened && !isCompleted && (
+                    {(isListened || isPodcastPlaying) && !isCompleted && (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -284,9 +307,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                                         textAlign: "center"
                                     }}
                                 >
-                                    {`Empezado - ${formatTime(playbackTime)}`}
+                                    {`${
+                                        isPodcastPlaying ? "Reproduciendo" : "Empezado"
+                                    } - ${formatTime(playbackTime)}`}
                                     <br />
-                                    {!isPlaying && "Clic para eliminar el tiempo"}
+                                    {!isPodcastPlaying && "Clic para eliminar el tiempo"}
                                 </Typography>
                             }
                             placement="top"
@@ -296,15 +321,15 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                             <motion.div
                                 variants={iconVariants}
                                 whileHover="hover"
-                                onClick={() => !isPlaying && handleRemoveStarted(podcast)}
-                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                                onClick={() => !isPodcastPlaying && handleRemoveStarted(podcast)}
+                                style={{ cursor: !isPodcastPlaying ? "pointer" : "default" }}
                             >
                                 <Headphones className={styles.statusIcon} />
                             </motion.div>
                         </BootstrapTooltip>
                     )}
 
-                    {isCompleted && (
+                    {isCompleted && !isPodcastPlaying && (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -316,7 +341,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                                 >
                                     Podcast completado
                                     <br />
-                                    {!isPlaying && "Clic para eliminar de completados"}
+                                    Clic para eliminar de completados
                                 </Typography>
                             }
                             placement="top"
@@ -326,8 +351,8 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                             <motion.div
                                 variants={iconVariants}
                                 whileHover="hover"
-                                onClick={() => !isPlaying && handleRemoveCompleted(podcast)}
-                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                                onClick={() => handleRemoveCompleted(podcast)}
+                                style={{ cursor: "pointer" }}
                             >
                                 <CheckCircle className={styles.statusIcon} />
                             </motion.div>
@@ -358,18 +383,18 @@ const PodcastDetail = ({ onPlayPodcast }) => {
 
             <motion.h2
                 className={styles.title}
-                initial={{ opacity: 0, x: 200 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
             >
                 {podcast.title}
             </motion.h2>
             {youtubeVideoId && (
                 <motion.div
                     className={styles.youtubePlayer}
-                    initial={{ opacity: 0, scale: 0.4 }}
+                    initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
                 >
                     <YouTube
                         videoId={youtubeVideoId}
@@ -389,11 +414,12 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             )}
             <motion.p
                 className={styles.description}
-                initial={{ opacity: 0, x: -200 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                dangerouslySetInnerHTML={{ __html: podcast.description }}
-            />
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+            >
+                {podcast.description}
+            </motion.p>
             <motion.div
                 className={styles.metadata}
                 initial={{ opacity: 0, y: 20 }}
@@ -402,7 +428,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             >
                 <span className={styles.date}>{podcast.pubDate}</span>
                 <div className={styles.actions}>
-                    {isListened || isCompleted ? (
+                    {isListened || isCompleted || isPodcastPlaying ? (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -412,11 +438,13 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                                         textAlign: "center"
                                     }}
                                 >
-                                    {isCompleted
+                                    {isPodcastPlaying
+                                        ? `Reproduciendo - ${formatTime(playbackTime)}`
+                                        : isCompleted
                                         ? "Podcast completado"
                                         : `Empezado - ${formatTime(playbackTime)}`}
                                     <br />
-                                    {!isPlaying &&
+                                    {!isPodcastPlaying &&
                                         (isCompleted
                                             ? "Clic para eliminar de completados"
                                             : "Clic para eliminar el tiempo")}
@@ -445,7 +473,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => onPlayPodcast(podcast)}
+                        onClick={handlePlay}
                     >
                         {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}

@@ -7,7 +7,7 @@ import useWindowWidth from "../../hooks/useWindowWidth";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { togglePlay } from "../../store/slices/playerSlice";
-import { markAsCompleted } from "../../store/slices/podcastSlice";
+import { markAsCompleted, removeFromCompleted } from "../../store/slices/podcastSlice";
 
 const PersistentPlayer = ({ onClose }) => {
     const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const PersistentPlayer = ({ onClose }) => {
 
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes, savePlaybackTime } = useSelector((state) => state.audioTime);
+    const { completedEpisodes } = useSelector((state) => state.podcast);
 
     useEffect(() => {
         if (audioRef.current && currentPodcast) {
@@ -44,6 +45,13 @@ const PersistentPlayer = ({ onClose }) => {
     const handleEnded = () => {
         dispatch(updatePlaybackTime({ title: currentPodcast.title, time: 0 }));
         dispatch(markAsCompleted(currentPodcast.title));
+    };
+
+    const handlePlay = () => {
+        if (completedEpisodes.includes(currentPodcast.title)) {
+            dispatch(removeFromCompleted(currentPodcast.title));
+        }
+        dispatch(togglePlay(true));
     };
 
     if (!currentPodcast) return null;
@@ -74,7 +82,7 @@ const PersistentPlayer = ({ onClose }) => {
                 layout="stacked-reverse"
                 customProgressBarSection={["CURRENT_TIME", "PROGRESS_BAR", "DURATION"]}
                 className={styles.audioPlayer}
-                onPlay={() => dispatch(togglePlay(true))}
+                onPlay={handlePlay}
                 onPause={() => dispatch(togglePlay(false))}
                 listenInterval={1000}
                 onListen={handleTimeUpdate}

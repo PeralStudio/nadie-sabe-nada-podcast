@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./LastPodcast.module.css";
 import YouTube from "react-youtube";
 import { Bounce, toast } from "react-toastify";
@@ -38,6 +38,7 @@ const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
 const LastPodcast = ({ onPlayPodcast }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
     const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
 
@@ -48,6 +49,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
     const { playbackTimes } = useSelector((state) => state.audioTime);
 
     const podcast = songs[0];
+    const playbackTime = playbackTimes[podcast.title] || 0;
 
     const BootstrapTooltip = useMemo(
         () =>
@@ -68,6 +70,21 @@ const LastPodcast = ({ onPlayPodcast }) => {
             })),
         []
     );
+
+    const logoVariants = {
+        hover: {
+            scale: 1.16,
+            rotate: 45,
+            transition: { type: "spring", stiffness: 150, damping: 4 }
+        }
+    };
+
+    const iconVariants = {
+        hover: {
+            scale: 1.1,
+            transition: { type: "spring", stiffness: 300, damping: 10 }
+        }
+    };
 
     const showConfirmToast = (message, onConfirm) => {
         toast.warn(
@@ -142,21 +159,6 @@ const LastPodcast = ({ onPlayPodcast }) => {
         );
     };
 
-    const logoVariants = {
-        hover: {
-            scale: 1.16,
-            rotate: 45,
-            transition: { type: "spring", stiffness: 150, damping: 4 }
-        }
-    };
-
-    const iconVariants = {
-        hover: {
-            scale: 1.1,
-            transition: { type: "spring", stiffness: 300, damping: 10 }
-        }
-    };
-
     useEffect(() => {
         const fetchYoutubeVideo = async () => {
             if (podcast?.audio) {
@@ -173,29 +175,17 @@ const LastPodcast = ({ onPlayPodcast }) => {
                 } catch (error) {
                     console.error("Error fetching YouTube video:", error);
                 }
+            } else {
+                navigate("/404");
             }
         };
 
         fetchYoutubeVideo();
-    }, [podcast?.audio, podcast?.title]);
+    }, [podcast?.audio, podcast?.title, navigate]);
 
     if (!podcast) {
-        return <div>Loading...</div>;
+        return null;
     }
-
-    const handleShareClick = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: podcast.title,
-                    text: podcast.description,
-                    url: window.location.href
-                });
-            } catch (error) {
-                console.error("Error sharing:", error);
-            }
-        }
-    };
 
     const isListened =
         listenedEpisodes.includes(podcast.title) ||
@@ -211,34 +201,68 @@ const LastPodcast = ({ onPlayPodcast }) => {
         return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
     };
 
-    const handleListenedToggle = () => {
-        if (!isPlaying) {
-            if (isCompleted) {
-                dispatch(removeFromCompleted(podcast.title));
-            } else {
-                dispatch(deleteEpisode(podcast.title));
-                dispatch(removePlaybackTime(podcast.title));
+    const handleShareClick = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: podcast.title,
+                    text: podcast.description,
+                    url: window.location.href
+                });
+            } catch (error) {
+                console.error("Error sharing:", error);
             }
         }
     };
 
-    const playbackTime = playbackTimes[podcast.title] || 0;
+    const handleListenedToggle = () => {
+        if (!isPlaying) {
+            if (isCompleted) {
+                handleRemoveCompleted(podcast);
+            } else {
+                handleRemoveStarted(podcast);
+            }
+        }
+    };
+
+    const handlePlay = () => {
+        if (isCompleted) {
+            dispatch(removeFromCompleted(podcast.title));
+        }
+        onPlayPodcast(podcast);
+    };
+
+    const getStatusIcon = () => {
+        if (isPodcastPlaying) return <Headphones />;
+        if (isCompleted) return <CheckCircle />;
+        if (isListened) return <Headphones />;
+        return <HeadsetOff />;
+    };
+
+    const getStatusText = () => {
+        if (isPodcastPlaying) return "Reproduciendo";
+        if (isCompleted) return "Completado";
+        if (isListened) return "Empezado";
+        return "No Empezado";
+    };
 
     const ListenedButton = () => (
         <motion.button
             whileTap={{ scale: 0.95 }}
             className={`${styles.listenedButton} ${
-                (isListened || isCompleted) && !isPlaying ? styles.listenedButtonTrue : ""
-            } ${isPlaying ? styles.listenedButtonPlaying : ""}`}
-            onClick={!isPlaying ? handleListenedToggle : undefined}
+                (isListened || isCompleted) && !isPodcastPlaying ? styles.listenedButtonTrue : ""
+            } ${isPodcastPlaying ? styles.listenedButtonPlaying : ""}`}
+            onClick={
+                !isPodcastPlaying && (isListened || isCompleted) ? handleListenedToggle : undefined
+            }
             style={{
-                cursor: !isPlaying && (isListened || isCompleted) ? "pointer" : "default",
+                cursor: !isPodcastPlaying && (isListened || isCompleted) ? "pointer" : "default",
                 backgroundColor: isCompleted ? "#14DB93" : isListened ? "#14DB93" : "",
                 color: isCompleted || isListened ? "#000000" : ""
             }}
         >
-            {isCompleted ? <CheckCircle /> : isListened ? <Headphones /> : <HeadsetOff />}
-            {isCompleted ? "Completado" : isListened ? "Empezado" : "No Empezado"}
+            {getStatusIcon()}
+            {getStatusText()}
         </motion.button>
     );
 
@@ -267,7 +291,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                 </Link>
 
                 <div className={styles.iconControls}>
-                    {isListened && !isCompleted && (
+                    {(isListened || isPodcastPlaying) && !isCompleted && (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -277,9 +301,11 @@ const LastPodcast = ({ onPlayPodcast }) => {
                                         textAlign: "center"
                                     }}
                                 >
-                                    {`Empezado - ${formatTime(playbackTime)}`}
+                                    {`${
+                                        isPodcastPlaying ? "Reproduciendo" : "Empezado"
+                                    } - ${formatTime(playbackTime)}`}
                                     <br />
-                                    {!isPlaying && "Clic para eliminar el tiempo"}
+                                    {!isPodcastPlaying && "Clic para eliminar el tiempo"}
                                 </Typography>
                             }
                             placement="top"
@@ -289,15 +315,15 @@ const LastPodcast = ({ onPlayPodcast }) => {
                             <motion.div
                                 variants={iconVariants}
                                 whileHover="hover"
-                                onClick={() => !isPlaying && handleRemoveStarted(podcast)}
-                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                                onClick={() => !isPodcastPlaying && handleRemoveStarted(podcast)}
+                                style={{ cursor: !isPodcastPlaying ? "pointer" : "default" }}
                             >
                                 <Headphones className={styles.statusIcon} />
                             </motion.div>
                         </BootstrapTooltip>
                     )}
 
-                    {isCompleted && (
+                    {isCompleted && !isPodcastPlaying && (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -309,7 +335,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                                 >
                                     Podcast completado
                                     <br />
-                                    {!isPlaying && "Clic para eliminar de completados"}
+                                    Clic para eliminar de completados
                                 </Typography>
                             }
                             placement="top"
@@ -319,8 +345,8 @@ const LastPodcast = ({ onPlayPodcast }) => {
                             <motion.div
                                 variants={iconVariants}
                                 whileHover="hover"
-                                onClick={() => !isPlaying && handleRemoveCompleted(podcast)}
-                                style={{ cursor: !isPlaying ? "pointer" : "default" }}
+                                onClick={() => handleRemoveCompleted(podcast)}
+                                style={{ cursor: "pointer" }}
                             >
                                 <CheckCircle className={styles.statusIcon} />
                             </motion.div>
@@ -396,7 +422,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
             >
                 <span className={styles.date}>{podcast.pubDate}</span>
                 <div className={styles.actions}>
-                    {isListened || isCompleted ? (
+                    {isListened || isCompleted || isPodcastPlaying ? (
                         <BootstrapTooltip
                             title={
                                 <Typography
@@ -406,11 +432,13 @@ const LastPodcast = ({ onPlayPodcast }) => {
                                         textAlign: "center"
                                     }}
                                 >
-                                    {isCompleted
+                                    {isPodcastPlaying
+                                        ? `Reproduciendo - ${formatTime(playbackTime)}`
+                                        : isCompleted
                                         ? "Podcast completado"
                                         : `Empezado - ${formatTime(playbackTime)}`}
                                     <br />
-                                    {!isPlaying &&
+                                    {!isPodcastPlaying &&
                                         (isCompleted
                                             ? "Clic para eliminar de completados"
                                             : "Clic para eliminar el tiempo")}
@@ -439,7 +467,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => onPlayPodcast(podcast)}
+                        onClick={() => handlePlay}
                     >
                         {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
