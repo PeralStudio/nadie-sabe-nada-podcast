@@ -36,7 +36,7 @@ const PodcastList = ({ onPlayPodcast }) => {
     );
     const { currentFilter, currentPage, songsPerPage } = useSelector((state) => state.filter);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
-    const { playbackTimes } = useSelector((state) => state.audioTime);
+    const { playbackTimes, savePlaybackTime } = useSelector((state) => state.audioTime);
 
     const showConfirmToast = (message, onConfirm) => {
         toast.warn(
@@ -243,16 +243,30 @@ const PodcastList = ({ onPlayPodcast }) => {
                         </motion.button>
                     </span>
                 </BootstrapTooltip>
-
                 <BootstrapTooltip
-                    title="Podcasts empezados"
+                    title={
+                        <Typography
+                            style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}
+                        >
+                            {!savePlaybackTime && "Activa recordar tiempo en ajustes para ver los "}
+                            Podcasts empezados
+                        </Typography>
+                    }
                     placement="top"
                     arrow
                     TransitionComponent={Zoom}
                 >
                     <span>
                         <motion.button
-                            whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
+                            whileHover={{
+                                scale: 1.1,
+                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)"
+                            }}
+                            disabled={!savePlaybackTime}
                             whileTap={{ scale: 0.95 }}
                             className={
                                 currentFilter === "empezados" ? styles.activeButton : styles.button
@@ -265,7 +279,18 @@ const PodcastList = ({ onPlayPodcast }) => {
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
-                    title="Podcasts no empezados"
+                    title={
+                        <Typography
+                            style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}
+                        >
+                            {!savePlaybackTime && "Activa recordar tiempo en ajustes para ver los "}
+                            Podcasts no empezados
+                        </Typography>
+                    }
                     placement="top"
                     arrow
                     TransitionComponent={Zoom}
@@ -274,6 +299,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
+                            disabled={!savePlaybackTime}
                             className={
                                 currentFilter === "no-empezados"
                                     ? styles.activeButton
@@ -285,7 +311,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                         </motion.button>
                     </span>
                 </BootstrapTooltip>
-
                 <BootstrapTooltip
                     title="Podcasts favoritos"
                     placement="top"
