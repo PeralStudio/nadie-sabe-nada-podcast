@@ -3,28 +3,28 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #16213e;
-    padding: 10px;
+    background-color: var(--color-background-alt);
+    padding: var(--spacing-sm);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    flex-wrap: wrap; /* Permite que los elementos se reorganicen en pantallas pequeñas */
+    box-shadow: var(--shadow-md);
+    z-index: var(--z-index-fixed);
+    flex-wrap: wrap;
 }
 
 .podcastInfo {
     display: flex;
     align-items: center;
     flex: 1;
-    min-width: 200px; /* Asegura que no se comprima demasiado en pantallas pequeñas */
+    min-width: 200px;
 }
 
 .podcastImage {
     width: 60px;
     height: 60px;
-    border-radius: 5px;
-    margin-right: 10px;
+    border-radius: var(--border-radius-sm);
+    margin-right: var(--spacing-sm);
 }
 
 .podcastDetails {
@@ -33,118 +33,84 @@
 
 .podcastDetails h3 {
     margin: 0;
-    font-size: 1rem;
-    color: #e0e0e0;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
 }
 
 .podcastDetails p {
     margin: 0;
-    font-size: 0.8rem;
-    color: #16db93;
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
 }
 
 .audioPlayer {
     flex: 2;
     background-color: transparent !important;
     box-shadow: none !important;
-    width: 100%; /* Asegura que ocupe todo el ancho disponible en pantallas pequeñas */
-    margin-top: 10px; /* Añade espacio entre los elementos en pantallas más pequeñas */
+    width: 100%;
+    margin-top: var(--spacing-sm);
 }
 
 .closeButton {
-    background-color: #103460;
-    font-weight: 600;
-    color: #16db93 !important;
+    background-color: var(--color-secondary);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary) !important;
     border: none;
-    border-radius: 25px;
-    padding: 2px 10px !important;
-    margin: 5px 5px;
-    font-size: 1rem;
+    border-radius: var(--border-radius-pill);
+    padding: var(--spacing-xs) var(--spacing-sm) !important;
+    margin: var(--spacing-xs);
+    font-size: var(--font-size-base);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition-base);
     position: absolute;
-    top: 0px;
-    right: 10px;
+    top: 0;
+    right: var(--spacing-sm);
 }
 
 .closeButton:hover {
-    color: #103460 !important;
-    background-color: #16db93 !important;
-}
-
-:global(.rhap_container) {
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
-
-:global(.rhap_time),
-:global(.rhap_current-time) {
-    color: #16db93 !important;
-    min-width: 50px;
-}
-
-:global(.rhap_total-time) {
-    min-width: 40px;
-}
-
-:global(.rhap_progress-filled),
-:global(.rhap_progress-indicator) {
-    background-color: #16db93 !important;
-}
-
-:global(.rhap_download-progress),
-:global(.rhap_volume-indicator) {
-    background-color: #16db93 !important;
-}
-
-:global(.rhap_button-clear) {
-    color: #16db93 !important;
-}
-
-:global(.rhap_volume-button),
-:global(.rhap_main-controls-button) {
-    color: #16db93 !important;
+    color: var(--color-secondary) !important;
+    background-color: var(--color-primary) !important;
 }
 
 @media (max-width: 768px) {
     .persistentPlayer {
         flex-direction: column;
         align-items: stretch;
-        padding: 15px; /* Añade más padding en pantallas pequeñas */
+        padding: var(--spacing-lg);
     }
 
     .podcastInfo {
-        margin-bottom: 10px;
-        width: 100%; /* Asegura que el contenido de información ocupe todo el ancho */
+        margin-bottom: var(--spacing-sm);
+        width: 100%;
     }
 
     .podcastImage {
         width: 50px;
-        height: 50px; /* Reduce el tamaño de la imagen en pantallas más pequeñas */
+        height: 50px;
     }
 
     .audioPlayer {
-        width: 100%; /* Reproductor a pantalla completa en móviles */
-        margin-top: 5px; /* Asegura separación entre controles y otros elementos */
+        width: 100%;
+        margin-top: var(--spacing-xs);
     }
 
     .closeButton {
         position: absolute;
         top: 50px;
-        right: 10px; /* Mueve el botón de cierre en pantallas pequeñas */
+        right: var(--spacing-sm);
     }
 }
 
 @media (max-width: 480px) {
     .podcastDetails h3 {
-        font-size: 0.9rem;
+        font-size: var(--font-size-sm);
     }
 
     .podcastDetails p {
-        font-size: 0.7rem;
+        font-size: var(--font-size-xs);
     }
 
     .audioPlayer {
-        margin-top: 8px;
+        margin-top: var(--spacing-sm);
     }
 }
