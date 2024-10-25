@@ -73,6 +73,7 @@
 .confirmHeader {
     display: flex;
     align-items: center;
+    justify-self: center;
     gap: 10px;
     margin-bottom: 15px;
 }
@@ -96,7 +97,7 @@
 
 .confirmButtons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 10px;
 }
 
