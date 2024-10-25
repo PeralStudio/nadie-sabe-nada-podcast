@@ -1,4 +1,3 @@
-/* Estilos del contenedor principal */
 .settingsContainer {
     max-width: 800px;
     margin: 0 auto;
@@ -113,13 +112,23 @@
 }
 
 .favoritesButton {
-    background-color: #e74c3c;
+    background-color: #9b59b6;
 }
 
 .favoritesButton:hover {
     background-color: #c0392b;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 4px 8px rgba(155, 89, 182, 0.3);
+}
+
+.listenLaterButton {
+    background-color: #f1c40f;
+}
+
+.listenLaterButton:hover {
+    background-color: #f39c12;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
 }
 
 .completedButton {
@@ -133,16 +142,15 @@
 }
 
 .deleteAllButton {
-    background-color: #9b59b6;
+    background-color: #e74c3c;
 }
 
 .deleteAllButton:hover {
     background-color: #8e44ad;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(155, 89, 182, 0.3);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
 }
 
-/* Estilos del toast de confirmación */
 .confirmToast {
     background-color: #16213e;
     padding: 20px;
@@ -212,33 +220,6 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
 }
-
-/* Estilos personalizados para el contenedor del toast */
-/* :global(.Toastify__toast-container) {
-    width: auto !important;
-    max-width: 400px;
-}
-
-:global(.Toastify__toast-icon) {
-    margin-bottom: 10px !important;
-}
-
-:global(.Toastify__toast) {
-    padding: 10px !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-:global(.Toastify__toast--success) {
-    background-color: #18181b !important;
-}
-
-:global(.Toastify__toast-body) {
-    display: block !important;
-    justify-items: center !important;
-    padding: 0 !important;
-    margin: 0 !important;
-} */
 
 @media (max-width: 768px) {
     .settingsContainer {
