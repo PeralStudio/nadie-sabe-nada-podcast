@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./PodcastList.module.css";
 import MP3Player from "../MP3Player/MP3Player";
 import Pagination from "../Pagination/Pagination";
+import NoResults from "../NoResults/NoResults";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -36,7 +37,7 @@ const PodcastList = ({ onPlayPodcast }) => {
     );
     const { currentFilter, currentPage, songsPerPage } = useSelector((state) => state.filter);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
-    const { playbackTimes, savePlaybackTime } = useSelector((state) => state.audioTime);
+    const { playbackTimes } = useSelector((state) => state.audioTime);
 
     const showConfirmToast = (message, onConfirm) => {
         toast.warn(
@@ -244,18 +245,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                     </span>
                 </BootstrapTooltip>
                 <BootstrapTooltip
-                    title={
-                        <Typography
-                            style={{
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                                textAlign: "center"
-                            }}
-                        >
-                            {!savePlaybackTime && "Activa recordar tiempo en ajustes para ver los "}
-                            Podcasts empezados
-                        </Typography>
-                    }
+                    title="Podcasts empezados"
                     placement="top"
                     arrow
                     TransitionComponent={Zoom}
@@ -266,7 +256,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                                 scale: 1.1,
                                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)"
                             }}
-                            disabled={!savePlaybackTime}
                             whileTap={{ scale: 0.95 }}
                             className={
                                 currentFilter === "empezados" ? styles.activeButton : styles.button
@@ -279,18 +268,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
-                    title={
-                        <Typography
-                            style={{
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                                textAlign: "center"
-                            }}
-                        >
-                            {!savePlaybackTime && "Activa recordar tiempo en ajustes para ver los "}
-                            Podcasts no empezados
-                        </Typography>
-                    }
+                    title="Podcasts no empezados"
                     placement="top"
                     arrow
                     TransitionComponent={Zoom}
@@ -299,7 +277,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            disabled={!savePlaybackTime}
                             className={
                                 currentFilter === "no-empezados"
                                     ? styles.activeButton
@@ -330,7 +307,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                         </motion.button>
                     </span>
                 </BootstrapTooltip>
-
                 <BootstrapTooltip
                     title="Podcasts completados"
                     placement="top"
@@ -353,122 +329,128 @@ const PodcastList = ({ onPlayPodcast }) => {
                     </span>
                 </BootstrapTooltip>
             </motion.div>
-            <motion.div
-                className={styles.playerList}
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {currentSongs.map((song) => {
-                    const isStarted = playbackTimes[song.title] > 0;
-                    const playbackTime = playbackTimes[song.title] || 0;
-                    const isCompleted = completedEpisodes.includes(song.title);
 
-                    return (
-                        <motion.div
-                            className={styles.playerList}
-                            key={song.pubDate}
-                            variants={itemVariants}
-                            initial="hidden"
-                            animate="visible"
-                            whileHover="hover"
-                        >
-                            <div className={styles.podcastCard}>
-                                <MP3Player
-                                    title={song.title}
-                                    url={song.audio}
-                                    imageUrl={song.image}
-                                    date={song.pubDate}
-                                    desc={song.description}
-                                    isFavorite={favoriteEpisodes.includes(song.title)}
-                                    toggleFavorite={() => dispatch(toggleFavorite(song))}
-                                    onPlay={() => onPlayPodcast(song)}
-                                    isPlaying={
-                                        isPlaying &&
-                                        currentPodcast &&
-                                        currentPodcast.title === song.title
-                                    }
-                                    onClick={() => handleCardClick(song)}
-                                />
-                                {isStarted && !isCompleted && (
-                                    <BootstrapTooltip
-                                        title={
-                                            <Typography
-                                                style={{
-                                                    fontSize: "14px",
-                                                    fontWeight: "bold",
-                                                    textAlign: "center"
-                                                }}
-                                            >
-                                                {`Empezado - ${formatTime(playbackTime)}`}
-                                                <br />
-                                                {!isPlaying && "Clic para eliminar el tiempo"}
-                                            </Typography>
+            {filteredSongs.length === 0 ? (
+                <NoResults searchTerm={searchTerm} currentFilter={currentFilter} />
+            ) : (
+                <motion.div
+                    className={styles.playerList}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {currentSongs.map((song) => {
+                        const isStarted = playbackTimes[song.title] > 0;
+                        const playbackTime = playbackTimes[song.title] || 0;
+                        const isCompleted = completedEpisodes.includes(song.title);
+
+                        return (
+                            <motion.div
+                                className={styles.playerList}
+                                key={song.pubDate}
+                                variants={itemVariants}
+                                initial="hidden"
+                                animate="visible"
+                                whileHover="hover"
+                            >
+                                <div className={styles.podcastCard}>
+                                    <MP3Player
+                                        title={song.title}
+                                        url={song.audio}
+                                        imageUrl={song.image}
+                                        date={song.pubDate}
+                                        desc={song.description}
+                                        isFavorite={favoriteEpisodes.includes(song.title)}
+                                        toggleFavorite={() => dispatch(toggleFavorite(song))}
+                                        onPlay={() => onPlayPodcast(song)}
+                                        isPlaying={
+                                            isPlaying &&
+                                            currentPodcast &&
+                                            currentPodcast.title === song.title
                                         }
-                                        placement="top"
-                                        arrow
-                                        TransitionComponent={Zoom}
-                                    >
-                                        <Headphones
-                                            style={{
-                                                color: "#17D891",
-                                                position: "absolute",
-                                                top: "10px",
-                                                left: "6px",
-                                                fontSize: "20px",
-                                                cursor: !isPlaying && "pointer"
-                                            }}
-                                            onClick={() => {
-                                                if (!isPlaying) {
-                                                    handleRemoveStarted(song);
-                                                }
-                                            }}
-                                            className={styles.headphonesIcon}
-                                        />
-                                    </BootstrapTooltip>
-                                )}
-                                {isCompleted && (
-                                    <BootstrapTooltip
-                                        title={
-                                            <Typography
+                                        onClick={() => handleCardClick(song)}
+                                    />
+                                    {isStarted && !isCompleted && (
+                                        <BootstrapTooltip
+                                            title={
+                                                <Typography
+                                                    style={{
+                                                        fontSize: "14px",
+                                                        fontWeight: "bold",
+                                                        textAlign: "center"
+                                                    }}
+                                                >
+                                                    {`Empezado - ${formatTime(playbackTime)}`}
+                                                    <br />
+                                                    {!isPlaying && "Clic para eliminar el tiempo"}
+                                                </Typography>
+                                            }
+                                            placement="top"
+                                            arrow
+                                            TransitionComponent={Zoom}
+                                        >
+                                            <Headphones
                                                 style={{
-                                                    fontSize: "14px",
-                                                    fontWeight: "bold",
-                                                    textAlign: "center"
+                                                    color: "#17D891",
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    left: "6px",
+                                                    fontSize: "20px",
+                                                    cursor: !isPlaying && "pointer"
                                                 }}
-                                            >
-                                                Podcast completado
-                                                <br />
-                                                {!isPlaying && "Clic para eliminar de completados"}
-                                            </Typography>
-                                        }
-                                        placement="top"
-                                        arrow
-                                        TransitionComponent={Zoom}
-                                    >
-                                        <CheckCircle
-                                            style={{
-                                                color: "#17D891",
-                                                position: "absolute",
-                                                top: "10px",
-                                                left: "6px",
-                                                fontSize: "20px",
-                                                cursor: !isPlaying && "pointer"
-                                            }}
-                                            onClick={() => {
-                                                if (!isPlaying) {
-                                                    handleRemoveCompleted(song);
-                                                }
-                                            }}
-                                            className={styles.completedIcon}
-                                        />
-                                    </BootstrapTooltip>
-                                )}
-                            </div>
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
+                                                onClick={() => {
+                                                    if (!isPlaying) {
+                                                        handleRemoveStarted(song);
+                                                    }
+                                                }}
+                                                className={styles.headphonesIcon}
+                                            />
+                                        </BootstrapTooltip>
+                                    )}
+                                    {isCompleted && (
+                                        <BootstrapTooltip
+                                            title={
+                                                <Typography
+                                                    style={{
+                                                        fontSize: "14px",
+                                                        fontWeight: "bold",
+                                                        textAlign: "center"
+                                                    }}
+                                                >
+                                                    Podcast completado
+                                                    <br />
+                                                    {!isPlaying &&
+                                                        "Clic para eliminar de completados"}
+                                                </Typography>
+                                            }
+                                            placement="top"
+                                            arrow
+                                            TransitionComponent={Zoom}
+                                        >
+                                            <CheckCircle
+                                                style={{
+                                                    color: "#17D891",
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    left: "6px",
+                                                    fontSize: "20px",
+                                                    cursor: !isPlaying && "pointer"
+                                                }}
+                                                onClick={() => {
+                                                    if (!isPlaying) {
+                                                        handleRemoveCompleted(song);
+                                                    }
+                                                }}
+                                                className={styles.completedIcon}
+                                            />
+                                        </BootstrapTooltip>
+                                    )}
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </motion.div>
+            )}
             {filteredSongs.length > 12 && (
                 <div className={styles.paginationContainer}>
                     <Pagination
