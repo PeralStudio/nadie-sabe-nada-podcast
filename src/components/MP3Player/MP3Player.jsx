@@ -1,10 +1,26 @@
 import React, { useMemo } from "react";
 import styles from "./MP3Player.module.css";
-import { PlayArrow, Pause, Download, FavoriteBorder, Favorite, WatchLater, WatchLaterOutlined } from "@mui/icons-material";
+import { motion } from "framer-motion";
+import {
+    PlayArrow,
+    Pause,
+    Download,
+    FavoriteBorder,
+    Favorite,
+    WatchLater,
+    WatchLaterOutlined,
+    Warning,
+    Headphones,
+    CheckCircle
+} from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Fade } from "@mui/material";
+import { Fade, Typography } from "@mui/material";
 import useDownload from "../../hooks/useDownload";
+import { useDispatch, useSelector } from "react-redux";
+import { Bounce, toast } from "react-toastify";
+import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
+import { deleteEpisode, removeFromCompleted } from "../../store/slices/podcastSlice";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -23,7 +39,14 @@ const MP3Player = ({
     isPlaying,
     onClick
 }) => {
+    const dispatch = useDispatch();
     const { isLoading, handleDownload, progress } = useDownload();
+    const { playbackTimes } = useSelector((state) => state.audioTime);
+    const { /* songs, favoriteEpisodes, listenLaterEpisodes, searchTerm, */ completedEpisodes } =
+        useSelector((state) => state.podcast);
+    const isStarted = playbackTimes[title] > 0;
+    const isCompleted = completedEpisodes.includes(title);
+    const playbackTime = playbackTimes[title] || 0;
 
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
@@ -47,6 +70,48 @@ const MP3Player = ({
         onPlay();
     };
 
+    const showConfirmToast = (message, onConfirm) => {
+        toast.warn(
+            <div className={styles.confirmToast}>
+                <div className={styles.confirmHeader}>
+                    <Warning className={styles.warningIcon} />
+                    <h3>Confirmar Acción</h3>
+                </div>
+                <p className={styles.confirmMessage}>{message}</p>
+                <div className={styles.confirmButtons}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.confirmButton}
+                        onClick={() => {
+                            toast.dismiss();
+                            onConfirm();
+                        }}
+                    >
+                        Confirmar
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.cancelButton}
+                        onClick={() => toast.dismiss()}
+                    >
+                        Cancelar
+                    </motion.button>
+                </div>
+            </div>,
+            {
+                position: "top-center",
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                className: styles.customToast,
+                theme: "dark"
+            }
+        );
+    };
+
     const BootstrapTooltip = useMemo(
         () =>
             styled(({ className, ...props }) => (
@@ -67,6 +132,46 @@ const MP3Player = ({
         []
     );
 
+    const formatTime = (seconds) => {
+        if (!seconds) return "0:00";
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    };
+
+    const handleRemoveStarted = (title, e) => {
+        e.stopPropagation();
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
+            () => {
+                dispatch(deleteEpisode(title));
+                dispatch(removePlaybackTime(title));
+                toast.success("Tiempo de reproducción eliminado", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
+    };
+
+    const handleRemoveCompleted = (title, e) => {
+        e.stopPropagation();
+        showConfirmToast(
+            "¿Estás seguro de que quieres eliminar este podcast de completados?",
+            () => {
+                dispatch(removeFromCompleted(title));
+                toast.success("Podcast eliminado de completados", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        );
+    };
+
     const favoriteButton = (
         <BootstrapTooltip
             title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
@@ -81,9 +186,9 @@ const MP3Player = ({
                 className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteActive : ""}`}
             >
                 {isFavorite ? (
-                    <Favorite style={{ fontSize: "20px" }} />
+                    <Favorite style={{ fontSize: "22px" }} />
                 ) : (
-                    <FavoriteBorder style={{ fontSize: "20px" }} />
+                    <FavoriteBorder style={{ fontSize: "22px" }} />
                 )}
             </span>
         </BootstrapTooltip>
@@ -169,7 +274,9 @@ const MP3Player = ({
 
     const listenLaterButton = (
         <BootstrapTooltip
-            title={isListenLater ? "Quitar de escuchar más tarde" : "Guardar para escuchar más tarde"}
+            title={
+                isListenLater ? "Quitar de escuchar más tarde" : "Guardar para escuchar más tarde"
+            }
             placement="top"
             arrow
             disableInteractive
@@ -197,9 +304,87 @@ const MP3Player = ({
 
     return (
         <div className={styles.card} onClick={onClick}>
-            <div className={styles.favoriteContainer}>
-                {favoriteButton}
-            </div>
+            <div className={styles.favoriteContainer}>{favoriteButton}</div>
+            {isStarted && !isCompleted && (
+                <div className={styles.favoriteContainer}>
+                    <BootstrapTooltip
+                        title={
+                            <Typography
+                                style={{
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    textAlign: "center"
+                                }}
+                            >
+                                {`Empezado - ${formatTime(playbackTime)}`}
+                                <br />
+                                {!isPlaying && "Clic para eliminar el tiempo"}
+                            </Typography>
+                        }
+                        placement="top"
+                        arrow
+                        disableInteractive
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                    >
+                        <Headphones
+                            style={{
+                                color: "#17D891",
+                                position: "absolute",
+                                top: "38px",
+                                right: "0px",
+                                fontSize: "22px",
+                                cursor: !isPlaying && "pointer"
+                            }}
+                            onClick={(e) => {
+                                if (!isPlaying) {
+                                    handleRemoveStarted(title, e);
+                                }
+                            }}
+                            className={styles.headphonesIcon}
+                        />
+                    </BootstrapTooltip>
+                </div>
+            )}
+            {isCompleted && (
+                <BootstrapTooltip
+                    title={
+                        <Typography
+                            style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}
+                        >
+                            Podcast completado
+                            <br />
+                            {!isPlaying && "Clic para eliminar de completados"}
+                        </Typography>
+                    }
+                    placement="top"
+                    arrow
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                >
+                    <CheckCircle
+                        style={{
+                            color: "#17D891",
+                            position: "absolute",
+                            top: "42px",
+                            right: "4px",
+                            fontSize: "22px",
+                            cursor: !isPlaying && "pointer"
+                        }}
+                        onClick={(e) => {
+                            if (!isPlaying) {
+                                handleRemoveCompleted(title, e);
+                            }
+                        }}
+                        className={styles.completedIcon}
+                    />
+                </BootstrapTooltip>
+            )}
             <img
                 src={imageUrl || placeHolderImage2}
                 alt={title}
