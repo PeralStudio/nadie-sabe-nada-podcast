@@ -27,8 +27,7 @@ import { togglePlay } from "../../store/slices/playerSlice";
 import {
     deleteEpisode,
     removeFromCompleted,
-    toggleFavorite,
-    markAsCompleted
+    toggleFavorite
 } from "../../store/slices/podcastSlice";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
