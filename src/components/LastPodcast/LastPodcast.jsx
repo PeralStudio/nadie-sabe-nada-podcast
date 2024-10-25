@@ -467,7 +467,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => handlePlay}
+                        onClick={handlePlay}
                     >
                         {isPodcastPlaying ? <Pause /> : <PlayArrow />}
                         {isPodcastPlaying ? "Pausar" : "Reproducir"}
