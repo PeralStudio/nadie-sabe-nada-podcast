@@ -15,6 +15,7 @@ const podcastSlice = createSlice({
         listenedEpisodes: JSON.parse(localStorage.getItem("nsnPodcastListened") || "[]"),
         favoriteEpisodes: JSON.parse(localStorage.getItem("nsnPodcastFavorites") || "[]"),
         completedEpisodes: JSON.parse(localStorage.getItem("nsnPodcastCompleted") || "[]"),
+        listenLaterEpisodes: JSON.parse(localStorage.getItem("nsnPodcastListenLater") || "[]"),
         searchTerm: ""
     },
     reducers: {
@@ -31,6 +32,20 @@ const podcastSlice = createSlice({
             }
 
             localStorage.setItem("nsnPodcastFavorites", JSON.stringify(state.favoriteEpisodes));
+        },
+        toggleListenLater: (state, action) => {
+            const songTitle = action.payload.title;
+            const isListenLater = state.listenLaterEpisodes.includes(songTitle);
+
+            if (isListenLater) {
+                state.listenLaterEpisodes = state.listenLaterEpisodes.filter(
+                    (title) => title !== songTitle
+                );
+            } else {
+                state.listenLaterEpisodes.push(songTitle);
+            }
+
+            localStorage.setItem("nsnPodcastListenLater", JSON.stringify(state.listenLaterEpisodes));
         },
         markAsCompleted: (state, action) => {
             const songTitle = action.payload;
@@ -56,6 +71,10 @@ const podcastSlice = createSlice({
         clearFavorites: (state) => {
             state.favoriteEpisodes = [];
             localStorage.setItem("nsnPodcastFavorites", JSON.stringify([]));
+        },
+        clearListenLater: (state) => {
+            state.listenLaterEpisodes = [];
+            localStorage.setItem("nsnPodcastListenLater", JSON.stringify([]));
         },
         clearStarted: (state) => {
             state.listenedEpisodes = [];
@@ -85,11 +104,13 @@ const podcastSlice = createSlice({
 
 export const {
     toggleFavorite,
+    toggleListenLater,
     setSearchTerm,
     deleteEpisode,
     markAsCompleted,
     removeFromCompleted,
     clearFavorites,
+    clearListenLater,
     clearStarted,
     clearCompleted
 } = podcastSlice.actions;

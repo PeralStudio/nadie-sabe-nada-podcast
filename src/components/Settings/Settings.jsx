@@ -10,12 +10,13 @@ import {
     Headphones,
     CheckCircle,
     Timer,
-    Warning
+    Warning,
+    WatchLater
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSavePlaybackTime, clearPlaybackTimes } from "../../store/slices/audioTimeSlice";
-import { clearFavorites, clearStarted, clearCompleted } from "../../store/slices/podcastSlice";
+import { clearFavorites, clearStarted, clearCompleted, clearListenLater } from "../../store/slices/podcastSlice";
 import { Bounce, toast } from "react-toastify";
 
 const IOSSwitch = styled((props) => (
@@ -147,6 +148,16 @@ const Settings = () => {
         );
     };
 
+    const handleClearListenLater = () => {
+        showConfirmToast(
+            "¿Estás seguro de que quieres borrar todos los podcasts guardados para escuchar más tarde?",
+            () => {
+                dispatch(clearListenLater());
+                showSuccessToast("Podcasts guardados para escuchar más tarde eliminados");
+            }
+        );
+    };
+
     const handleClearCompleted = () => {
         showConfirmToast(
             "¿Estás seguro de que quieres borrar todos los podcasts completados?",
@@ -170,6 +181,7 @@ const Settings = () => {
             () => {
                 dispatch(clearStarted());
                 dispatch(clearFavorites());
+                dispatch(clearListenLater());
                 dispatch(clearCompleted());
                 dispatch(clearPlaybackTimes());
                 showSuccessToast("Todos los datos han sido eliminados");
@@ -236,6 +248,16 @@ const Settings = () => {
                 >
                     <Favorite className={styles.buttonIcon} />
                     Borrar podcasts favoritos
+                </motion.button>
+
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`${styles.clearButton} ${styles.listenLaterButton}`}
+                    onClick={handleClearListenLater}
+                >
+                    <WatchLater className={styles.buttonIcon} />
+                    Borrar escuchar más tarde
                 </motion.button>
 
                 <motion.button

@@ -14,7 +14,8 @@ import {
     Favorite,
     FormatListBulleted,
     CheckCircle,
-    Warning
+    Warning,
+    WatchLater
 } from "@mui/icons-material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Typography, Fade } from "@mui/material";
@@ -23,6 +24,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     deleteEpisode,
     toggleFavorite,
+    toggleListenLater,
     removeFromCompleted
 } from "../../store/slices/podcastSlice";
 import { setFilter, setCurrentPage } from "../../store/slices/filterSlice";
@@ -32,9 +34,8 @@ const PodcastList = ({ onPlayPodcast }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { songs, favoriteEpisodes, searchTerm, completedEpisodes } = useSelector(
-        (state) => state.podcast
-    );
+    const { songs, favoriteEpisodes, listenLaterEpisodes, searchTerm, completedEpisodes } =
+        useSelector((state) => state.podcast);
     const { currentFilter, currentPage, songsPerPage } = useSelector((state) => state.filter);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
@@ -100,6 +101,8 @@ const PodcastList = ({ onPlayPodcast }) => {
                 return matchesSearch && !isStarted && !isCompleted;
             case "favoritos":
                 return matchesSearch && favoriteEpisodes.includes(song.title);
+            case "escuchar-mas-tarde":
+                return matchesSearch && listenLaterEpisodes.includes(song.title);
             case "completados":
                 return matchesSearch && isCompleted;
             default:
@@ -219,7 +222,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                     maxHeight: "2rem",
                     justifyContent: "center",
                     marginBottom: "2rem",
-                    gap: "0.5rem"
+                    gap: "0.3rem"
                 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -316,6 +319,29 @@ const PodcastList = ({ onPlayPodcast }) => {
                     </span>
                 </BootstrapTooltip>
                 <BootstrapTooltip
+                    title="Escuchar más tarde"
+                    placement="top"
+                    arrow
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                >
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "escuchar-mas-tarde"
+                                    ? styles.activeButton
+                                    : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("escuchar-mas-tarde"))}
+                        >
+                            <WatchLater className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
+                </BootstrapTooltip>
+                <BootstrapTooltip
                     title="Podcasts completados"
                     placement="top"
                     arrow
@@ -371,7 +397,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                                         date={song.pubDate}
                                         desc={song.description}
                                         isFavorite={favoriteEpisodes.includes(song.title)}
+                                        isListenLater={listenLaterEpisodes.includes(song.title)}
                                         toggleFavorite={() => dispatch(toggleFavorite(song))}
+                                        toggleListenLater={() => dispatch(toggleListenLater(song))}
                                         onPlay={() => onPlayPodcast(song)}
                                         isPlaying={
                                             isPlaying &&

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styles from "./MP3Player.module.css";
-import { PlayArrow, Pause, Download, FavoriteBorder, Favorite } from "@mui/icons-material";
+import { PlayArrow, Pause, Download, FavoriteBorder, Favorite, WatchLater, WatchLaterOutlined } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Fade } from "@mui/material";
@@ -16,7 +16,9 @@ const MP3Player = ({
     date,
     desc,
     isFavorite,
+    isListenLater,
     toggleFavorite,
+    toggleListenLater,
     onPlay,
     isPlaying,
     onClick
@@ -31,6 +33,12 @@ const MP3Player = ({
         e.preventDefault();
         e.stopPropagation();
         toggleFavorite();
+    };
+
+    const handleListenLaterClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleListenLater();
     };
 
     const handlePlayClick = (e) => {
@@ -159,9 +167,39 @@ const MP3Player = ({
         </BootstrapTooltip>
     );
 
+    const listenLaterButton = (
+        <BootstrapTooltip
+            title={isListenLater ? "Quitar de escuchar más tarde" : "Guardar para escuchar más tarde"}
+            placement="top"
+            arrow
+            disableInteractive
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
+        >
+            <button
+                onClick={handleListenLaterClick}
+                style={{
+                    borderRadius: "25px",
+                    padding: "2px 10px",
+                    margin: "0 5px",
+                    backgroundColor: isListenLater ? "#0f3460" : "",
+                    color: isListenLater ? "#16db93" : ""
+                }}
+            >
+                {isListenLater ? (
+                    <WatchLater style={{ fontSize: "16px" }} />
+                ) : (
+                    <WatchLaterOutlined style={{ fontSize: "16px" }} />
+                )}
+            </button>
+        </BootstrapTooltip>
+    );
+
     return (
         <div className={styles.card} onClick={onClick}>
-            <div className={styles.favoriteContainer}>{favoriteButton}</div>
+            <div className={styles.favoriteContainer}>
+                {favoriteButton}
+            </div>
             <img
                 src={imageUrl || placeHolderImage2}
                 alt={title}
@@ -174,7 +212,9 @@ const MP3Player = ({
             <div className={styles.spanDate}>
                 <span className={styles.date}>{date}</span>
                 <div className={styles.controls}>
-                    {playButton} {downloadButton}
+                    {playButton}
+                    {listenLaterButton}
+                    {downloadButton}
                 </div>
             </div>
         </div>

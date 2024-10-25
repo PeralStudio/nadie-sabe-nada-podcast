@@ -15,7 +15,9 @@ import {
     CheckCircle,
     Favorite,
     FavoriteBorder,
-    Warning
+    Warning,
+    WatchLater,
+    WatchLaterOutlined
 } from "@mui/icons-material";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
@@ -27,7 +29,8 @@ import { togglePlay } from "../../store/slices/playerSlice";
 import {
     deleteEpisode,
     removeFromCompleted,
-    toggleFavorite
+    toggleFavorite,
+    toggleListenLater
 } from "../../store/slices/podcastSlice";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
@@ -45,9 +48,8 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
     const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
 
-    const { songs, listenedEpisodes, completedEpisodes, favoriteEpisodes } = useSelector(
-        (state) => state.podcast
-    );
+    const { songs, listenedEpisodes, completedEpisodes, favoriteEpisodes, listenLaterEpisodes } =
+        useSelector((state) => state.podcast);
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
 
@@ -196,6 +198,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const isPodcastPlaying = isPlaying && currentPodcast && currentPodcast.title === podcast.title;
     const isCompleted = completedEpisodes.includes(podcast.title);
     const isFavorite = favoriteEpisodes.includes(podcast.title);
+    const isListenLater = listenLaterEpisodes.includes(podcast.title);
 
     const formatTime = (seconds) => {
         if (!seconds) return "0:00";
@@ -433,6 +436,15 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             >
                 <span className={styles.date}>{podcast.pubDate}</span>
                 <div className={styles.actions}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={handlePlay}
+                    >
+                        {isPodcastPlaying ? <Pause /> : <PlayArrow />}
+                        {isPodcastPlaying ? "Pausar" : "Reproducir"}
+                    </motion.button>
                     {isListened || isCompleted || isPodcastPlaying ? (
                         <BootstrapTooltip
                             title={
@@ -472,18 +484,22 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={handleShareClick}
+                        onClick={() => dispatch(toggleListenLater(podcast))}
+                        style={{
+                            backgroundColor: isListenLater ? "#0f3460" : "",
+                            color: isListenLater ? "#16db93" : ""
+                        }}
                     >
-                        <Share /> Compartir
+                        {isListenLater ? <WatchLater /> : <WatchLaterOutlined />}
+                        {isListenLater ? "Quitar de escuchar más tarde" : "Escuchar más tarde"}
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={handlePlay}
+                        onClick={handleShareClick}
                     >
-                        {isPodcastPlaying ? <Pause /> : <PlayArrow />}
-                        {isPodcastPlaying ? "Pausar" : "Reproducir"}
+                        <Share /> Compartir
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
