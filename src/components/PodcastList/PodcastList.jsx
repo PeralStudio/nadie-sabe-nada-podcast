@@ -7,28 +7,28 @@ import NoResults from "../NoResults/NoResults";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { Bounce, toast } from "react-toastify";
+// import { Bounce, toast } from "react-toastify";
 import {
     Headphones,
     HeadsetOff,
     Favorite,
     FormatListBulleted,
     CheckCircle,
-    Warning,
+    // Warning,
     WatchLater
 } from "@mui/icons-material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Typography, Fade } from "@mui/material";
+import { /* Typography, */ Fade } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    deleteEpisode,
+    // deleteEpisode,
     toggleFavorite,
-    toggleListenLater,
-    removeFromCompleted
+    toggleListenLater
+    // removeFromCompleted
 } from "../../store/slices/podcastSlice";
 import { setFilter, setCurrentPage } from "../../store/slices/filterSlice";
-import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
+// import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 
 const PodcastList = ({ onPlayPodcast }) => {
     const navigate = useNavigate();
@@ -40,54 +40,54 @@ const PodcastList = ({ onPlayPodcast }) => {
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes } = useSelector((state) => state.audioTime);
 
-    const showConfirmToast = (message, onConfirm) => {
-        toast.warn(
-            <div className={styles.confirmToast}>
-                <div className={styles.confirmHeader}>
-                    <Warning className={styles.warningIcon} />
-                    <h3>Confirmar Acción</h3>
-                </div>
-                <p className={styles.confirmMessage}>{message}</p>
-                <div className={styles.confirmButtons}>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.confirmButton}
-                        onClick={() => {
-                            toast.dismiss();
-                            onConfirm();
-                        }}
-                    >
-                        Confirmar
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.cancelButton}
-                        onClick={() => toast.dismiss()}
-                    >
-                        Cancelar
-                    </motion.button>
-                </div>
-            </div>,
-            {
-                position: "top-center",
-                autoClose: false,
-                closeOnClick: false,
-                draggable: false,
-                closeButton: false,
-                className: styles.customToast,
-                theme: "dark"
-            }
-        );
-    };
+    // const showConfirmToast = (message, onConfirm) => {
+    //     toast.warn(
+    //         <div className={styles.confirmToast}>
+    //             <div className={styles.confirmHeader}>
+    //                 <Warning className={styles.warningIcon} />
+    //                 <h3>Confirmar Acción</h3>
+    //             </div>
+    //             <p className={styles.confirmMessage}>{message}</p>
+    //             <div className={styles.confirmButtons}>
+    //                 <motion.button
+    //                     whileHover={{ scale: 1.05 }}
+    //                     whileTap={{ scale: 0.95 }}
+    //                     className={styles.confirmButton}
+    //                     onClick={() => {
+    //                         toast.dismiss();
+    //                         onConfirm();
+    //                     }}
+    //                 >
+    //                     Confirmar
+    //                 </motion.button>
+    //                 <motion.button
+    //                     whileHover={{ scale: 1.05 }}
+    //                     whileTap={{ scale: 0.95 }}
+    //                     className={styles.cancelButton}
+    //                     onClick={() => toast.dismiss()}
+    //                 >
+    //                     Cancelar
+    //                 </motion.button>
+    //             </div>
+    //         </div>,
+    //         {
+    //             position: "top-center",
+    //             autoClose: false,
+    //             closeOnClick: false,
+    //             draggable: false,
+    //             closeButton: false,
+    //             className: styles.customToast,
+    //             theme: "dark"
+    //         }
+    //     );
+    // };
 
-    const formatTime = (seconds) => {
-        if (!seconds) return "0:00";
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = Math.floor(seconds % 60);
-        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-    };
+    // const formatTime = (seconds) => {
+    //     if (!seconds) return "0:00";
+    //     const minutes = Math.floor(seconds / 60);
+    //     const remainingSeconds = Math.floor(seconds % 60);
+    //     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    // };
 
     const filteredSongs = songs.filter((song) => {
         const matchesSearch = song.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -118,36 +118,36 @@ const PodcastList = ({ onPlayPodcast }) => {
         navigate(`/podcast/${slugify(song.title)}`);
     };
 
-    const handleRemoveStarted = (song) => {
-        showConfirmToast(
-            "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
-            () => {
-                dispatch(deleteEpisode(song.title));
-                dispatch(removePlaybackTime(song.title));
-                toast.success("Tiempo de reproducción eliminado", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    theme: "dark",
-                    transition: Bounce
-                });
-            }
-        );
-    };
+    // const handleRemoveStarted = (song) => {
+    //     showConfirmToast(
+    //         "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
+    //         () => {
+    //             dispatch(deleteEpisode(song.title));
+    //             dispatch(removePlaybackTime(song.title));
+    //             toast.success("Tiempo de reproducción eliminado", {
+    //                 position: "top-right",
+    //                 autoClose: 3000,
+    //                 theme: "dark",
+    //                 transition: Bounce
+    //             });
+    //         }
+    //     );
+    // };
 
-    const handleRemoveCompleted = (song) => {
-        showConfirmToast(
-            "¿Estás seguro de que quieres eliminar este podcast de completados?",
-            () => {
-                dispatch(removeFromCompleted(song.title));
-                toast.success("Podcast eliminado de completados", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    theme: "dark",
-                    transition: Bounce
-                });
-            }
-        );
-    };
+    // const handleRemoveCompleted = (song) => {
+    //     showConfirmToast(
+    //         "¿Estás seguro de que quieres eliminar este podcast de completados?",
+    //         () => {
+    //             dispatch(removeFromCompleted(song.title));
+    //             toast.success("Podcast eliminado de completados", {
+    //                 position: "top-right",
+    //                 autoClose: 3000,
+    //                 theme: "dark",
+    //                 transition: Bounce
+    //             });
+    //         }
+    //     );
+    // };
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -376,9 +376,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     animate="visible"
                 >
                     {currentSongs.map((song) => {
-                        const isStarted = playbackTimes[song.title] > 0;
-                        const playbackTime = playbackTimes[song.title] || 0;
-                        const isCompleted = completedEpisodes.includes(song.title);
+                        // const isStarted = playbackTimes[song.title] > 0;
+                        // const playbackTime = playbackTimes[song.title] || 0;
+                        // const isCompleted = completedEpisodes.includes(song.title);
 
                         return (
                             <motion.div
@@ -408,85 +408,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                                         }
                                         onClick={() => handleCardClick(song)}
                                     />
-                                    {isStarted && !isCompleted && (
-                                        <BootstrapTooltip
-                                            title={
-                                                <Typography
-                                                    style={{
-                                                        fontSize: "14px",
-                                                        fontWeight: "bold",
-                                                        textAlign: "center"
-                                                    }}
-                                                >
-                                                    {`Empezado - ${formatTime(playbackTime)}`}
-                                                    <br />
-                                                    {!isPlaying && "Clic para eliminar el tiempo"}
-                                                </Typography>
-                                            }
-                                            placement="top"
-                                            arrow
-                                            disableInteractive
-                                            TransitionComponent={Fade}
-                                            TransitionProps={{ timeout: 600 }}
-                                        >
-                                            <Headphones
-                                                style={{
-                                                    color: "#17D891",
-                                                    position: "absolute",
-                                                    top: "10px",
-                                                    left: "6px",
-                                                    fontSize: "20px",
-                                                    cursor: !isPlaying && "pointer"
-                                                }}
-                                                onClick={() => {
-                                                    if (!isPlaying) {
-                                                        handleRemoveStarted(song);
-                                                    }
-                                                }}
-                                                className={styles.headphonesIcon}
-                                            />
-                                        </BootstrapTooltip>
-                                    )}
-                                    {isCompleted && (
-                                        <BootstrapTooltip
-                                            title={
-                                                <Typography
-                                                    style={{
-                                                        fontSize: "14px",
-                                                        fontWeight: "bold",
-                                                        textAlign: "center"
-                                                    }}
-                                                >
-                                                    Podcast completado
-                                                    <br />
-                                                    {!isPlaying &&
-                                                        "Clic para eliminar de completados"}
-                                                </Typography>
-                                            }
-                                            placement="top"
-                                            arrow
-                                            disableInteractive
-                                            TransitionComponent={Fade}
-                                            TransitionProps={{ timeout: 600 }}
-                                        >
-                                            <CheckCircle
-                                                style={{
-                                                    color: "#17D891",
-                                                    position: "absolute",
-                                                    top: "10px",
-                                                    left: "6px",
-                                                    fontSize: "20px",
-                                                    cursor: !isPlaying && "pointer"
-                                                }}
-                                                onClick={() => {
-                                                    if (!isPlaying) {
-                                                        handleRemoveCompleted(song);
-                                                    }
-                                                }}
-                                                className={styles.completedIcon}
-                                            />
-                                        </BootstrapTooltip>
-                                    )}
                                 </div>
                             </motion.div>
                         );
