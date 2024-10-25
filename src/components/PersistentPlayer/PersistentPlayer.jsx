@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { motion } from "framer-motion";
@@ -8,12 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { updatePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { togglePlay } from "../../store/slices/playerSlice";
 import { markAsCompleted, removeFromCompleted } from "../../store/slices/podcastSlice";
+import SleepTimer from "../SleepTimer/SleepTimer";
 
 const PersistentPlayer = ({ onClose }) => {
     const dispatch = useDispatch();
     const audioRef = useRef(null);
     const windowWidth = useWindowWidth();
     const lastTimeUpdateRef = useRef(0);
+    const [volume, setVolume] = useState(() => {
+        const savedVolume = localStorage.getItem("nsnPlayerVolume");
+        return savedVolume ? parseFloat(savedVolume) : 1;
+    });
 
     const { currentPodcast, isPlaying } = useSelector((state) => state.player);
     const { playbackTimes, savePlaybackTime } = useSelector((state) => state.audioTime);
@@ -22,15 +27,18 @@ const PersistentPlayer = ({ onClose }) => {
     useEffect(() => {
         if (audioRef.current && currentPodcast) {
             const savedTime = savePlaybackTime ? playbackTimes[currentPodcast.title] || 0 : 0;
-            audioRef.current.audio.current.currentTime = savedTime;
+            const audio = audioRef.current.audio.current;
+
+            audio.currentTime = savedTime;
+            audio.volume = volume;
 
             if (isPlaying) {
-                audioRef.current.audio.current.play();
+                audio.play();
             } else {
-                audioRef.current.audio.current.pause();
+                audio.pause();
             }
         }
-    }, [isPlaying, currentPodcast]);
+    }, [isPlaying, currentPodcast, volume]);
 
     const handleTimeUpdate = (e) => {
         const currentTime = e.target.currentTime;
@@ -40,6 +48,11 @@ const PersistentPlayer = ({ onClose }) => {
             dispatch(updatePlaybackTime({ title: currentPodcast.title, time: currentTime }));
             lastTimeUpdateRef.current = now;
         }
+    };
+
+    const handleVolumeChange = (e) => {
+        const newVolume = e.target.volume;
+        localStorage.setItem("nsnPlayerVolume", newVolume.toString());
     };
 
     const handleEnded = () => {
@@ -75,19 +88,24 @@ const PersistentPlayer = ({ onClose }) => {
                     <p>{currentPodcast.pubDate}</p>
                 </div>
             </div>
-            <AudioPlayer
-                ref={audioRef}
-                src={currentPodcast.audio}
-                showJumpControls={true}
-                layout="stacked-reverse"
-                customProgressBarSection={["CURRENT_TIME", "PROGRESS_BAR", "DURATION"]}
-                className={styles.audioPlayer}
-                onPlay={handlePlay}
-                onPause={() => dispatch(togglePlay(false))}
-                listenInterval={1000}
-                onListen={handleTimeUpdate}
-                onEnded={handleEnded}
-            />
+            <div className={styles.playerControls}>
+                <AudioPlayer
+                    ref={audioRef}
+                    src={currentPodcast.audio}
+                    showJumpControls={true}
+                    layout="stacked-reverse"
+                    customProgressBarSection={["CURRENT_TIME", "PROGRESS_BAR", "DURATION"]}
+                    className={styles.audioPlayer}
+                    onPlay={handlePlay}
+                    onPause={() => dispatch(togglePlay(false))}
+                    onListen={handleTimeUpdate}
+                    onEnded={handleEnded}
+                    volume={volume}
+                    onVolumeChange={handleVolumeChange}
+                    showLoopControl={true}
+                />
+                <SleepTimer />
+            </div>
             <button onClick={onClose} className={styles.closeButton}>
                 ×
             </button>
