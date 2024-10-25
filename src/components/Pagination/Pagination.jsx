@@ -50,15 +50,17 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <button
-                        onClick={() => {
-                            backToTop();
-                            setCurrentPage(1);
-                        }}
-                        disabled={currentPage === 1}
-                    >
-                        <FirstPageIcon />
-                    </button>
+                    <span>
+                        <button
+                            onClick={() => {
+                                backToTop();
+                                setCurrentPage(1);
+                            }}
+                            disabled={currentPage === 1}
+                        >
+                            <FirstPageIcon />
+                        </button>
+                    </span>
                 </BootstrapTooltip>
                 <BootstrapTooltip
                     title={currentPage !== 1 && "Anterior"}
@@ -66,15 +68,17 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <button
-                        onClick={() => {
-                            backToTop();
-                            setCurrentPage(currentPage - 1);
-                        }}
-                        disabled={currentPage === 1}
-                    >
-                        <NavigateBeforeIcon />
-                    </button>
+                    <span>
+                        <button
+                            onClick={() => {
+                                backToTop();
+                                setCurrentPage(currentPage - 1);
+                            }}
+                            disabled={currentPage === 1}
+                        >
+                            <NavigateBeforeIcon />
+                        </button>
+                    </span>
                 </BootstrapTooltip>
                 <BootstrapTooltip
                     title={currentPage !== totalPages && "Siguiente"}

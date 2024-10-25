@@ -230,14 +230,18 @@ const PodcastList = ({ onPlayPodcast }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
-                        whileTap={{ scale: 0.95 }}
-                        className={currentFilter === "todos" ? styles.activeButton : styles.button}
-                        onClick={() => dispatch(setFilter("todos"))}
-                    >
-                        <FormatListBulleted className={styles.headphonesIcon} />
-                    </motion.button>
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "todos" ? styles.activeButton : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("todos"))}
+                        >
+                            <FormatListBulleted className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
@@ -246,16 +250,18 @@ const PodcastList = ({ onPlayPodcast }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
-                        whileTap={{ scale: 0.95 }}
-                        className={
-                            currentFilter === "empezados" ? styles.activeButton : styles.button
-                        }
-                        onClick={() => dispatch(setFilter("empezados"))}
-                    >
-                        <Headphones className={styles.headphonesIcon} />
-                    </motion.button>
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "empezados" ? styles.activeButton : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("empezados"))}
+                        >
+                            <Headphones className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
@@ -264,16 +270,20 @@ const PodcastList = ({ onPlayPodcast }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={
-                            currentFilter === "no-empezados" ? styles.activeButton : styles.button
-                        }
-                        onClick={() => dispatch(setFilter("no-empezados"))}
-                    >
-                        <HeadsetOff className={styles.headphonesIcon} />
-                    </motion.button>
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "no-empezados"
+                                    ? styles.activeButton
+                                    : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("no-empezados"))}
+                        >
+                            <HeadsetOff className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
@@ -282,16 +292,18 @@ const PodcastList = ({ onPlayPodcast }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={
-                            currentFilter === "favoritos" ? styles.activeButton : styles.button
-                        }
-                        onClick={() => dispatch(setFilter("favoritos"))}
-                    >
-                        <Favorite className={styles.headphonesIcon} />
-                    </motion.button>
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "favoritos" ? styles.activeButton : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("favoritos"))}
+                        >
+                            <Favorite className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
                 </BootstrapTooltip>
 
                 <BootstrapTooltip
@@ -300,16 +312,20 @@ const PodcastList = ({ onPlayPodcast }) => {
                     arrow
                     TransitionComponent={Zoom}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={
-                            currentFilter === "completados" ? styles.activeButton : styles.button
-                        }
-                        onClick={() => dispatch(setFilter("completados"))}
-                    >
-                        <CheckCircle className={styles.headphonesIcon} />
-                    </motion.button>
+                    <span>
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={
+                                currentFilter === "completados"
+                                    ? styles.activeButton
+                                    : styles.button
+                            }
+                            onClick={() => dispatch(setFilter("completados"))}
+                        >
+                            <CheckCircle className={styles.headphonesIcon} />
+                        </motion.button>
+                    </span>
                 </BootstrapTooltip>
             </motion.div>
             <motion.div
