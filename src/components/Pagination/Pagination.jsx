@@ -5,7 +5,7 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Zoom } from "@mui/material";
+import { Fade } from "@mui/material";
 import { useMemo } from "react";
 
 const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
@@ -48,7 +48,9 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     title={currentPage !== 1 && "Primera Página"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <button
@@ -66,7 +68,9 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     title={currentPage !== 1 && "Anterior"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <button
@@ -84,7 +88,9 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     title={currentPage !== totalPages && "Siguiente"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <button
                         onClick={() => {
@@ -100,7 +106,9 @@ const Pagination = ({ currentPage, setCurrentPage, songsPerPage, songs }) => {
                     title={currentPage !== totalPages && "Última Página"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <button
                         onClick={() => {

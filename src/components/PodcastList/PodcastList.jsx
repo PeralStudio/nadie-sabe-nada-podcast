@@ -17,7 +17,7 @@ import {
     Warning
 } from "@mui/icons-material";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Typography, Zoom } from "@mui/material";
+import { Typography, Fade } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -229,7 +229,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     title="Todos los Podcasts"
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <motion.button
@@ -248,7 +250,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     title="Podcasts empezados"
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <motion.button
@@ -271,7 +275,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     title="Podcasts no empezados"
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <motion.button
@@ -292,7 +298,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     title="Podcasts favoritos"
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <motion.button
@@ -311,7 +319,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                     title="Podcasts completados"
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <span>
                         <motion.button
@@ -387,7 +397,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                                             }
                                             placement="top"
                                             arrow
-                                            TransitionComponent={Zoom}
+                                            disableInteractive
+                                            TransitionComponent={Fade}
+                                            TransitionProps={{ timeout: 600 }}
                                         >
                                             <Headphones
                                                 style={{
@@ -425,7 +437,9 @@ const PodcastList = ({ onPlayPodcast }) => {
                                             }
                                             placement="top"
                                             arrow
-                                            TransitionComponent={Zoom}
+                                            disableInteractive
+                                            TransitionComponent={Fade}
+                                            TransitionProps={{ timeout: 600 }}
                                         >
                                             <CheckCircle
                                                 style={{

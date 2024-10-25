@@ -3,7 +3,7 @@ import styles from "./MP3Player.module.css";
 import { PlayArrow, Pause, Download, FavoriteBorder, Favorite } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Zoom } from "@mui/material";
+import { Fade } from "@mui/material";
 import useDownload from "../../hooks/useDownload";
 
 const placeHolderImage2 =
@@ -64,7 +64,9 @@ const MP3Player = ({
             title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
             placement="top"
             arrow
-            TransitionComponent={Zoom}
+            disableInteractive
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
         >
             <span
                 onClick={handleFavoriteClick}
@@ -84,7 +86,9 @@ const MP3Player = ({
             title={isPlaying ? "Pausar" : "Reproducir"}
             placement="top"
             arrow
-            TransitionComponent={Zoom}
+            disableInteractive
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
         >
             <button
                 onClick={handlePlayClick}
@@ -116,7 +120,9 @@ const MP3Player = ({
             title={isLoading ? "" : "Descargar"}
             placement="top"
             arrow
-            TransitionComponent={Zoom}
+            disableInteractive
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
         >
             <button
                 onClick={(e) => {

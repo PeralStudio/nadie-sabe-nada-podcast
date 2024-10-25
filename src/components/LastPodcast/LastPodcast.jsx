@@ -31,7 +31,7 @@ import {
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Typography, Zoom } from "@mui/material";
+import { Typography, Fade } from "@mui/material";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -310,7 +310,9 @@ const LastPodcast = ({ onPlayPodcast }) => {
                             }
                             placement="top"
                             arrow
-                            TransitionComponent={Zoom}
+                            disableInteractive
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
                         >
                             <motion.div
                                 variants={iconVariants}
@@ -340,7 +342,9 @@ const LastPodcast = ({ onPlayPodcast }) => {
                             }
                             placement="top"
                             arrow
-                            TransitionComponent={Zoom}
+                            disableInteractive
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
                         >
                             <motion.div
                                 variants={iconVariants}
@@ -357,7 +361,9 @@ const LastPodcast = ({ onPlayPodcast }) => {
                         title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
                         placement="top"
                         arrow
-                        TransitionComponent={Zoom}
+                        disableInteractive
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
                     >
                         <motion.div
                             variants={iconVariants}
@@ -446,7 +452,9 @@ const LastPodcast = ({ onPlayPodcast }) => {
                             }
                             placement="top"
                             arrow
-                            TransitionComponent={Zoom}
+                            disableInteractive
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
                         >
                             <span>
                                 <ListenedButton />

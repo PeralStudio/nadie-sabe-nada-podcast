@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { GitHub, Language, Settings } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { Zoom } from "@mui/material";
+import { Fade } from "@mui/material";
 
 const Header = () => {
     const headerVariants = {
@@ -81,7 +81,9 @@ const Header = () => {
                     title={"Página Web"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <motion.div whileHover="hover" variants={iconVariants}>
                         <IconButton
@@ -94,7 +96,14 @@ const Header = () => {
                         </IconButton>
                     </motion.div>
                 </BootstrapTooltip>
-                <BootstrapTooltip title={"Github"} placement="top" arrow TransitionComponent={Zoom}>
+                <BootstrapTooltip
+                    title={"Github"}
+                    placement="top"
+                    arrow
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                >
                     <motion.div whileHover="hover" variants={iconVariants}>
                         <IconButton
                             href="https://github.com/PeralStudio"
@@ -115,7 +124,9 @@ const Header = () => {
                     title={"Ajustes"}
                     placement="top"
                     arrow
-                    TransitionComponent={Zoom}
+                    disableInteractive
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
                 >
                     <motion.div whileHover="hover" variants={iconVariants}>
                         <Link to="/settings">
