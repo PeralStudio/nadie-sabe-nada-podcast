@@ -91,7 +91,10 @@
     gap: 8px;
 }
 
-.favoriteButton, .listenLaterButton {
+.favoriteButton,
+.listenLaterButton,
+.completedIcon,
+.headphonesIcon {
     background-color: transparent;
     color: var(--color-primary);
     border: none;
@@ -104,11 +107,15 @@
     border-radius: var(--border-radius-full);
 }
 
-.favoriteButton:hover, .listenLaterButton:hover {
+.favoriteButton:hover,
+.listenLaterButton:hover,
+.completedIcon:hover,
+.headphonesIcon:hover {
     transform: scale(1.1);
 }
 
-.favoriteActive, .listenLaterActive {
+.favoriteActive,
+.listenLaterActive {
     color: var(--color-primary);
     background-color: transparent;
 }
