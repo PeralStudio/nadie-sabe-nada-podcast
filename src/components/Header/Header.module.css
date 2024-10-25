@@ -1,26 +1,23 @@
-/* Estilos generales del header */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0f3460;
-    padding: 16px 68px;
-    color: #fff;
-    /* position: sticky; */
+    background-color: var(--color-secondary);
+    padding: var(--spacing-md) var(--spacing-2xl);
+    color: var(--color-text);
     top: 0;
-    z-index: 1000;
+    z-index: var(--z-index-sticky);
 }
 
-/* Estilos del logo y tagline */
 .logo {
     text-align: left;
 }
 
 .logo h1 {
     margin: 0;
-    font-size: 32px;
-    color: #16db93;
-    font-weight: bold;
+    font-size: var(--font-size-3xl);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
 }
 
 .logoLink {
@@ -29,58 +26,54 @@
 }
 
 .tagline {
-    font-size: 16px;
-    color: #ffffff;
-    margin: 5px 0 0 0;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    margin: var(--spacing-xs) 0 0 0;
 }
 
-/* Estilos de los iconos de redes sociales */
 .socialIcons {
     display: flex;
-    gap: 10px;
+    gap: var(--spacing-sm);
     align-items: baseline;
 }
 
 .iconButton {
-    color: white !important;
-    /* background-color: #16db93 !important; */
-    transition: color 0.3s ease;
+    color: var(--color-text) !important;
+    transition: var(--transition-base);
 }
 
 .iconButton:hover {
-    color: #16db93 !important;
+    color: var(--color-primary) !important;
     transform: translateY(-1px);
-    background-color: #103460 !important;
+    background-color: var(--color-secondary) !important;
 }
 
-/* Estilo del botón de "Último episodio" */
 .ctaButton {
     display: flex;
 }
 
 .ctaLink {
     text-decoration: none;
-    background-color: #16db93;
-    color: #0f3460;
-    font-size: 14px;
-    padding: 10px 10px;
-    border-radius: 30px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-sm);
+    border-radius: var(--border-radius-full);
+    font-weight: var(--font-weight-bold);
+    transition: var(--transition-base);
 }
 
 .ctaLink:hover {
-    background-color: #14db85;
+    background-color: var(--color-primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0px 0px 25px rgba(16, 185, 129, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Media queries para pantallas más pequeñas */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
         align-items: center;
-        padding: 10px;
+        padding: var(--spacing-sm);
     }
 
     .logo {
@@ -92,22 +85,22 @@
     }
 
     .logoLink {
-        font-size: 1.8rem;
+        font-size: var(--font-size-2xl);
         text-align: center;
     }
 
     .tagline {
-        font-size: 1rem;
+        font-size: var(--font-size-base);
         text-align: center;
     }
 
     .socialIcons {
-        margin-top: 15px;
+        margin-top: var(--spacing-lg);
         justify-content: center;
     }
 
     .ctaLink {
-        padding: 8px 15px;
-        font-size: 0.9rem;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-sm);
     }
 }

@@ -3,13 +3,13 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background-color: #16213e;
-    border-radius: 16px;
+    background-color: var(--color-background-alt);
+    border-radius: var(--border-radius-xl);
     width: 280px;
     height: 90%;
-    padding: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease-in-out;
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition-base);
     cursor: pointer;
     position: relative;
 }
@@ -23,9 +23,9 @@
     width: 252px;
     height: 252px;
     object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    transition: transform 0.3s ease;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-md);
+    transition: var(--transition-base);
 }
 
 .image:hover {
@@ -37,68 +37,68 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    font-size: 0.8rem;
-    color: #16db93;
-    margin-top: 24px;
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    margin-top: var(--spacing-xl);
 }
 
 .title {
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg);
     margin-bottom: auto;
-    color: #e0e0e0;
+    color: var(--color-text);
     text-align: center;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     line-height: 1.4;
 }
 
 .actionButton {
-    background-color: #16db93;
-    color: #1a1a2e;
+    background-color: var(--color-primary);
+    color: var(--color-background);
     border: none;
-    border-radius: 50%;
+    border-radius: var(--border-radius-full);
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-left: 5px;
+    transition: var(--transition-base);
+    margin-left: var(--spacing-xs);
 }
 
 .actionButton:hover {
-    background-color: #0f3460;
-    color: #16db93;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .listenedButton {
-    background-color: #0f3460;
-    color: #16db93;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
 }
 
 .listenedButton:hover {
-    background-color: #16db93;
-    color: #0f3460;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 .favoriteContainer {
     position: absolute;
-    top: 6px;
-    right: 3px;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
     z-index: 1;
 }
 
 .favoriteButton {
     background-color: transparent;
-    color: #16db93;
+    color: var(--color-primary);
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: var(--spacing-xs);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    border-radius: 50%;
+    transition: var(--transition-base);
+    border-radius: var(--border-radius-full);
 }
 
 .favoriteButton:hover {
@@ -106,7 +106,7 @@
 }
 
 .favoriteActive {
-    color: #16db93;
+    color: var(--color-primary);
     background-color: transparent;
 }
 

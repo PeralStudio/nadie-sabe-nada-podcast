@@ -1,17 +1,92 @@
+:root {
+    /* Colors */
+    --color-primary: #16db93;
+    --color-primary-hover: #14c985;
+    --color-primary-dark: #12b177;
+    --color-secondary: #0f3460;
+    --color-background: #1a1a2e;
+    --color-background-alt: #16213e;
+    --color-text: #e0e0e0;
+    --color-text-muted: #b0b0b0;
+    --color-text-dark: #9a9a9a;
+    --color-danger: #e74c3c;
+    --color-danger-hover: #c0392b;
+    --color-success: #2ecc71;
+    --color-success-hover: #27ae60;
+    --color-warning: #f1c410;
+    --color-info: #3498db;
+    --color-info-hover: #2980b9;
+    --color-purple: #9b59b6;
+    --color-purple-hover: #8e44ad;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    --spacing-3xl: 64px;
+
+    /* Border Radius */
+    --border-radius-sm: 5px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    --border-radius-full: 9999px;
+    --border-radius-pill: 25px;
+
+    /* Font Sizes */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.3);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Z-index */
+    --z-index-dropdown: 100;
+    --z-index-sticky: 200;
+    --z-index-fixed: 300;
+    --z-index-modal: 400;
+    --z-index-popover: 500;
+    --z-index-toast: 600;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
 html {
-    background-color: #1a1a2e;
+    background-color: var(--color-background);
     scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
-    background-color: #1a1a2e;
+    background-color: var(--color-background);
     font-family: "Poppins", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #e0e0e0;
+    color: var(--color-text);
     user-select: none;
 }
 
@@ -19,22 +94,131 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-/* Scrollbar personalizada */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #103460;
-    border-radius: 4px;
+    background: var(--color-secondary);
+    border-radius: var(--border-radius-sm);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #16db93;
-    border-radius: 4px;
+    background: var(--color-primary);
+    border-radius: var(--border-radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #16db93;
+    background: var(--color-primary);
+}
+
+/* Global Button Styles */
+button {
+    background-color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-background);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    padding: var(--spacing-xs) var(--spacing-md);
+    margin: 0 var(--spacing-xs);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+button:disabled {
+    background-color: var(--color-text-dark);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Toast Customization */
+:global(.Toastify__toast-container) {
+    width: auto !important;
+    max-width: 400px;
+}
+
+:global(.Toastify__toast-icon) {
+    margin-bottom: var(--spacing-sm) !important;
+}
+
+:global(.Toastify__toast) {
+    padding: var(--spacing-sm) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+:global(.Toastify__toast--success) {
+    background-color: var(--color-background) !important;
+}
+
+:global(.Toastify__toast-body) {
+    display: block !important;
+    justify-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Audio Player Customization */
+:global(.rhap_container) {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+:global(.rhap_time),
+:global(.rhap_current-time),
+:global(.rhap_total-time) {
+    color: var(--color-text) !important;
+}
+
+:global(.rhap_progress-filled),
+:global(.rhap_progress-indicator) {
+    background-color: var(--color-primary) !important;
+}
+
+:global(.rhap_download-progress),
+:global(.rhap_volume-indicator) {
+    background-color: var(--color-secondary) !important;
+}
+
+:global(.rhap_button-clear) {
+    color: var(--color-text) !important;
+}
+
+:global(.rhap_volume-button),
+:global(.rhap_main-controls-button) {
+    color: var(--color-primary) !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    :root {
+        --spacing-md: 12px;
+        --spacing-lg: 20px;
+        --spacing-xl: 28px;
+        --font-size-2xl: 1.25rem;
+        --font-size-3xl: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-md: 10px;
+        --spacing-lg: 16px;
+        --spacing-xl: 24px;
+        --font-size-2xl: 1.125rem;
+        --font-size-3xl: 1.375rem;
+    }
 }
