@@ -6,8 +6,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "./components/Header/Header";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { HelmetProvider } from "react-helmet-async";
-import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
