@@ -221,7 +221,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                     display: "flex",
                     maxHeight: "2rem",
                     justifyContent: "center",
-                    marginBottom: "2rem",
+                    marginBottom: "2.5rem",
                     gap: "0.3rem"
                 }}
                 initial={{ opacity: 0, y: -20 }}
