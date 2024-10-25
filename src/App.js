@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { fetchPodcasts, setSearchTerm } from "./store/slices/podcastSlice";
+import { setFilter } from "./store/slices/filterSlice";
 import {
     setCurrentPodcast,
     togglePlay,
@@ -39,6 +40,11 @@ const App = () => {
         dispatch(setSearchTerm(""));
     };
 
+    const handleSearchChange = (e) => {
+        dispatch(setFilter("todos"));
+        dispatch(setSearchTerm(e.target.value));
+    };
+
     const handlePlayPodcast = (podcast) => {
         if (currentPodcast && currentPodcast.title === podcast.title) {
             dispatch(togglePlay());
@@ -59,7 +65,7 @@ const App = () => {
             {location.pathname === "/" && !loading && (
                 <TextField
                     value={searchTerm}
-                    onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+                    onChange={handleSearchChange}
                     placeholder="Buscar Podcast..."
                     variant="outlined"
                     className={styles.searchInput}
