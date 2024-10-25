@@ -297,7 +297,7 @@
     .podcastDetail {
         padding: 15px;
         margin-top: 10px;
-        margin-bottom: 140px;
+        margin-bottom: 160px;
     }
 
     .title {
@@ -348,7 +348,7 @@
 @media (max-width: 480px) {
     .podcastDetail {
         padding: 10px;
-        margin-bottom: 170px;
+        margin-bottom: 160px;
     }
 
     .title {

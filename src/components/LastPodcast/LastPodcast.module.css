@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 0 auto;
     margin-top: 30px;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
     padding: 20px;
     background-color: #16213e;
     overflow: hidden;
@@ -348,7 +348,7 @@
 @media (max-width: 480px) {
     .podcastDetail {
         padding: 10px;
-        margin-bottom: 180px;
+        margin-bottom: 160px;
     }
 
     .title {
