@@ -115,7 +115,13 @@ const Header = () => {
                         </IconButton>
                     </motion.div>
                 </BootstrapTooltip>
-                <motion.div whileHover="hover" variants={ctaVariants}>
+                <motion.div
+                    whileHover="hover"
+                    variants={ctaVariants}
+                    style={{
+                        minWidth: "126px"
+                    }}
+                >
                     <Link to="/ultimo-episodio" className={styles.ctaLink}>
                         Último Episodio
                     </Link>
