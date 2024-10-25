@@ -1,0 +1,143 @@
+.sleepTimer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 10px;
+}
+
+.timeSelect {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius-pill);
+    padding: 4px 8px;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    outline: none;
+}
+
+.timeSelect:focus {
+    border-color: var(--color-primary-hover);
+    box-shadow: 0 0 0 2px rgba(22, 219, 147, 0.2);
+}
+
+.timeSelect option {
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+.timerButton,
+.cancelButton {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--border-radius-pill);
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
+}
+
+.timerButton:hover,
+.cancelButton:hover {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.timerIcon {
+    font-size: 20px;
+}
+
+.activeTimer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--color-secondary);
+    border-radius: var(--border-radius-pill);
+    padding: 4px 12px;
+    transition: opacity 0.3s ease;
+}
+
+.activeTimer.paused {
+    opacity: 0.6;
+}
+
+.timeLeft {
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    min-width: 45px;
+}
+
+.confirmToast {
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(22, 219, 147, 0.2);
+    color: #e0e0e0;
+}
+
+.confirmHeader {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.confirmHeader h3 {
+    margin: 0;
+    color: #16db93;
+    font-size: 1.05rem;
+}
+
+.warningIcon {
+    color: #f1c410;
+    font-size: 24px;
+}
+
+.successIcon {
+    color: #16db93;
+    font-size: 24px;
+}
+
+.confirmMessage {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .timeSelect,
+    .timerButton,
+    .cancelButton {
+        padding: 3px 6px;
+    }
+
+    .timerIcon {
+        font-size: 18px;
+    }
+
+    .timeLeft {
+        font-size: var(--font-size-xs);
+    }
+
+    .confirmToast {
+        padding: 15px;
+    }
+
+    .confirmHeader h3 {
+        font-size: 1.1rem;
+    }
+
+    .warningIcon,
+    .successIcon {
+        font-size: 20px;
+    }
+
+    .confirmMessage {
+        font-size: 0.9rem;
+    }
+}

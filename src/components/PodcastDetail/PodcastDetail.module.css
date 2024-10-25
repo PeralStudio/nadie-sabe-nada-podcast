@@ -259,6 +259,7 @@
 :global(.rhap_current-time),
 :global(.rhap_total-time) {
     color: #e0e0e0 !important;
+    min-width: 50px;
 }
 
 :global(.rhap_progress-filled),

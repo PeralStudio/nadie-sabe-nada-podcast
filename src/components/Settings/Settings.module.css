@@ -2,6 +2,7 @@
 .settingsContainer {
     max-width: 800px;
     margin: 0 auto;
+    margin-bottom: 87px;
     padding: 20px;
     background-color: #16213e;
     border-radius: 16px;
@@ -213,7 +214,7 @@
 }
 
 /* Estilos personalizados para el contenedor del toast */
-:global(.Toastify__toast-container) {
+/* :global(.Toastify__toast-container) {
     width: auto !important;
     max-width: 400px;
 }
@@ -237,12 +238,13 @@
     justify-items: center !important;
     padding: 0 !important;
     margin: 0 !important;
-}
+} */
 
 @media (max-width: 768px) {
     .settingsContainer {
         padding: 15px;
         margin: 15px;
+        margin-bottom: 120px;
     }
 
     .title {

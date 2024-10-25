@@ -43,12 +43,18 @@
     color: var(--color-primary);
 }
 
-.audioPlayer {
+.playerControls {
     flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.audioPlayer {
     background-color: transparent !important;
     box-shadow: none !important;
     width: 100%;
-    margin-top: var(--spacing-sm);
 }
 
 .closeButton {
@@ -89,7 +95,7 @@
         height: 50px;
     }
 
-    .audioPlayer {
+    .playerControls {
         width: 100%;
         margin-top: var(--spacing-xs);
     }
@@ -110,7 +116,7 @@
         font-size: var(--font-size-xs);
     }
 
-    .audioPlayer {
+    .playerControls {
         margin-top: var(--spacing-sm);
     }
 }
