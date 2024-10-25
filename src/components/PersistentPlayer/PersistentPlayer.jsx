@@ -38,7 +38,7 @@ const PersistentPlayer = ({ onClose }) => {
                 audio.pause();
             }
         }
-    }, [isPlaying, currentPodcast, volume]);
+    }, [isPlaying, currentPodcast]);
 
     const handleTimeUpdate = (e) => {
         const currentTime = e.target.currentTime;
@@ -52,6 +52,8 @@ const PersistentPlayer = ({ onClose }) => {
 
     const handleVolumeChange = (e) => {
         const newVolume = e.target.volume;
+
+        setVolume(newVolume);
         localStorage.setItem("nsnPlayerVolume", newVolume.toString());
     };
 
