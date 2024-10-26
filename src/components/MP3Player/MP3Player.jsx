@@ -95,10 +95,7 @@ const MP3Player = ({
                 position: "bottom-left",
                 autoClose: 3000,
                 theme: "dark",
-                transition: Bounce,
-                style: {
-                    height: "100px"
-                }
+                transition: Bounce
             });
         }
     };
