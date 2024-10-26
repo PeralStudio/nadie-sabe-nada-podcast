@@ -302,6 +302,7 @@ button:active:not(:disabled) {
 
 @media (max-width: 768px) {
     .Toastify__toast-container {
+        height: fit-content;
         width: calc(100% - 2rem) !important;
         max-width: 380px;
         transform: translateX(-50%);

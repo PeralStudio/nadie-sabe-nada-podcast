@@ -24,13 +24,14 @@
     height: 252px;
     object-fit: cover;
     border-radius: var(--border-radius-lg);
-    margin-bottom: var(--spacing-md);
+    /* margin-bottom: var(--spacing-md); */
     transition: var(--transition-base);
 }
 
-.image:hover {
-    transform: scale(1.05);
-}
+/* .image:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 16px rgba(16, 185, 129, 0.3);
+} */
 
 .spanDate {
     display: flex;
@@ -94,7 +95,8 @@
 .favoriteButton,
 .listenLaterButton,
 .completedIcon,
-.headphonesIcon {
+.headphonesIcon,
+.watchLaterIcon {
     background-color: transparent;
     color: var(--color-primary);
     border: none;
@@ -110,7 +112,8 @@
 .favoriteButton:hover,
 .listenLaterButton:hover,
 .completedIcon:hover,
-.headphonesIcon:hover {
+.headphonesIcon:hover,
+.watchLaterIcon:hover {
     transform: scale(1.1);
 }
 
@@ -129,7 +132,26 @@
     align-items: center;
 }
 
+.confirmTitle,
+.warningIcon {
+    color: var(--color-primary);
+}
+
+.confirmButton {
+    background-color: var(--color-danger);
+    color: var(--color-text) !important;
+}
+
+.confirmButton:hover {
+    background-color: var(--color-danger-hover) !important;
+    color: var(--color-text) !important;
+}
+
 @media (max-width: 480px) {
+    .Toastify__toast-container {
+        height: fit-content !important;
+    }
+
     .spanDate {
         align-self: center;
     }
