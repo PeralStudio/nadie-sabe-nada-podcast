@@ -57,9 +57,7 @@ const useDownload = () => {
                 <Warning className={styles.warningIconText} />
                 <h3 className={styles.warningText}>Descarga Cancelada</h3>
             </div>
-            <p className={styles.confirmMessage}>
-                La descarga de <strong>{fileName}</strong> ha sido cancelada.
-            </p>
+            <p className={styles.confirmMessage}>La descarga ha sido cancelada.</p>
         </div>
     );
 
