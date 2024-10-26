@@ -12,6 +12,8 @@ const SleepTimer = () => {
     const [timeLeft, setTimeLeft] = useState(0);
     const [selectedTime, setSelectedTime] = useState(15);
     const { isPlaying } = useSelector((state) => state.player);
+    const { completedEpisodes } = useSelector((state) => state.podcast);
+    const { currentPodcast } = useSelector((state) => state.player);
 
     const timeOptions = [5, 15, 30, 45, 60];
 
@@ -72,9 +74,7 @@ const SleepTimer = () => {
         );
     };
 
-    const handleTimerCancel = useCallback(() => {
-        setIsTimerActive(false);
-        setTimeLeft(0);
+    const showCancelToast = (isCompleted = false) => {
         toast.info(
             <div className={styles.confirmToast}>
                 <div className={styles.confirmHeader}>
@@ -82,7 +82,9 @@ const SleepTimer = () => {
                     <h3>Temporizador Cancelado</h3>
                 </div>
                 <p className={styles.confirmMessage}>
-                    El temporizador ha sido cancelado correctamente.
+                    {isCompleted
+                        ? "El temporizador ha sido cancelado debido a que el podcast ha sido completado."
+                        : "El temporizador ha sido cancelado correctamente."}
                 </p>
             </div>,
             {
@@ -96,6 +98,12 @@ const SleepTimer = () => {
                 transition: Bounce
             }
         );
+    };
+
+    const handleTimerCancel = useCallback((isCompleted = false) => {
+        setIsTimerActive(false);
+        setTimeLeft(0);
+        showCancelToast(isCompleted);
     }, []);
 
     const handleTimerEnd = useCallback(() => {
@@ -140,6 +148,12 @@ const SleepTimer = () => {
         return () => clearInterval(interval);
     }, [isTimerActive, timeLeft, handleTimerEnd, isPlaying]);
 
+    useEffect(() => {
+        if (currentPodcast && completedEpisodes.includes(currentPodcast.title) && isTimerActive) {
+            handleTimerCancel(true);
+        }
+    }, [completedEpisodes, currentPodcast, isTimerActive, handleTimerCancel]);
+
     const formatTimeLeft = () => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
@@ -177,7 +191,7 @@ const SleepTimer = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.cancelButton}
-                        onClick={handleTimerCancel}
+                        onClick={() => handleTimerCancel(false)}
                     >
                         <TimerOff className={styles.timerIcon} />
                     </motion.button>
