@@ -17,7 +17,8 @@ import {
     FavoriteBorder,
     Warning,
     WatchLater,
-    WatchLaterOutlined
+    WatchLaterOutlined,
+    CheckCircleOutline
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -27,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
 import {
     deleteEpisode,
+    markAsCompleted,
     removeFromCompleted,
     toggleFavorite,
     toggleListenLater
@@ -137,7 +139,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                 dispatch(deleteEpisode(song.title));
                 dispatch(removePlaybackTime(song.title));
                 toast.success("Tiempo de reproducción eliminado", {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
@@ -152,7 +154,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
             () => {
                 dispatch(removeFromCompleted(song.title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
@@ -233,6 +235,46 @@ const LastPodcast = ({ onPlayPodcast }) => {
             dispatch(removeFromCompleted(podcast.title));
         }
         onPlayPodcast(podcast);
+    };
+
+    const handleCompleteClick = () => {
+        if (isCompleted) {
+            dispatch(removeFromCompleted(podcast.title));
+            toast.warning("Podcast marcado como no completado", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            dispatch(markAsCompleted(podcast.title));
+            toast.success("Podcast marcado como completado", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
+    };
+
+    const handleWatchLater = () => {
+        if (isListenLater) {
+            dispatch(toggleListenLater(podcast));
+            toast.warning("Podcast eliminado de ver más tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            dispatch(toggleListenLater(podcast));
+            toast.success("Podcast agregado a ver más tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
     };
 
     const getStatusIcon = () => {
@@ -479,7 +521,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => dispatch(toggleListenLater(podcast))}
+                        onClick={handleWatchLater}
                         style={{
                             backgroundColor: isListenLater ? "#0f3460" : "",
                             color: isListenLater ? "#16db93" : ""
@@ -487,6 +529,19 @@ const LastPodcast = ({ onPlayPodcast }) => {
                     >
                         {isListenLater ? <WatchLater /> : <WatchLaterOutlined />}
                         {isListenLater ? "Quitar de escuchar más tarde" : "Escuchar más tarde"}
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={handleCompleteClick}
+                        style={{
+                            backgroundColor: isCompleted ? "#0f3460" : "",
+                            color: isCompleted ? "#16db93" : ""
+                        }}
+                    >
+                        {isCompleted ? <CheckCircle /> : <CheckCircleOutline />}
+                        {isCompleted ? "Quitar completado" : "Marcar completado"}
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}

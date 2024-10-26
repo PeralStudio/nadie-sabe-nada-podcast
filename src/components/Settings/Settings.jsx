@@ -16,7 +16,12 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSavePlaybackTime, clearPlaybackTimes } from "../../store/slices/audioTimeSlice";
-import { clearFavorites, clearStarted, clearCompleted, clearListenLater } from "../../store/slices/podcastSlice";
+import {
+    clearFavorites,
+    clearStarted,
+    clearCompleted,
+    clearListenLater
+} from "../../store/slices/podcastSlice";
 import { Bounce, toast } from "react-toastify";
 
 const IOSSwitch = styled((props) => (
@@ -75,7 +80,7 @@ const Settings = () => {
 
     const showSuccessToast = (message) => {
         toast.success(message, {
-            position: "top-right",
+            position: "bottom-left",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,

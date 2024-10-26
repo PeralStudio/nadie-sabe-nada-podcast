@@ -36,7 +36,7 @@ const SleepTimer = () => {
                     </p>
                 </div>,
                 {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
@@ -62,7 +62,7 @@ const SleepTimer = () => {
                 </p>
             </div>,
             {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -88,7 +88,7 @@ const SleepTimer = () => {
                 </p>
             </div>,
             {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -119,7 +119,7 @@ const SleepTimer = () => {
                 <p className={styles.confirmMessage}>El podcast se ha detenido automáticamente.</p>
             </div>,
             {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,

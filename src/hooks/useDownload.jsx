@@ -151,7 +151,7 @@ const useDownload = () => {
                 render: <DownloadCompleteToast fileName={fileName} />,
                 type: "success",
                 isLoading: false,
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -177,7 +177,7 @@ const useDownload = () => {
                 fileName={fileName}
             />,
             {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: false,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -205,7 +205,7 @@ const useDownload = () => {
                         </p>
                     </div>,
                     {
-                        position: "top-right",
+                        position: "bottom-left",
                         autoClose: 5000,
                         hideProgressBar: false,
                         closeOnClick: true,
@@ -227,7 +227,7 @@ const useDownload = () => {
             setIsCancelled(true);
             toast.dismiss(toastIdRef.current);
             toast.warning(<DownloadCancelledToast />, {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,

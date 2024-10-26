@@ -62,7 +62,7 @@ export const AudioTimeProvider = ({ children }) => {
             setPlaybackTimes({});
             localStorage.removeItem("nsnPlaybackTimes");
             toast.success("Tiempos Borrados", {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -73,7 +73,7 @@ export const AudioTimeProvider = ({ children }) => {
             });
         } catch (error) {
             toast.error("Error al borrar los tiempos", {
-                position: "top-right",
+                position: "bottom-left",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,

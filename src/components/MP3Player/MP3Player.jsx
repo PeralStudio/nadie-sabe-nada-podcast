@@ -11,7 +11,8 @@ import {
     WatchLaterOutlined,
     Warning,
     Headphones,
-    CheckCircle
+    CheckCircle,
+    CheckCircleOutline
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
@@ -20,7 +21,11 @@ import useDownload from "../../hooks/useDownload";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
-import { deleteEpisode, removeFromCompleted } from "../../store/slices/podcastSlice";
+import {
+    deleteEpisode,
+    removeFromCompleted,
+    markAsCompleted
+} from "../../store/slices/podcastSlice";
 
 const placeHolderImage2 =
     "https://sdmedia.playser.cadenaser.com/playser/image/20208/27/1593787718595_1598534487_square_img.png";
@@ -42,8 +47,7 @@ const MP3Player = ({
     const dispatch = useDispatch();
     const { isLoading, handleDownload, progress } = useDownload();
     const { playbackTimes } = useSelector((state) => state.audioTime);
-    const { /* songs, favoriteEpisodes, listenLaterEpisodes, searchTerm, */ completedEpisodes } =
-        useSelector((state) => state.podcast);
+    const { completedEpisodes } = useSelector((state) => state.podcast);
     const isStarted = playbackTimes[title] > 0;
     const isCompleted = completedEpisodes.includes(title);
     const playbackTime = playbackTimes[title] || 0;
@@ -55,13 +59,48 @@ const MP3Player = ({
     const handleFavoriteClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggleFavorite();
+        if (isFavorite) {
+            toggleFavorite();
+            toast.warning("Podcast eliminado de favoritos", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            toggleFavorite();
+            toast.success("Podcast guardado como favorito", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
     };
 
     const handleListenLaterClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        toggleListenLater();
+        if (isListenLater) {
+            toggleListenLater();
+            toast.warning("Podcast eliminado de escuchar mas tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            toggleListenLater();
+            toast.success("Podcast guardado para escuchar mas tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce,
+                style: {
+                    height: "100px"
+                }
+            });
+        }
     };
 
     const handlePlayClick = (e) => {
@@ -70,12 +109,36 @@ const MP3Player = ({
         onPlay();
     };
 
+    const handleCompleteClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isPlaying) {
+            if (isCompleted) {
+                dispatch(removeFromCompleted(title));
+                toast.warning("Podcast marcado como no completado", {
+                    position: "bottom-left",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            } else {
+                dispatch(markAsCompleted(title));
+                toast.success("Podcast marcado como completado", {
+                    position: "bottom-left",
+                    autoClose: 3000,
+                    theme: "dark",
+                    transition: Bounce
+                });
+            }
+        }
+    };
+
     const showConfirmToast = (message, onConfirm) => {
         toast.warn(
             <div className={styles.confirmToast}>
                 <div className={styles.confirmHeader}>
                     <Warning className={styles.warningIcon} />
-                    <h3>Confirmar Acción</h3>
+                    <h3 className={styles.confirmTitle}>Confirmar Acción</h3>
                 </div>
                 <p className={styles.confirmMessage}>{message}</p>
                 <div className={styles.confirmButtons}>
@@ -141,19 +204,32 @@ const MP3Player = ({
 
     const handleRemoveStarted = (title, e) => {
         e.stopPropagation();
-        showConfirmToast(
-            "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
-            () => {
-                dispatch(deleteEpisode(title));
-                dispatch(removePlaybackTime(title));
-                toast.success("Tiempo de reproducción eliminado", {
-                    position: "top-right",
+
+        if (!isPlaying) {
+            showConfirmToast(
+                "¿Estás seguro de que quieres eliminar el tiempo de reproducción guardado?",
+                () => {
+                    dispatch(deleteEpisode(title));
+                    dispatch(removePlaybackTime(title));
+                    toast.success("Tiempo de reproducción eliminado", {
+                        position: "bottom-left",
+                        autoClose: 3000,
+                        theme: "dark",
+                        transition: Bounce
+                    });
+                }
+            );
+        } else {
+            toast.warn(
+                "No puedes eliminar el tiempo de reproducción mientras se está reproduciendo",
+                {
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
-                });
-            }
-        );
+                }
+            );
+        }
     };
 
     const handleRemoveCompleted = (title, e) => {
@@ -163,7 +239,7 @@ const MP3Player = ({
             () => {
                 dispatch(removeFromCompleted(title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
@@ -272,6 +348,43 @@ const MP3Player = ({
         </BootstrapTooltip>
     );
 
+    const completeButton = (
+        <BootstrapTooltip
+            title={isCompleted ? "Marcar como no completado" : "Marcar como completado"}
+            placement="top"
+            arrow
+            disableInteractive
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 600 }}
+        >
+            <button
+                onClick={handleCompleteClick}
+                style={{
+                    borderRadius: "25px",
+                    padding: "2px 10px",
+                    margin: "0 5px",
+                    backgroundColor: isCompleted ? "#0f3460" : undefined,
+                    color: isCompleted ? "#16db93" : undefined
+                }}
+                disabled={isPlaying}
+            >
+                {isCompleted ? (
+                    <CheckCircle
+                        style={{
+                            fontSize: "16px"
+                        }}
+                    />
+                ) : (
+                    <CheckCircleOutline
+                        style={{
+                            fontSize: "16px"
+                        }}
+                    />
+                )}
+            </button>
+        </BootstrapTooltip>
+    );
+
     const listenLaterButton = (
         <BootstrapTooltip
             title={
@@ -283,22 +396,20 @@ const MP3Player = ({
             TransitionComponent={Fade}
             TransitionProps={{ timeout: 600 }}
         >
-            <button
+            <span
                 onClick={handleListenLaterClick}
                 style={{
-                    borderRadius: "25px",
-                    padding: "2px 10px",
-                    margin: "0 5px",
-                    backgroundColor: isListenLater ? "#0f3460" : "",
-                    color: isListenLater ? "#16db93" : ""
+                    color: "#17D891",
+                    position: "absolute",
+                    top: "41px",
+                    right: "3px",
+                    fontSize: "22px",
+                    borderRadius: "25px"
                 }}
+                className={styles.watchLaterIcon}
             >
-                {isListenLater ? (
-                    <WatchLater style={{ fontSize: "16px" }} />
-                ) : (
-                    <WatchLaterOutlined style={{ fontSize: "16px" }} />
-                )}
-            </button>
+                {isListenLater ? <WatchLater /> : <WatchLaterOutlined />}
+            </span>
         </BootstrapTooltip>
     );
 
@@ -331,16 +442,12 @@ const MP3Player = ({
                             style={{
                                 color: "#17D891",
                                 position: "absolute",
-                                top: "38px",
+                                top: "78px",
                                 right: "0px",
                                 fontSize: "22px",
                                 cursor: !isPlaying && "pointer"
                             }}
-                            onClick={(e) => {
-                                if (!isPlaying) {
-                                    handleRemoveStarted(title, e);
-                                }
-                            }}
+                            onClick={(e) => handleRemoveStarted(title, e)}
                             className={styles.headphonesIcon}
                         />
                     </BootstrapTooltip>
@@ -371,7 +478,7 @@ const MP3Player = ({
                         style={{
                             color: "#17D891",
                             position: "absolute",
-                            top: "42px",
+                            top: "82px",
                             right: "4px",
                             fontSize: "22px",
                             cursor: !isPlaying && "pointer"
@@ -385,6 +492,7 @@ const MP3Player = ({
                     />
                 </BootstrapTooltip>
             )}
+            {listenLaterButton}
             <img
                 src={imageUrl || placeHolderImage2}
                 alt={title}
@@ -398,8 +506,8 @@ const MP3Player = ({
                 <span className={styles.date}>{date}</span>
                 <div className={styles.controls}>
                     {playButton}
-                    {listenLaterButton}
                     {downloadButton}
+                    {completeButton}
                 </div>
             </div>
         </div>

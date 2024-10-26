@@ -17,7 +17,8 @@ import {
     FavoriteBorder,
     Warning,
     WatchLater,
-    WatchLaterOutlined
+    WatchLaterOutlined,
+    CheckCircleOutline
 } from "@mui/icons-material";
 import { slugify } from "../../utils/slugify";
 import { motion } from "framer-motion";
@@ -28,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
 import {
     deleteEpisode,
+    markAsCompleted,
     removeFromCompleted,
     toggleFavorite,
     toggleListenLater
@@ -137,7 +139,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 dispatch(deleteEpisode(song.title));
                 dispatch(removePlaybackTime(song.title));
                 toast.success("Tiempo de reproducción eliminado", {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
@@ -152,7 +154,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             () => {
                 dispatch(removeFromCompleted(song.title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "top-right",
+                    position: "bottom-left",
                     autoClose: 3000,
                     theme: "dark",
                     transition: Bounce
@@ -236,6 +238,66 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             dispatch(removeFromCompleted(podcast.title));
         }
         onPlayPodcast(podcast);
+    };
+
+    const handleCompleteClick = () => {
+        if (isCompleted) {
+            dispatch(removeFromCompleted(podcast.title));
+            toast.warning("Podcast marcado como no completado", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            dispatch(markAsCompleted(podcast.title));
+            toast.success("Podcast marcado como completado", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
+    };
+
+    const handleWatchLater = () => {
+        if (isListenLater) {
+            dispatch(toggleListenLater(podcast));
+            toast.warning("Podcast eliminado de ver más tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            dispatch(toggleListenLater(podcast));
+            toast.success("Podcast agregado a ver más tarde", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
+    };
+
+    const handleFavorites = () => {
+        if (isListenLater) {
+            dispatch(toggleFavorite(podcast));
+            toast.warning("Podcast eliminado favoritos", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        } else {
+            dispatch(toggleFavorite(podcast));
+            toast.success("Podcast agregado a favoritos", {
+                position: "bottom-left",
+                autoClose: 3000,
+                theme: "dark",
+                transition: Bounce
+            });
+        }
     };
 
     const playbackTime = playbackTimes[podcast.title] || 0;
@@ -376,7 +438,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                         <motion.div
                             variants={iconVariants}
                             whileHover="hover"
-                            onClick={() => dispatch(toggleFavorite(podcast))}
+                            onClick={handleFavorites}
                             style={{ cursor: "pointer" }}
                         >
                             {isFavorite ? (
@@ -484,7 +546,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className={styles.actionButton}
-                        onClick={() => dispatch(toggleListenLater(podcast))}
+                        onClick={handleWatchLater}
                         style={{
                             backgroundColor: isListenLater ? "#0f3460" : "",
                             color: isListenLater ? "#16db93" : ""
@@ -492,6 +554,19 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                     >
                         {isListenLater ? <WatchLater /> : <WatchLaterOutlined />}
                         {isListenLater ? "Quitar de escuchar más tarde" : "Escuchar más tarde"}
+                    </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={styles.actionButton}
+                        onClick={handleCompleteClick}
+                        style={{
+                            backgroundColor: isCompleted ? "#0f3460" : "",
+                            color: isCompleted ? "#16db93" : ""
+                        }}
+                    >
+                        {isCompleted ? <CheckCircle /> : <CheckCircleOutline />}
+                        {isCompleted ? "Quitar completado" : "Marcar completado"}
                     </motion.button>
                     <motion.button
                         whileHover={{ scale: 1.05 }}
