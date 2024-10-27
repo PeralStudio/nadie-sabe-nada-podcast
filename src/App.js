@@ -13,7 +13,6 @@ import LastPodcast from "./components/LastPodcast/LastPodcast";
 import PersistentPlayer from "./components/PersistentPlayer/PersistentPlayer";
 import Settings from "./components/Settings/Settings";
 import NotFound from "./components/NotFound/NotFound";
-import "react-toastify/dist/ReactToastify.css";
 
 import { fetchPodcasts, setSearchTerm } from "./store/slices/podcastSlice";
 import { setFilter } from "./store/slices/filterSlice";
