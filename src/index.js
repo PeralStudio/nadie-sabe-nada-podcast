@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,6 +18,7 @@ root.render(
                 <NavBar />
                 <HelmetProvider>
                     <App />
+                    <Toaster />
                 </HelmetProvider>
                 <ScrollToTop />
             </Router>

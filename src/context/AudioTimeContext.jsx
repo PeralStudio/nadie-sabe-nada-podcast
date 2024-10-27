@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-hot-toast"; // Importa toast desde react-hot-toast
 
 const AudioTimeContext = createContext();
 
@@ -62,25 +62,21 @@ export const AudioTimeProvider = ({ children }) => {
             setPlaybackTimes({});
             localStorage.removeItem("nsnPlaybackTimes");
             toast.success("Tiempos Borrados", {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                duration: 1000, // Duración en milisegundos
+                position: "bottom-center",
+                style: {
+                    backgroundColor: "#16213e", // Fondo oscuro
+                    color: "#ffffff" // Texto blanco
+                }
             });
         } catch (error) {
             toast.error("Error al borrar los tiempos", {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                duration: 1000,
+                position: "bottom-center",
+                style: {
+                    backgroundColor: "#e74c3c", // Fondo rojo para error
+                    color: "#ffffff" // Texto blanco
+                }
             });
             console.error("Error al borrar los tiempos de reproducción:", error);
         }

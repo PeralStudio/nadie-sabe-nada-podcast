@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./LastPodcast.module.css";
 import YouTube from "react-youtube";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-hot-toast"; // Cambiado a react-hot-toast
 import {
     PlayArrow,
     ArrowBack,
@@ -91,43 +91,51 @@ const LastPodcast = ({ onPlayPodcast }) => {
     };
 
     const showConfirmToast = (message, onConfirm) => {
-        toast.warn(
-            <div className={styles.confirmToast}>
-                <div className={styles.confirmHeader}>
-                    <Warning className={styles.warningIcon} />
-                    <h3>Confirmar Acción</h3>
+        toast.custom(
+            (t) => (
+                <div className={styles.confirmToast}>
+                    <div className={styles.confirmHeader}>
+                        <Warning className={styles.warningIcon} />
+                        <h3>Confirmar Acción</h3>
+                    </div>
+                    <p className={styles.confirmMessage}>{message}</p>
+                    <div className={styles.confirmButtons}>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.confirmButton}
+                            onClick={() => {
+                                toast.dismiss(t.id); // Cerrar el toast de confirmación
+                                onConfirm();
+                            }}
+                        >
+                            Confirmar
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.cancelButton}
+                            onClick={() => toast.dismiss(t.id)} // Cerrar el toast de confirmación
+                        >
+                            Cancelar
+                        </motion.button>
+                    </div>
                 </div>
-                <p className={styles.confirmMessage}>{message}</p>
-                <div className={styles.confirmButtons}>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.confirmButton}
-                        onClick={() => {
-                            toast.dismiss();
-                            onConfirm();
-                        }}
-                    >
-                        Confirmar
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.cancelButton}
-                        onClick={() => toast.dismiss()}
-                    >
-                        Cancelar
-                    </motion.button>
-                </div>
-            </div>,
+            ),
             {
+                duration: Infinity, // El toast permanece visible hasta que se cierra manualmente
                 position: "top-center",
-                autoClose: false,
-                closeOnClick: false,
-                draggable: false,
-                closeButton: false,
                 className: styles.customToast,
-                theme: "dark"
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    border: "1px solid #16db93", // Borde verde
+                    borderRadius: "12px", // Bordes redondeados
+                    padding: "20px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                },
+                closeButton: false,
+                closeOnClick: false,
+                draggable: false
             }
         );
     };
@@ -139,10 +147,15 @@ const LastPodcast = ({ onPlayPodcast }) => {
                 dispatch(deleteEpisode(song.title));
                 dispatch(removePlaybackTime(song.title));
                 toast.success("Tiempo de reproducción eliminado", {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    theme: "dark",
-                    transition: Bounce
+                    position: "bottom-center",
+                    duration: 3000,
+                    style: {
+                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                        color: "#ffffff", // Texto blanco
+                        borderRadius: "8px", // Bordes redondeados
+                        padding: "10px", // Espaciado interno
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    }
                 });
             }
         );
@@ -154,10 +167,15 @@ const LastPodcast = ({ onPlayPodcast }) => {
             () => {
                 dispatch(removeFromCompleted(song.title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    theme: "dark",
-                    transition: Bounce
+                    position: "bottom-center",
+                    duration: 3000,
+                    style: {
+                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                        color: "#ffffff", // Texto blanco
+                        borderRadius: "8px", // Bordes redondeados
+                        padding: "10px", // Espaciado interno
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    }
                 });
             }
         );
@@ -240,19 +258,29 @@ const LastPodcast = ({ onPlayPodcast }) => {
     const handleCompleteClick = () => {
         if (isCompleted) {
             dispatch(removeFromCompleted(podcast.title));
-            toast.warning("Podcast marcado como no completado", {
-                position: "bottom-left",
-                autoClose: 3000,
-                theme: "dark",
-                transition: Bounce
+            toast.error("Podcast marcado como no completado", {
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
             });
         } else {
             dispatch(markAsCompleted(podcast.title));
             toast.success("Podcast marcado como completado", {
-                position: "bottom-left",
-                autoClose: 3000,
-                theme: "dark",
-                transition: Bounce
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
             });
         }
     };
@@ -260,19 +288,59 @@ const LastPodcast = ({ onPlayPodcast }) => {
     const handleWatchLater = () => {
         if (isListenLater) {
             dispatch(toggleListenLater(podcast));
-            toast.warning("Podcast eliminado de ver más tarde", {
-                position: "bottom-left",
-                autoClose: 3000,
-                theme: "dark",
-                transition: Bounce
+            toast.error("Podcast eliminado de ver más tarde", {
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
             });
         } else {
             dispatch(toggleListenLater(podcast));
             toast.success("Podcast agregado a ver más tarde", {
-                position: "bottom-left",
-                autoClose: 3000,
-                theme: "dark",
-                transition: Bounce
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
+            });
+        }
+    };
+
+    const handleFavorites = () => {
+        if (isFavorite) {
+            dispatch(toggleFavorite(podcast));
+            toast.error("Podcast eliminado favoritos", {
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
+            });
+        } else {
+            dispatch(toggleFavorite(podcast));
+            toast.success("Podcast agregado a favoritos", {
+                position: "bottom-center",
+                duration: 3000,
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    color: "#ffffff", // Texto blanco
+                    borderRadius: "8px", // Bordes redondeados
+                    padding: "10px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                }
             });
         }
     };
@@ -413,7 +481,7 @@ const LastPodcast = ({ onPlayPodcast }) => {
                         <motion.div
                             variants={iconVariants}
                             whileHover="hover"
-                            onClick={() => dispatch(toggleFavorite(podcast))}
+                            onClick={handleFavorites}
                             style={{ cursor: "pointer" }}
                         >
                             {isFavorite ? (

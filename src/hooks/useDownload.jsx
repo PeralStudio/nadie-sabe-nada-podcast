@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Bounce, toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Download, Warning, CheckCircle, Close } from "@mui/icons-material";
 import styles from "./useDownload.module.css";
@@ -51,7 +51,7 @@ const useDownload = () => {
         </div>
     );
 
-    const DownloadCancelledToast = ({ fileName }) => (
+    const DownloadCancelledToast = () => (
         <div className={styles.confirmToast}>
             <div className={styles.confirmHeader}>
                 <Warning className={styles.warningIconText} />
@@ -120,19 +120,21 @@ const useDownload = () => {
                 break;
             }
 
-            toast.update(toastIdRef.current, {
-                render: (
-                    <DownloadProgressToast
-                        currentProgress={currentProgress}
-                        cancelDownload={cancelDownload}
-                        fileName={fileName}
-                    />
-                ),
-                type: "info",
-                isLoading: true,
-                closeOnClick: false,
-                autoClose: false
-            });
+            toastIdRef.current = toast.loading(
+                <DownloadProgressToast
+                    currentProgress={currentProgress}
+                    cancelDownload={cancelDownload}
+                    fileName={fileName}
+                />,
+                {
+                    id: toastIdRef.current,
+                    position: "bottom-center",
+                    duration: Infinity,
+                    style: {
+                        backgroundColor: "transparent"
+                    }
+                }
+            );
         }
 
         if (!isCancelled) {
@@ -147,18 +149,13 @@ const useDownload = () => {
             document.body.removeChild(link);
             window.URL.revokeObjectURL(urlBlob);
 
-            toast.update(toastIdRef.current, {
-                render: <DownloadCompleteToast fileName={fileName} />,
-                type: "success",
-                isLoading: false,
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+            toast.success(<DownloadCompleteToast fileName={fileName} />, {
+                id: toastIdRef.current,
+                position: "bottom-center",
+                duration: 5000,
+                style: {
+                    backgroundColor: "transparent"
+                }
             });
         }
     };
@@ -177,14 +174,11 @@ const useDownload = () => {
                 fileName={fileName}
             />,
             {
-                position: "bottom-left",
-                autoClose: false,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                position: "bottom-center",
+                duration: Infinity,
+                style: {
+                    backgroundColor: "transparent"
+                }
             }
         );
 
@@ -205,14 +199,11 @@ const useDownload = () => {
                         </p>
                     </div>,
                     {
-                        position: "bottom-left",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "dark",
-                        transition: Bounce
+                        position: "bottom-center",
+                        duration: 5000,
+                        style: {
+                            backgroundColor: "transparent"
+                        }
                     }
                 );
             }
@@ -226,15 +217,12 @@ const useDownload = () => {
             abortController.current.abort();
             setIsCancelled(true);
             toast.dismiss(toastIdRef.current);
-            toast.warning(<DownloadCancelledToast />, {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+            toast.custom(<DownloadCancelledToast />, {
+                position: "bottom-center",
+                duration: 2000,
+                style: {
+                    backgroundColor: "transparent"
+                }
             });
             resetState();
         }

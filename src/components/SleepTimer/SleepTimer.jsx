@@ -4,7 +4,7 @@ import { Timer, TimerOff, Warning, CheckCircle } from "@mui/icons-material";
 import styles from "./SleepTimer.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-hot-toast"; // Cambiado de react-toastify a react-hot-toast
 
 const SleepTimer = () => {
     const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const SleepTimer = () => {
 
     const handleTimerStart = () => {
         if (!isPlaying) {
-            toast.warning(
+            toast.custom(
                 <div className={styles.confirmToast}>
                     <div className={styles.confirmHeader}>
                         <Warning className={styles.warningIcon} />
@@ -36,14 +36,14 @@ const SleepTimer = () => {
                     </p>
                 </div>,
                 {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    theme: "dark",
-                    transition: Bounce
+                    duration: 3000, // Duración en milisegundos
+                    position: "bottom-center",
+                    style: {
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        border: "1px solid #16db93",
+                        borderRadius: "12px",
+                        color: "#ffffff"
+                    }
                 }
             );
             return;
@@ -51,7 +51,7 @@ const SleepTimer = () => {
 
         setIsTimerActive(true);
         setTimeLeft(selectedTime * 60);
-        toast.success(
+        toast.custom(
             <div className={styles.confirmToast}>
                 <div className={styles.confirmHeader}>
                     <Timer className={styles.successIcon} />
@@ -62,20 +62,20 @@ const SleepTimer = () => {
                 </p>
             </div>,
             {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                duration: 3000,
+                position: "bottom-center",
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    border: "1px solid #16db93",
+                    borderRadius: "12px",
+                    color: "#ffffff"
+                }
             }
         );
     };
 
     const showCancelToast = (isCompleted = false) => {
-        toast.info(
+        toast.custom(
             <div className={styles.confirmToast}>
                 <div className={styles.confirmHeader}>
                     <TimerOff className={styles.warningIcon} />
@@ -88,14 +88,14 @@ const SleepTimer = () => {
                 </p>
             </div>,
             {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                duration: 3000,
+                position: "bottom-center",
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    border: "1px solid #16db93",
+                    borderRadius: "12px",
+                    color: "#ffffff"
+                }
             }
         );
     };
@@ -110,7 +110,7 @@ const SleepTimer = () => {
         setIsTimerActive(false);
         setTimeLeft(0);
         dispatch(togglePlay(false));
-        toast.success(
+        toast.custom(
             <div className={styles.confirmToast}>
                 <div className={styles.confirmHeader}>
                     <CheckCircle className={styles.successIcon} />
@@ -119,14 +119,14 @@ const SleepTimer = () => {
                 <p className={styles.confirmMessage}>El podcast se ha detenido automáticamente.</p>
             </div>,
             {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "dark",
-                transition: Bounce
+                duration: 3000,
+                position: "bottom-center",
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    border: "1px solid #16db93",
+                    borderRadius: "12px",
+                    color: "#ffffff"
+                }
             }
         );
     }, [dispatch]);

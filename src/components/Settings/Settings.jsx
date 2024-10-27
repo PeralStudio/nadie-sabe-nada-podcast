@@ -22,7 +22,7 @@ import {
     clearCompleted,
     clearListenLater
 } from "../../store/slices/podcastSlice";
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-hot-toast"; // Cambiado a react-hot-toast
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -81,54 +81,63 @@ const Settings = () => {
     const showSuccessToast = (message) => {
         toast.success(message, {
             position: "bottom-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "dark",
-            transition: Bounce
+            duration: 5000,
+            style: {
+                backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                color: "#ffffff", // Texto blanco
+                borderRadius: "8px", // Bordes redondeados
+                padding: "10px", // Espaciado interno
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+            }
         });
     };
 
     const showConfirmToast = (message, onConfirm) => {
-        toast.warn(
-            <div className={styles.confirmToast}>
-                <div className={styles.confirmHeader}>
-                    <Warning className={styles.warningIcon} />
-                    <h3>Confirmar Acción</h3>
+        toast.custom(
+            (t) => (
+                <div className={styles.confirmToast}>
+                    <div className={styles.confirmHeader}>
+                        <Warning className={styles.warningIcon} />
+                        <h3>Confirmar Acción</h3>
+                    </div>
+                    <p className={styles.confirmMessage}>{message}</p>
+                    <div className={styles.confirmButtons}>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.confirmButton}
+                            onClick={() => {
+                                toast.dismiss(t.id); // Cerrar el toast de confirmación
+                                onConfirm();
+                            }}
+                        >
+                            Confirmar
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={styles.cancelButton}
+                            onClick={() => toast.dismiss(t.id)} // Cerrar el toast de confirmación
+                        >
+                            Cancelar
+                        </motion.button>
+                    </div>
                 </div>
-                <p className={styles.confirmMessage}>{message}</p>
-                <div className={styles.confirmButtons}>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.confirmButton}
-                        onClick={() => {
-                            toast.dismiss();
-                            onConfirm();
-                        }}
-                    >
-                        Confirmar
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={styles.cancelButton}
-                        onClick={() => toast.dismiss()}
-                    >
-                        Cancelar
-                    </motion.button>
-                </div>
-            </div>,
+            ),
             {
+                duration: Infinity, // Toast permanece visible hasta que se cierra manualmente
                 position: "top-center",
-                autoClose: false,
-                closeOnClick: false,
-                draggable: false,
-                closeButton: false,
                 className: styles.customToast,
-                theme: "dark"
+                style: {
+                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
+                    border: "1px solid #16db93", // Borde verde
+                    borderRadius: "12px", // Bordes redondeados
+                    padding: "20px", // Espaciado interno
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                },
+                closeButton: false,
+                closeOnClick: false,
+                draggable: false
             }
         );
     };
