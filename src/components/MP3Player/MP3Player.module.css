@@ -140,11 +140,93 @@
 .confirmButton {
     background-color: var(--color-danger);
     color: var(--color-text) !important;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .confirmButton:hover {
     background-color: var(--color-danger-hover) !important;
     color: var(--color-text) !important;
+}
+
+.confirmToast {
+    background-color: rgba(33, 33, 33, 0.9); /* Fondo oscuro semitransparente */
+    color: #ffffff; /* Texto blanco para buen contraste */
+    padding: 20px; /* Espaciado interno amplio */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #16db93; /* Borde de color de acento */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    max-width: 300px; /* Ancho máximo para que no ocupe mucho espacio */
+    text-align: center; /* Centrar texto */
+    animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+}
+
+.confirmHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Separación inferior */
+}
+
+.warningIcon {
+    color: #ffa726; /* Icono de advertencia en color naranja */
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.confirmTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.confirmMessage {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.confirmButtons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.cancelButton {
+    background-color: #16db93; /* Fondo verde para confirmar */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* .confirmButton:hover {
+    background-color: #13b680; 
+} */
+
+/* .cancelButton {
+    background-color: #e53935; 
+} */
+
+.cancelButton:hover {
+    color: #ffffff !important;
+    background-color: #13b278 !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 480px) {

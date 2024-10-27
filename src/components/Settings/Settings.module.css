@@ -152,35 +152,44 @@
 }
 
 .confirmToast {
-    background-color: #16213e;
+    background-color: rgba(22, 33, 62, 0.9) !important; /* Fondo oscuro semitransparente */
+    color: #ffffff; /* Texto blanco */
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid rgba(22, 219, 147, 0.2);
-    color: #e0e0e0;
+    border: 1px solid #16db93;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra */
+    max-width: 300px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .confirmHeader {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
-.confirmHeader h3 {
+.confirmHeader h3,
+.confirmTitle {
     margin: 0;
     color: #16db93;
     font-size: 1.2rem;
 }
 
-.warningIcon {
-    color: #16db93;
+.warningIcon,
+.successIcon {
+    color: #ffa726;
     font-size: 24px;
+    margin-right: 8px;
 }
 
 .confirmMessage {
-    margin: 0 0 20px 0;
     font-size: 1rem;
+    margin: 0 0 15px;
     line-height: 1.5;
+    color: #e0e0e0; /* Color de mensaje ajustado para el tema */
 }
 
 .confirmButtons {
@@ -195,6 +204,7 @@
     border: none;
     border-radius: 20px;
     font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -207,18 +217,30 @@
 .confirmButton:hover {
     background-color: #14c985;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(22, 219, 147, 0.3);
+    box-shadow: 0px 4px 8px rgba(22, 219, 147, 0.3);
 }
 
 .cancelButton {
-    background-color: #e74c3c;
-    color: white;
+    background-color: #e53935;
+    color: #ffffff;
 }
 
 .cancelButton:hover {
-    background-color: #c0392b;
+    background-color: #c62828;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    box-shadow: 0px 4px 8px rgba(231, 76, 60, 0.3);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 768px) {
@@ -265,10 +287,10 @@
 
     .confirmToast {
         padding: 15px;
-        margin: 10px;
     }
 
-    .confirmHeader h3 {
+    .confirmHeader h3,
+    .confirmTitle {
         font-size: 1.1rem;
     }
 
@@ -327,11 +349,13 @@
         padding: 12px;
     }
 
-    .confirmHeader h3 {
+    .confirmHeader h3,
+    .confirmTitle {
         font-size: 1rem;
     }
 
-    .warningIcon {
+    .warningIcon,
+    .successIcon {
         font-size: 20px;
     }
 

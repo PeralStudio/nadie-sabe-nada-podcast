@@ -191,75 +191,96 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+.confirmButton {
+    background-color: var(--color-danger);
+    color: var(--color-text) !important;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.confirmButton:hover {
+    background-color: var(--color-danger-hover) !important;
+    color: var(--color-text) !important;
+}
+
 .confirmToast {
-    background-color: #16213e;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(22, 219, 147, 0.2);
-    color: #e0e0e0;
+    background-color: rgba(33, 33, 33, 0.9); /* Fondo oscuro semitransparente */
+    color: #ffffff; /* Texto blanco para buen contraste */
+    padding: 20px; /* Espaciado interno amplio */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #16db93; /* Borde de color de acento */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    max-width: 300px; /* Ancho máximo para que no ocupe mucho espacio */
+    text-align: center; /* Centrar texto */
+    animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
 }
 
 .confirmHeader {
     display: flex;
     align-items: center;
-    justify-self: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.confirmHeader h3 {
-    margin: 0;
-    color: #16db93;
-    font-size: 1.2rem;
+    justify-content: center;
+    margin-bottom: 10px; /* Separación inferior */
 }
 
 .warningIcon {
-    color: #16db93;
+    color: #ffa726; /* Icono de advertencia en color naranja */
     font-size: 24px;
+    margin-right: 8px;
+}
+
+.confirmTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
 }
 
 .confirmMessage {
-    margin: 0 0 20px 0;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 16px;
+    margin-bottom: 15px;
 }
 
 .confirmButtons {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-around;
 }
 
-.confirmButton,
 .cancelButton {
-    padding: 8px 16px;
+    background-color: #16db93; /* Fondo verde para confirmar */
+    color: #ffffff; /* Texto blanco */
     border: none;
-    border-radius: 20px;
-    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
-.confirmButton {
-    background-color: #16db93;
-    color: #16213e;
-}
+/* .confirmButton:hover {
+    background-color: #13b680; 
+} */
 
-.confirmButton:hover {
-    background-color: #14c985;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(22, 219, 147, 0.3);
-}
-
-.cancelButton {
-    background-color: #e74c3c;
-    color: white;
-}
+/* .cancelButton {
+    background-color: #e53935; 
+} */
 
 .cancelButton:hover {
-    background-color: #c0392b;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    color: #ffffff !important;
+    background-color: #13b278 !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 :global(.rhap_container) {
