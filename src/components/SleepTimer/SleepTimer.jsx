@@ -5,6 +5,7 @@ import styles from "./SleepTimer.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
 import { toast } from "react-hot-toast";
+import useMobileDetect from "../../hooks/useMobileDetect";
 
 const SleepTimer = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const SleepTimer = () => {
     const { isPlaying } = useSelector((state) => state.player);
     const { completedEpisodes } = useSelector((state) => state.podcast);
     const { currentPodcast } = useSelector((state) => state.player);
+    const isMobile = useMobileDetect();
 
     const timeOptions = [5, 15, 30, 45, 60];
 
@@ -37,7 +39,7 @@ const SleepTimer = () => {
                 </div>,
                 {
                     duration: 3000,
-                    position: "bottom-center",
+                    position: isMobile ? "bottom-center" : "bottom-left",
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",
                         border: "1px solid #16db93",
@@ -63,7 +65,7 @@ const SleepTimer = () => {
             </div>,
             {
                 duration: 3000,
-                position: "bottom-center",
+                position: isMobile ? "bottom-center" : "bottom-left",
                 style: {
                     backgroundColor: "rgba(33, 33, 33, 0.9)",
                     border: "1px solid #16db93",
@@ -89,7 +91,7 @@ const SleepTimer = () => {
             </div>,
             {
                 duration: 3000,
-                position: "bottom-center",
+                position: isMobile ? "bottom-center" : "bottom-left",
                 style: {
                     backgroundColor: "rgba(33, 33, 33, 0.9)",
                     border: "1px solid #16db93",
@@ -120,7 +122,7 @@ const SleepTimer = () => {
             </div>,
             {
                 duration: 3000,
-                position: "bottom-center",
+                position: isMobile ? "bottom-center" : "bottom-left",
                 style: {
                     backgroundColor: "rgba(33, 33, 33, 0.9)",
                     border: "1px solid #16db93",

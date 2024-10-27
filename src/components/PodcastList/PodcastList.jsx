@@ -21,10 +21,12 @@ import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleFavorite, toggleListenLater } from "../../store/slices/podcastSlice";
 import { setFilter, setCurrentPage } from "../../store/slices/filterSlice";
+import useMobileDetect from "../../hooks/useMobileDetect";
 
 const PodcastList = ({ onPlayPodcast }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isMobile = useMobileDetect();
 
     const { songs, favoriteEpisodes, listenLaterEpisodes, searchTerm, completedEpisodes } =
         useSelector((state) => state.podcast);
@@ -134,7 +136,7 @@ const PodcastList = ({ onPlayPodcast }) => {
                     maxHeight: "2rem",
                     justifyContent: "center",
                     marginBottom: "2.5rem",
-                    gap: "0.3rem"
+                    gap: isMobile ? "0.1rem" : "0.3rem"
                 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

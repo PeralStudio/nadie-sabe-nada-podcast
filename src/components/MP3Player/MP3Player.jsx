@@ -21,6 +21,7 @@ import useDownload from "../../hooks/useDownload";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
+import useMobileDetect from "../../hooks/useMobileDetect";
 import {
     deleteEpisode,
     removeFromCompleted,
@@ -51,6 +52,7 @@ const MP3Player = ({
     const isStarted = playbackTimes[title] > 0;
     const isCompleted = completedEpisodes.includes(title);
     const playbackTime = playbackTimes[title] || 0;
+    const isMobile = useMobileDetect();
 
     const handleImageError = (event) => {
         event.target.src = placeHolderImage2;
@@ -60,58 +62,58 @@ const MP3Player = ({
         e.preventDefault();
         e.stopPropagation();
         toggleFavorite();
-        if (isFavorite) {
-            toast.error("Podcast eliminado de favoritos", {
-                position: "bottom-center",
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
-        } else {
-            toast.success("Podcast guardado como favorito", {
-                position: "bottom-center",
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
-        }
+        // if (isFavorite) {
+        //     toast.error("Podcast eliminado de favoritos", {
+        //         position: "bottom-center",
+        //         style: {
+        //             backgroundColor: "rgba(33, 33, 33, 0.9)",
+        //             color: "#ffffff",
+        //             borderRadius: "8px",
+        //             padding: "10px",
+        //             boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+        //         }
+        //     });
+        // } else {
+        //     toast.success("Podcast guardado como favorito", {
+        //         position: "bottom-center",
+        //         style: {
+        //             backgroundColor: "rgba(33, 33, 33, 0.9)",
+        //             color: "#ffffff",
+        //             borderRadius: "8px",
+        //             padding: "10px",
+        //             boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+        //         }
+        //     });
+        // }
     };
 
     const handleListenLaterClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         toggleListenLater();
-        if (isListenLater) {
-            toast.error("Podcast eliminado de escuchar más tarde", {
-                position: "bottom-center",
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
-        } else {
-            toast.success("Podcast guardado para escuchar más tarde", {
-                position: "bottom-center",
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
-        }
+        // if (isListenLater) {
+        //     toast.error("Podcast eliminado de escuchar más tarde", {
+        //         position: "bottom-center",
+        //         style: {
+        //             backgroundColor: "rgba(33, 33, 33, 0.9)",
+        //             color: "#ffffff",
+        //             borderRadius: "8px",
+        //             padding: "10px",
+        //             boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+        //         }
+        //     });
+        // } else {
+        //     toast.success("Podcast guardado para escuchar más tarde", {
+        //         position: "bottom-center",
+        //         style: {
+        //             backgroundColor: "rgba(33, 33, 33, 0.9)",
+        //             color: "#ffffff",
+        //             borderRadius: "8px",
+        //             padding: "10px",
+        //             boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+        //         }
+        //     });
+        // }
     };
 
     const handlePlayClick = (e) => {
@@ -138,16 +140,16 @@ const MP3Player = ({
                 });
             } else {
                 dispatch(markAsCompleted(title));
-                toast.success("Podcast marcado como completado", {
-                    position: "bottom-center",
-                    style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)",
-                        color: "#ffffff",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                    }
-                });
+                // toast.success("Podcast marcado como completado", {
+                //     position: "bottom-center",
+                //     style: {
+                //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+                //         color: "#ffffff",
+                //         borderRadius: "8px",
+                //         padding: "10px",
+                //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+                //     }
+                // });
             }
         }
     };
@@ -224,7 +226,7 @@ const MP3Player = ({
                     dispatch(deleteEpisode(title));
                     dispatch(removePlaybackTime(title));
                     toast.success("Tiempo de reproducción eliminado", {
-                        position: "bottom-center",
+                        position: isMobile ? "bottom-center" : "bottom-left",
                         style: {
                             backgroundColor: "rgba(33, 33, 33, 0.9)",
                             color: "#ffffff",
@@ -239,7 +241,7 @@ const MP3Player = ({
             toast.error(
                 "No puedes eliminar el tiempo de reproducción mientras se está reproduciendo",
                 {
-                    position: "bottom-center",
+                    position: isMobile ? "bottom-center" : "bottom-left",
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",
                         color: "#ffffff",
@@ -259,7 +261,7 @@ const MP3Player = ({
             () => {
                 dispatch(removeFromCompleted(title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "bottom-center",
+                    position: isMobile ? "bottom-center" : "bottom-left",
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",
                         color: "#ffffff",
@@ -382,7 +384,13 @@ const MP3Player = ({
             TransitionProps={{ timeout: 600 }}
         >
             <button
-                onClick={handleCompleteClick}
+                onClick={(e) => {
+                    if (isCompleted) {
+                        handleRemoveCompleted(title, e);
+                    } else {
+                        handleCompleteClick(e);
+                    }
+                }}
                 style={{
                     borderRadius: "25px",
                     padding: "2px 10px",

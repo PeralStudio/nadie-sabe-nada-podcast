@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
+import useMobileDetect from "../hooks/useMobileDetect";
 
 const AudioTimeContext = createContext();
+const isMobile = useMobileDetect();
 
 export const useAudioTime = () => {
     const context = useContext(AudioTimeContext);
@@ -63,7 +65,7 @@ export const AudioTimeProvider = ({ children }) => {
             localStorage.removeItem("nsnPlaybackTimes");
             toast.success("Tiempos Borrados", {
                 duration: 1000,
-                position: "bottom-center",
+                position: isMobile ? "bottom-center" : "bottom-left",
                 style: {
                     backgroundColor: "#16213e",
                     color: "#ffffff"
@@ -72,7 +74,7 @@ export const AudioTimeProvider = ({ children }) => {
         } catch (error) {
             toast.error("Error al borrar los tiempos", {
                 duration: 1000,
-                position: "bottom-center",
+                position: isMobile ? "bottom-center" : "bottom-left",
                 style: {
                     backgroundColor: "#e74c3c",
                     color: "#ffffff"

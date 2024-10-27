@@ -38,6 +38,7 @@ import { removePlaybackTime } from "../../store/slices/audioTimeSlice";
 import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { Typography, Fade } from "@mui/material";
+import useMobileDetect from "../../hooks/useMobileDetect";
 
 const YT_API_KEY = process.env.REACT_APP_YT_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
@@ -49,6 +50,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
     const [podcast, setPodcast] = useState(null);
     const [youtubeVideoId, setYoutubeVideoId] = useState("");
     const { isLoading, progress, isCancelled, handleDownload, cancelDownload } = useDownload();
+    const isMobile = useMobileDetect();
 
     const { songs, listenedEpisodes, completedEpisodes, favoriteEpisodes, listenLaterEpisodes } =
         useSelector((state) => state.podcast);
@@ -147,7 +149,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 dispatch(deleteEpisode(song.title));
                 dispatch(removePlaybackTime(song.title));
                 toast.success("Tiempo de reproducción eliminado", {
-                    position: "bottom-center",
+                    position: isMobile ? "bottom-center" : "bottom-left",
                     duration: 3000,
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",
@@ -167,7 +169,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
             () => {
                 dispatch(removeFromCompleted(song.title));
                 toast.success("Podcast eliminado de completados", {
-                    position: "bottom-center",
+                    position: isMobile ? "bottom-center" : "bottom-left",
                     duration: 3000,
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",
@@ -260,91 +262,92 @@ const PodcastDetail = ({ onPlayPodcast }) => {
 
     const handleCompleteClick = () => {
         if (isCompleted) {
-            dispatch(removeFromCompleted(podcast.title));
-            toast.error("Podcast marcado como no completado", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            handleRemoveCompleted(podcast);
+            // dispatch(removeFromCompleted(podcast.title));
+            // toast.error("Podcast marcado como no completado", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         } else {
             dispatch(markAsCompleted(podcast.title));
-            toast.success("Podcast marcado como completado", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            // toast.success("Podcast marcado como completado", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         }
     };
 
     const handleWatchLater = () => {
         if (isListenLater) {
             dispatch(toggleListenLater(podcast));
-            toast.error("Podcast eliminado de ver más tarde", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            // toast.error("Podcast eliminado de ver más tarde", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         } else {
             dispatch(toggleListenLater(podcast));
-            toast.success("Podcast agregado a ver más tarde", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            // toast.success("Podcast agregado a ver más tarde", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         }
     };
 
     const handleFavorites = () => {
         if (isFavorite) {
             dispatch(toggleFavorite(podcast));
-            toast.error("Podcast eliminado favoritos", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            // toast.error("Podcast eliminado favoritos", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         } else {
             dispatch(toggleFavorite(podcast));
-            toast.success("Podcast agregado a favoritos", {
-                position: "bottom-center",
-                duration: 3000,
-                style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)",
-                    color: "#ffffff",
-                    borderRadius: "8px",
-                    padding: "10px",
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
-                }
-            });
+            // toast.success("Podcast agregado a favoritos", {
+            //     position: "bottom-center",
+            //     duration: 3000,
+            //     style: {
+            //         backgroundColor: "rgba(33, 33, 33, 0.9)",
+            //         color: "#ffffff",
+            //         borderRadius: "8px",
+            //         padding: "10px",
+            //         boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
+            //     }
+            // });
         }
     };
 
@@ -475,6 +478,31 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                         </BootstrapTooltip>
                     )}
 
+                    <BootstrapTooltip
+                        title={
+                            isListenLater
+                                ? "Quitar de escuchar más tarde"
+                                : "Guardar para escuchar más tarde"
+                        }
+                        placement="top"
+                        arrow
+                        disableInteractive
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                    >
+                        <motion.div
+                            variants={iconVariants}
+                            whileHover="hover"
+                            onClick={handleWatchLater}
+                            style={{ cursor: "pointer" }}
+                        >
+                            {isListenLater ? (
+                                <WatchLater className={styles.favoriteIcon} />
+                            ) : (
+                                <WatchLaterOutlined className={styles.favoriteIcon} />
+                            )}
+                        </motion.div>
+                    </BootstrapTooltip>
                     <BootstrapTooltip
                         title={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
                         placement="top"
