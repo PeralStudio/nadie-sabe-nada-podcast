@@ -4,7 +4,7 @@ import { Timer, TimerOff, Warning, CheckCircle } from "@mui/icons-material";
 import styles from "./SleepTimer.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePlay } from "../../store/slices/playerSlice";
-import { toast } from "react-hot-toast"; // Cambiado de react-toastify a react-hot-toast
+import { toast } from "react-hot-toast";
 
 const SleepTimer = () => {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const SleepTimer = () => {
                     </p>
                 </div>,
                 {
-                    duration: 3000, // Duración en milisegundos
+                    duration: 3000,
                     position: "bottom-center",
                     style: {
                         backgroundColor: "rgba(33, 33, 33, 0.9)",

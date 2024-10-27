@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import styles from "./PodcastDetail.module.css";
 import YouTube from "react-youtube";
-import { toast } from "react-hot-toast"; // Cambiado a react-hot-toast
+import { toast } from "react-hot-toast";
 import {
     PlayArrow,
     ArrowBack,
@@ -105,7 +105,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                             whileTap={{ scale: 0.95 }}
                             className={styles.confirmButton}
                             onClick={() => {
-                                toast.dismiss(t.id); // Cerrar el toast de confirmación
+                                toast.dismiss(t.id);
                                 onConfirm();
                             }}
                         >
@@ -115,7 +115,7 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={styles.cancelButton}
-                            onClick={() => toast.dismiss(t.id)} // Cerrar el toast de confirmación
+                            onClick={() => toast.dismiss(t.id)}
                         >
                             Cancelar
                         </motion.button>
@@ -123,15 +123,15 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 </div>
             ),
             {
-                duration: Infinity, // Toast permanece visible hasta que se cierra manualmente
+                duration: Infinity,
                 position: "top-center",
                 className: styles.customToast,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    border: "1px solid #16db93", // Borde verde
-                    borderRadius: "12px", // Bordes redondeados
-                    padding: "20px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    border: "1px solid #16db93",
+                    borderRadius: "12px",
+                    padding: "20px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 },
                 closeButton: false,
                 closeOnClick: false,
@@ -150,11 +150,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                     position: "bottom-center",
                     duration: 3000,
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 });
             }
@@ -170,11 +170,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                     position: "bottom-center",
                     duration: 3000,
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 });
             }
@@ -265,11 +265,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         } else {
@@ -278,11 +278,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         }
@@ -295,11 +295,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         } else {
@@ -308,11 +308,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         }
@@ -325,11 +325,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         } else {
@@ -338,11 +338,11 @@ const PodcastDetail = ({ onPlayPodcast }) => {
                 position: "bottom-center",
                 duration: 3000,
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         }

@@ -64,22 +64,22 @@ const MP3Player = ({
             toast.error("Podcast eliminado de favoritos", {
                 position: "bottom-center",
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         } else {
             toast.success("Podcast guardado como favorito", {
                 position: "bottom-center",
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         }
@@ -93,22 +93,22 @@ const MP3Player = ({
             toast.error("Podcast eliminado de escuchar más tarde", {
                 position: "bottom-center",
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         } else {
             toast.success("Podcast guardado para escuchar más tarde", {
                 position: "bottom-center",
                 style: {
-                    backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                    color: "#ffffff", // Texto blanco
-                    borderRadius: "8px", // Bordes redondeados
-                    padding: "10px", // Espaciado interno
-                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
+                    color: "#ffffff",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                 }
             });
         }
@@ -129,11 +129,11 @@ const MP3Player = ({
                 toast.error("Podcast marcado como no completado", {
                     position: "bottom-center",
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 });
             } else {
@@ -141,11 +141,11 @@ const MP3Player = ({
                 toast.success("Podcast marcado como completado", {
                     position: "bottom-center",
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 });
             }
@@ -226,11 +226,11 @@ const MP3Player = ({
                     toast.success("Tiempo de reproducción eliminado", {
                         position: "bottom-center",
                         style: {
-                            backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                            color: "#ffffff", // Texto blanco
-                            borderRadius: "8px", // Bordes redondeados
-                            padding: "10px", // Espaciado interno
-                            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                            backgroundColor: "rgba(33, 33, 33, 0.9)",
+                            color: "#ffffff",
+                            borderRadius: "8px",
+                            padding: "10px",
+                            boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                         }
                     });
                 }
@@ -241,11 +241,11 @@ const MP3Player = ({
                 {
                     position: "bottom-center",
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 }
             );
@@ -261,11 +261,11 @@ const MP3Player = ({
                 toast.success("Podcast eliminado de completados", {
                     position: "bottom-center",
                     style: {
-                        backgroundColor: "rgba(33, 33, 33, 0.9)", // Fondo oscuro
-                        color: "#ffffff", // Texto blanco
-                        borderRadius: "8px", // Bordes redondeados
-                        padding: "10px", // Espaciado interno
-                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)" // Sombra
+                        backgroundColor: "rgba(33, 33, 33, 0.9)",
+                        color: "#ffffff",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)"
                     }
                 });
             }

@@ -288,10 +288,6 @@ const PodcastList = ({ onPlayPodcast }) => {
                     animate="visible"
                 >
                     {currentSongs.map((song) => {
-                        // const isStarted = playbackTimes[song.title] > 0;
-                        // const playbackTime = playbackTimes[song.title] || 0;
-                        // const isCompleted = completedEpisodes.includes(song.title);
-
                         return (
                             <motion.div
                                 className={styles.playerList}

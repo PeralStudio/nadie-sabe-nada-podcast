@@ -13,7 +13,6 @@ import LastPodcast from "./components/LastPodcast/LastPodcast";
 import PersistentPlayer from "./components/PersistentPlayer/PersistentPlayer";
 import Settings from "./components/Settings/Settings";
 import NotFound from "./components/NotFound/NotFound";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { fetchPodcasts, setSearchTerm } from "./store/slices/podcastSlice";
@@ -137,18 +136,6 @@ const App = () => {
                     <PersistentPlayer onClose={() => dispatch(closePersistentPlayerAsync())} />
                 )}
             </AnimatePresence>
-            <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable={true}
-                pauseOnHover
-                theme="light"
-            />
         </div>
     );
 };
