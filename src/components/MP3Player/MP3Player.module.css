@@ -230,10 +230,6 @@
 }
 
 @media (max-width: 480px) {
-    .Toastify__toast-container {
-        height: fit-content !important;
-    }
-
     .spanDate {
         align-self: center;
     }
